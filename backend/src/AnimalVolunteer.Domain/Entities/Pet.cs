@@ -17,6 +17,7 @@ public class Pet
     public string HealthInfo { get; private set; } = null!;
     public string Address { get; private set; } = null!;
     public float Weight { get; private set; }
+    public float Height { get; private set; }
     public string PhoneNumber { get; private set; } = null!;
     public bool IsNeutered { get; private set; }
     public DateOnly BirthDate { get; private set; }
