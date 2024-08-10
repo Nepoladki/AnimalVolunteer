@@ -5,7 +5,7 @@ public class Volunteer
     public Guid Id { get; private set; }
     public string FullName { get; private set; } = null!;
     public string Description { get; private set; } = null!;
-    public float ExpirienceYears { get; private set; }
+    public int ExpirienceYears { get; private set; }
     public int PetsFoundedHome { get; private set; }
     public int PetsLookingForHome { get; private set; }
     public int PetsInVetClinic { get; private set; }
