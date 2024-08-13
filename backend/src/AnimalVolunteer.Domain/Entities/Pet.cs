@@ -24,5 +24,6 @@ public class Pet
     public bool IsVaccinated { get; private set; }
     public string CurrentStatus { get; private set; } = null!;
     public List<PaymentDetails> PaymentsDetails { get; private set; } = default!;
+    public List<PetPhoto> PetPhotos { get; private set; } = default!;
     public DateTime CreatedAt { get; private set; }
 }
