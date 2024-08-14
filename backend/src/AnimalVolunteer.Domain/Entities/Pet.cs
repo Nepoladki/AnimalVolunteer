@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AnimalVolunteer.Domain.Entities;
+﻿namespace AnimalVolunteer.Domain.Entities;
 
 public class Pet
 {
-    public Guid Id { get; private set; }
+    public Guid PetId { get; private set; }
     public string Name { get; private set; } = null!;
     public string Species { get; private set; } = null!;
     public string Description { get; private set; } = null!;
@@ -20,10 +14,10 @@ public class Pet
     public float Height { get; private set; }
     public string PhoneNumber { get; private set; } = null!;
     public bool IsNeutered { get; private set; }
-    public DateOnly BirthDate { get; private set; }
     public bool IsVaccinated { get; private set; }
+    public DateOnly BirthDate { get; private set; }
     public string CurrentStatus { get; private set; } = null!;
-    public List<PaymentDetails> PaymentsDetails { get; private set; } = default!;
-    public List<PetPhoto> PetPhotos { get; private set; } = default!;
     public DateTime CreatedAt { get; private set; }
+    public List<PaymentDetails> PaymentDetails { get; private set; } = default!;
+    public List<PetPhoto> PetPhotos { get; private set; } = default!;
 }

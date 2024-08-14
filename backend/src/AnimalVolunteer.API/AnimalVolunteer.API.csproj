@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -23,6 +23,10 @@
     <ProjectReference Include="..\AnimalVolunteer.Application\AnimalVolunteer.Application.csproj" />
     <ProjectReference Include="..\AnimalVolunteer.Domain\AnimalVolunteer.Domain.csproj" />
     <ProjectReference Include="..\AnimalVolunteer.Infrastructure\AnimalVolunteer.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

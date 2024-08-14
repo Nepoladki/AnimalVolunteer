@@ -1,8 +1,8 @@
 ﻿namespace AnimalVolunteer.Domain.Entities;
 
-public class Volunteer
+public sealed class Volunteer
 {
-    public Guid Id { get; private set; }
+    public Guid VolunteerId { get; private set; }
     public string FullName { get; private set; } = null!;
     public string Description { get; private set; } = null!;
     public int ExpirienceYears { get; private set; }
