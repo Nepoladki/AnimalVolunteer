@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.API", "src\AnimalVolunteer.API\AnimalVolunteer.API.csproj", "{50CB1F7D-CCA4-4791-A9C6-E08EB3FC3B2A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Infrastructure", "src\AnimalVolunteer.Infrastructure\AnimalVolunteer.Infrastructure.csproj", "{50141EF3-E88D-4570-87A8-DA4CCFC1EE39}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Domain", "src\AnimalVolunteer.Domain\AnimalVolunteer.Domain.csproj", "{01FF1CEB-7F0C-4E2C-8278-52815B37B0CB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Application", "src\AnimalVolunteer.Application\AnimalVolunteer.Application.csproj", "{AA0A19E2-2A15-4759-9571-55645757C162}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{6BEDAD03-A0AC-44D0-9740-DE654403792B}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.dcproj = docker-compose.dcproj
+		docker-compose.yml = docker-compose.yml
+		launchSettings.json = launchSettings.json
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50CB1F7D-CCA4-4791-A9C6-E08EB3FC3B2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50CB1F7D-CCA4-4791-A9C6-E08EB3FC3B2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50CB1F7D-CCA4-4791-A9C6-E08EB3FC3B2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50CB1F7D-CCA4-4791-A9C6-E08EB3FC3B2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50141EF3-E88D-4570-87A8-DA4CCFC1EE39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50141EF3-E88D-4570-87A8-DA4CCFC1EE39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50141EF3-E88D-4570-87A8-DA4CCFC1EE39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50141EF3-E88D-4570-87A8-DA4CCFC1EE39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01FF1CEB-7F0C-4E2C-8278-52815B37B0CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01FF1CEB-7F0C-4E2C-8278-52815B37B0CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01FF1CEB-7F0C-4E2C-8278-52815B37B0CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01FF1CEB-7F0C-4E2C-8278-52815B37B0CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA0A19E2-2A15-4759-9571-55645757C162}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA0A19E2-2A15-4759-9571-55645757C162}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA0A19E2-2A15-4759-9571-55645757C162}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA0A19E2-2A15-4759-9571-55645757C162}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2918F184-1665-4379-B2CA-AE86614A7E61}
+	EndGlobalSection
+EndGlobal
