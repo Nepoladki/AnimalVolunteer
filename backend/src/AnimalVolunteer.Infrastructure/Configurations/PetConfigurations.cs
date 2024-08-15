@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AnimalVolunteer.Domain.Common;
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using AnimalVolunteer.Domain.ValueObjects;
 
 namespace AnimalVolunteer.Infrastructure.Configurations;
 
@@ -12,7 +14,12 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
     {
         builder.ToTable("pets");
 
-        builder.HasKey(x => x.PetId);
+        builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.Id)
+            .HasConversion(
+                id => id.Value,
+                value => PetId.CreateWithGuid(value));
 
         builder.Property(x => x.Name)
             .IsRequired()
@@ -34,13 +41,44 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
             .IsRequired()
             .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW);
 
-        builder.Property(x => x.HealthInfo)
+        builder.ComplexProperty(x => x.HealthInfo, hi =>
+        {
+            hi.Property(j => j.Description)
             .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_HIGH);
+            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_HIGH)
+            .HasColumnName("description");
 
-        builder.Property(x => x.Address)
+            hi.Property(j => j.IsVaccinated)
             .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_MEDIUM);
+            .HasColumnName("is_vaccinated");
+
+            hi.Property(j => j.IsNeutered)
+            .IsRequired()
+            .HasColumnName("is_neutered");
+        });
+
+        builder.ComplexProperty(x => x.Address, a =>
+        {
+            a.Property(j => j.Country)
+            .IsRequired()
+            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+            .HasColumnName("country");
+
+            a.Property(j => j.City)
+            .IsRequired()
+            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+            .HasColumnName("city");
+
+            a.Property(j => j.Street)
+            .IsRequired()
+            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+            .HasColumnName("street");
+
+            a.Property(j => j.House)
+            .IsRequired(false)
+            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+            .HasColumnName("house");
+        });
 
         builder.Property(x => x.Weight)
             .IsRequired();
@@ -48,15 +86,27 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
         builder.Property(x => x.Height)
             .IsRequired();
 
-        builder.Property(x => x.PhoneNumber)
-            .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW);
+        builder.OwnsOne(x => x.ContactInfos, ci =>
+        {
+            ci.ToJson(); 
 
-        builder.Property(x => x.IsNeutered)
-            .IsRequired();
+            ci.OwnsMany(i => i.Contacts, j => 
+            { 
+                j.Property(k => k.PhoneNumber)
+                .IsRequired()
+                .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+                .HasJsonPropertyName("phone_number");
 
-        builder.Property(x => x.IsVaccinated)
-            .IsRequired();
+                j.Property(k => k.Name)
+                .IsRequired()
+                .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+                .HasJsonPropertyName("name");
+
+                j.Property(k => k.Note)
+                .IsRequired(false)
+                .HasJsonPropertyName("note");
+            });
+        });
 
         builder.Property(x => x.BirthDate)
             .IsRequired();
@@ -67,12 +117,39 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
         builder.Property(x => x.CreatedAt)
             .IsRequired();
 
-        builder.HasMany(x => x.PaymentDetails)
-            .WithOne()
-            .HasForeignKey("payment_details_id");
+        builder.OwnsOne(x => x.PaymentDetails, pd =>
+        {
+            pd.ToJson();
 
-        builder.HasMany(x => x.PetPhotos)
-            .WithOne()
-            .HasForeignKey("pet_photo_id");
+            pd.OwnsMany(i => i.Payments, j =>
+            {
+                j.Property(k => k.Name)
+                .IsRequired()
+                .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+                .HasJsonPropertyName("name");
+
+                j.Property(k => k.Description)
+                .IsRequired()
+                .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+                .HasJsonPropertyName("description");
+            });
+        });
+
+        builder.OwnsOne(x => x.PetPhotos, pp =>
+        {
+            pp.ToJson();
+
+            pp.OwnsMany(i => i.PetPhotos, j =>
+            {
+                j.Property(k => k.FilePath)
+                .IsRequired()
+                .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_MEDIUM)
+                .HasJsonPropertyName("file_path");
+
+                j.Property(k => k.IsMain)
+                .IsRequired()
+                .HasJsonPropertyName("is_main");
+            });
+        });
     }
 }
