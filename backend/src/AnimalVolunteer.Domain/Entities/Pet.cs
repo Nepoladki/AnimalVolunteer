@@ -1,8 +1,13 @@
-﻿namespace AnimalVolunteer.Domain.Entities;
+﻿using AnimalVolunteer.Domain.Common;
 
-public class Pet
+namespace AnimalVolunteer.Domain.Entities;
+
+public class Pet : Entity<PetId>
 {
-    public Guid PetId { get; private set; }
+    // EF Core ctor
+    private Pet(PetId id) : base(id) { }
+
+    public PetId PetId { get; private set; }
     public string Name { get; private set; } = null!;
     public string Species { get; private set; } = null!;
     public string Description { get; private set; } = null!;
@@ -19,5 +24,5 @@ public class Pet
     public string CurrentStatus { get; private set; } = null!;
     public DateTime CreatedAt { get; private set; }
     public List<PaymentDetails> PaymentDetails { get; private set; } = default!;
-    public List<PetPhoto> PetPhotos { get; private set; } = default!;
+    public List<PetPhoto> PetPhotos { get; private set; } = default!;    
 }

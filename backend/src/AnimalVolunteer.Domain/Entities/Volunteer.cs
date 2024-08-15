@@ -1,7 +1,12 @@
-﻿namespace AnimalVolunteer.Domain.Entities;
+﻿using AnimalVolunteer.Domain.Common;
 
-public sealed class Volunteer
+namespace AnimalVolunteer.Domain.Entities;
+
+public sealed class Volunteer : Entity<VolunteerId>
 {
+    // EF Core ctor
+    private Volunteer(VolunteerId id) : base(id) { }
+
     public Guid VolunteerId { get; private set; }
     public string FullName { get; private set; } = null!;
     public string Description { get; private set; } = null!;
