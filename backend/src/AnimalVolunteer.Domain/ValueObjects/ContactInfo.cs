@@ -5,8 +5,6 @@ namespace AnimalVolunteer.Domain.ValueObjects;
 
 public record ContactInfo
 {
-    // EF Core ctor
-    private ContactInfo() { }
     private ContactInfo(string phoneNumber, string name, string? note)
     {
         PhoneNumber = phoneNumber;

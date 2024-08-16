@@ -5,8 +5,6 @@ namespace AnimalVolunteer.Domain.ValueObjects;
 
 public record Address
 {
-    // EF Core ctor
-    private Address() { }
     private Address(string country, string city, string street, string? house)
     {
         Country = country;

@@ -6,8 +6,6 @@ namespace AnimalVolunteer.Domain.ValueObjects;
 
 public record PaymentDetails
 {
-    // EF Core ctor
-    private PaymentDetails() { }
     private PaymentDetails(string name, string description)
     {
         Name = name;

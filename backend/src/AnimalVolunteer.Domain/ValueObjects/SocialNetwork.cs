@@ -5,8 +5,6 @@ namespace AnimalVolunteer.Domain.ValueObjects;
 
 public record SocialNetwork
 {
-    // EF Core ctor
-    private SocialNetwork() { }
     private SocialNetwork(string name, string url)
     {
         Name = name;

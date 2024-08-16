@@ -6,8 +6,6 @@ namespace AnimalVolunteer.Domain.ValueObjects;
 
 public record PetPhoto
 {
-    // EF Core ctor
-    private PetPhoto() { }
     private PetPhoto(string filePath, bool isMain)
     {
         FilePath = filePath;

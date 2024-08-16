@@ -5,8 +5,6 @@ namespace AnimalVolunteer.Domain.ValueObjects;
 
 public record HealthInfo
 {
-    // EF Core ctor
-    private HealthInfo() { }
     private HealthInfo(string description, bool isVaccinated, bool isNeutered)
     {
         Description = description;

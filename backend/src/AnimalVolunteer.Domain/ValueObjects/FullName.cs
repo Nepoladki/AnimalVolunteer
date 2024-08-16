@@ -5,8 +5,6 @@ namespace AnimalVolunteer.Domain.ValueObjects;
 
 public record FullName
 {
-    // EF Core ctor
-    private FullName() { }
     private FullName(string firstName, string? surName, string lastName)
     {
         FirstName = firstName;
