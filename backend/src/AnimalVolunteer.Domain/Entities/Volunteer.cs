@@ -6,7 +6,7 @@ namespace AnimalVolunteer.Domain.Entities;
 public sealed class Volunteer : Entity<VolunteerId>
 {
     // EF Core ctor
-    private Volunteer(VolunteerId volunteerId) : base(volunteerId) { }
+    private Volunteer(VolunteerId id) : base(id) { }
     public FullName FullName { get; private set; } = null!;
     public string Description { get; private set; } = null!;
     public int ExpirienceYears { get; private set; }
