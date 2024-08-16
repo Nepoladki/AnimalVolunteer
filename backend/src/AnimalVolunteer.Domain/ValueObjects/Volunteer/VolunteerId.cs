@@ -1,10 +1,8 @@
-﻿namespace AnimalVolunteer.Domain.ValueObjects;
+﻿namespace AnimalVolunteer.Domain.ValueObjects.Volunteer;
 
 public record VolunteerId
-{   
-    private VolunteerId() { }
+{
     public Guid Value { get; }
-
     protected VolunteerId(Guid value)
     {
         Value = value;

@@ -1,7 +1,9 @@
 ﻿using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.ValueObjects;
+using AnimalVolunteer.Domain.Entities;
+using AnimalVolunteer.Domain.ValueObjects.Common;
+using AnimalVolunteer.Domain.ValueObjects.Volunteer;
 
-namespace AnimalVolunteer.Domain.Entities;
+namespace AnimalVolunteer.Domain.Aggregates;
 
 public sealed class Volunteer : Entity<VolunteerId>
 {

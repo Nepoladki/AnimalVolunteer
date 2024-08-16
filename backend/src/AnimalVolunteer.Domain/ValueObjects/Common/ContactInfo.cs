@@ -1,7 +1,7 @@
 ﻿using AnimalVolunteer.Domain.Common;
 using CSharpFunctionalExtensions;
 
-namespace AnimalVolunteer.Domain.ValueObjects;
+namespace AnimalVolunteer.Domain.ValueObjects.Common;
 
 public record ContactInfo
 {

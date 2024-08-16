@@ -1,8 +1,8 @@
-﻿using AnimalVolunteer.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.ValueObjects;
+using AnimalVolunteer.Domain.ValueObjects.Volunteer;
+using AnimalVolunteer.Domain.Aggregates;
 
 namespace AnimalVolunteer.Infrastructure.Configurations;
 
@@ -12,7 +12,8 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
     {
         builder.ToTable("volunteers");
 
-        builder.HasKey(x => x.Id);
+        builder.HasKey(x => x.Id)
+            .HasName("volunteer_id");
 
         builder.Property(x => x.Id)
             .HasConversion(
