@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Domain.Entities;
+using AnimalVolunteer.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -20,6 +21,9 @@ public class ApplicationDbContext(IConfiguration configuration) : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+        modelBuilder.Entity<PetId>()
+        .HasNoKey();
     }
 
     private ILoggerFactory CreateLoggerFactory() =>

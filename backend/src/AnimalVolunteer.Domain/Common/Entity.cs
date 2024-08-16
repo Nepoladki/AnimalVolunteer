@@ -6,6 +6,5 @@ public abstract class Entity<TId> where TId : notnull
     {
         Id = id;
     }
-
     public TId Id { get; private set; }
 }
