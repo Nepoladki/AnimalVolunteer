@@ -1,4 +1,5 @@
-﻿using AnimalVolunteer.Domain.Common;
+﻿using AnimalVolunteer.Domain.Aggregates;
+using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Entities;
 using AnimalVolunteer.Domain.ValueObjects.Breed;
 using AnimalVolunteer.Domain.ValueObjects.Common;
@@ -14,25 +15,32 @@ public class BreedConfigurations : IEntityTypeConfiguration<Breed>
     {
         builder.ToTable("breeds");
 
-        builder.HasKey(x => x.Id)
-            .HasName("breed_id");
+        builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id)
             .HasConversion(
                 id => id.Value,
-                value => BreedId.CreateWithGuid(value));
+                value => BreedId.CreateWithGuid(value))
+            .HasColumnName("id");
 
-        builder.Property(s => s.Title)
-            .HasConversion(
-                t => t.Value,
-                value => Title.Create(value).Value)
+        builder.ComplexProperty(s => s.Title, t =>
+        {
+            t.Property(i => i.Value)
             .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW);
+            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+            .HasColumnName("title");
+        });
 
-        builder.Property(x => x.SpeciesId)
-            .HasConversion(
-                id => id.Value,
-                value => SpeciesId.CreateWithGuid(value))
-            .IsRequired();
+        //builder.ComplexProperty(b => b.SpeciesId, i =>
+        //{
+        //    i.Property(i => i.Value)
+        //    .IsRequired()
+        //    .HasColumnName("species_id");
+        //});
+
+        builder.HasOne<Species>()
+            .WithMany(s => s.Breeds)
+            .HasForeignKey(s => s.SpeciesId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

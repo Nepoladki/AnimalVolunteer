@@ -12,8 +12,7 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
     {
         builder.ToTable("pets");
 
-        builder.HasKey(x => x.Id)
-            .HasName("pet_id");
+        builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id)
             .HasConversion(

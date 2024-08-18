@@ -18,7 +18,7 @@ public record SpeciesAndBreed
             return Result.Failure<SpeciesAndBreed>("Invalid species id");
 
         if (breedId == Guid.Empty)
-            return Result.Failure<SpeciesAndBreed>("Invalid species id");
+            return Result.Failure<SpeciesAndBreed>("Invalid breed id");
 
         return Result.Success(new SpeciesAndBreed(speciesId, breedId));
     }

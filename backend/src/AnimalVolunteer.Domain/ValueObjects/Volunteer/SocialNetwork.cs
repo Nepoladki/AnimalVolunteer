@@ -5,6 +5,7 @@ namespace AnimalVolunteer.Domain.ValueObjects.Volunteer;
 
 public record SocialNetwork
 {
+    protected SocialNetwork() { }
     private SocialNetwork(string name, string url)
     {
         Name = name;

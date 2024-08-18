@@ -13,23 +13,24 @@ public class SpeciesConfigurations : IEntityTypeConfiguration<Species>
     {
         builder.ToTable("species");
 
-        builder.HasKey(s => s.Id)
-            .HasName("species_id");
+        builder.HasKey(s => s.Id);
 
         builder.Property(s => s.Id)
             .HasConversion(
                 id => id.Value,
-                guid => SpeciesId.CreateWithGuid(guid));
+                guid => SpeciesId.CreateWithGuid(guid))
+            .HasColumnName("id");
 
-        builder.Property(s => s.Title)
-            .HasConversion(
-                t => t.Value, 
-                value => Title.Create(value).Value)
+        builder.ComplexProperty(s => s.Title, t =>
+        {
+            t.Property(i => i.Value)
             .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW);
+            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+            .HasColumnName("title");
+        });
 
         builder.HasMany(s => s.Breeds)
             .WithOne()
-            .HasForeignKey("breed_id");
+            .HasForeignKey("id");
     }
 }
