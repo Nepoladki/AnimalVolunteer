@@ -10,7 +10,7 @@ public record Title
     {
         Value = value;
     }
-    public string Value { get; private set; } = null!;
+    public string Value { get; } = null!;
 
     public static Result<Title> Create(string value)
     {
