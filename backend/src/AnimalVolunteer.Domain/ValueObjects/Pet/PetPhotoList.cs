@@ -1,4 +1,4 @@
-﻿namespace AnimalVolunteer.Domain.ValueObjects;
+﻿namespace AnimalVolunteer.Domain.ValueObjects.Pet;
 
 public record PetPhotoList
 {

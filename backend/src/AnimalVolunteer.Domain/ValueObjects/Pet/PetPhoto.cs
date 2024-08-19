@@ -2,7 +2,7 @@
 using CSharpFunctionalExtensions;
 using System.Reflection.Metadata;
 
-namespace AnimalVolunteer.Domain.ValueObjects;
+namespace AnimalVolunteer.Domain.ValueObjects.Pet;
 
 public record PetPhoto
 {

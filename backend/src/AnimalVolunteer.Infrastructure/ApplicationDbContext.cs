@@ -1,5 +1,5 @@
-﻿using AnimalVolunteer.Domain.Entities;
-using AnimalVolunteer.Domain.ValueObjects;
+﻿using AnimalVolunteer.Domain.Aggregates;
+using AnimalVolunteer.Domain.ValueObjects.Pet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -10,6 +10,7 @@ public class ApplicationDbContext(IConfiguration configuration) : DbContext
 {
     private const string CONNECTION_NAME = "Postgres";
     public DbSet<Volunteer> Volunteers { get; set; }
+    public DbSet<Species> Species { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -21,9 +22,6 @@ public class ApplicationDbContext(IConfiguration configuration) : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-
-        modelBuilder.Entity<PetId>()
-        .HasNoKey();
     }
 
     private ILoggerFactory CreateLoggerFactory() =>

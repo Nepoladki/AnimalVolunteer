@@ -2,7 +2,7 @@
 using CSharpFunctionalExtensions;
 using CSharpFunctionalExtensions.ValueTasks;
 
-namespace AnimalVolunteer.Domain.ValueObjects;
+namespace AnimalVolunteer.Domain.ValueObjects.Common;
 
 public record PaymentDetails
 {

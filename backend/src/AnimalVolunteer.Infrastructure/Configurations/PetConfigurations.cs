@@ -2,9 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AnimalVolunteer.Domain.Common;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using AnimalVolunteer.Domain.ValueObjects;
+using AnimalVolunteer.Domain.ValueObjects.Pet;
 
 namespace AnimalVolunteer.Infrastructure.Configurations;
 
@@ -25,21 +23,24 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
             .IsRequired()
             .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW);
 
-        builder.Property(x => x.Species)
-            .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW);
-
         builder.Property(x => x.Description)
             .IsRequired()
             .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_HIGH);
 
-        builder.Property(x => x.Breed)
-            .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW);
-
         builder.Property(x => x.Color)
             .IsRequired()
             .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW);
+
+        builder.ComplexProperty(x => x.SpeciesAndBreed, sb =>
+        {
+            sb.Property(j => j.SpeciesId)
+            .IsRequired()
+            .HasColumnName("species_id");
+
+            sb.Property(j => j.BreedId)
+            .IsRequired()
+            .HasColumnName("breed_id");
+        });
 
         builder.ComplexProperty(x => x.HealthInfo, hi =>
         {

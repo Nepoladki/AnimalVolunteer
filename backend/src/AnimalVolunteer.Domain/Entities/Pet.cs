@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.ValueObjects;
+using AnimalVolunteer.Domain.ValueObjects.Common;
+using AnimalVolunteer.Domain.ValueObjects.Pet;
 
 namespace AnimalVolunteer.Domain.Entities;
 
@@ -8,10 +9,9 @@ public sealed class Pet : Entity<PetId>
     // EF Core ctor
     private Pet(PetId id) : base(id) { }
     public string Name { get; private set; } = null!;
-    public string Species { get; private set; } = null!;
     public string Description { get; private set; } = null!;
-    public string Breed { get; private set; } = null!;
     public string Color { get; private set; } = null!;
+    public SpeciesAndBreed SpeciesAndBreed { get; private set; } = null!;
     public HealthInfo HealthInfo { get; private set; } = null!;
     public Address Address { get; private set; } = null!;
     public float Weight { get; private set; }
@@ -20,6 +20,6 @@ public sealed class Pet : Entity<PetId>
     public DateOnly BirthDate { get; private set; }
     public string CurrentStatus { get; private set; } = null!;
     public DateTime CreatedAt { get; private set; }
-    public PaymentDetailsList PaymentDetails { get; private set; } = default!;
-    public PetPhotoList PetPhotos { get; private set; } = default!;    
+    public PaymentDetailsList PaymentDetails { get; private set; } = null!;
+    public PetPhotoList PetPhotos { get; private set; } = null!;    
 }

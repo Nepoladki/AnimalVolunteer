@@ -1,8 +1,8 @@
-﻿using AnimalVolunteer.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.ValueObjects;
+using AnimalVolunteer.Domain.ValueObjects.Volunteer;
+using AnimalVolunteer.Domain.Aggregates;
 
 namespace AnimalVolunteer.Infrastructure.Configurations;
 
@@ -114,6 +114,6 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
 
         builder.HasMany(x => x.Pets)
             .WithOne()
-            .HasForeignKey("pet_id");
+            .HasForeignKey("volunteer_id");
     }
 }

@@ -1,10 +1,11 @@
 ﻿using AnimalVolunteer.Domain.Common;
 using CSharpFunctionalExtensions;
 
-namespace AnimalVolunteer.Domain.ValueObjects;
+namespace AnimalVolunteer.Domain.ValueObjects.Volunteer;
 
 public record SocialNetwork
 {
+    protected SocialNetwork() { }
     private SocialNetwork(string name, string url)
     {
         Name = name;

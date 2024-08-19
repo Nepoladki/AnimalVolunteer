@@ -1,4 +1,4 @@
-﻿namespace AnimalVolunteer.Domain.ValueObjects;
+﻿namespace AnimalVolunteer.Domain.ValueObjects.Volunteer;
 
 public record SocialNetworkList
 {
