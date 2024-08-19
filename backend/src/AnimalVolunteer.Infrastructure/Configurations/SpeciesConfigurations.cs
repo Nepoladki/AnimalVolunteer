@@ -31,6 +31,6 @@ public class SpeciesConfigurations : IEntityTypeConfiguration<Species>
 
         builder.HasMany(s => s.Breeds)
             .WithOne()
-            .HasForeignKey("id");
+            .HasForeignKey("species_id");
     }
 }

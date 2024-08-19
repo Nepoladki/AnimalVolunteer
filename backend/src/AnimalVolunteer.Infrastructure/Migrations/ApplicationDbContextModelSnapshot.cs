@@ -108,9 +108,9 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<Guid?>("id")
+                    b.Property<Guid?>("species_id")
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnName("species_id");
 
                     b.ComplexProperty<Dictionary<string, object>>("Title", "AnimalVolunteer.Domain.Entities.Breed.Title#Title", b1 =>
                         {
@@ -126,14 +126,10 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_breeds");
 
-                    b.HasIndex("id")
-                        .HasDatabaseName("ix_breeds_id");
+                    b.HasIndex("species_id")
+                        .HasDatabaseName("ix_breeds_species_id");
 
-                    b.ToTable("breeds", null, t =>
-                        {
-                            t.Property("id")
-                                .HasColumnName("id1");
-                        });
+                    b.ToTable("breeds", (string)null);
                 });
 
             modelBuilder.Entity("AnimalVolunteer.Domain.Entities.Pet", b =>
@@ -181,9 +177,9 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                         .HasColumnType("real")
                         .HasColumnName("weight");
 
-                    b.Property<Guid?>("pet_id")
+                    b.Property<Guid?>("volunteer_id")
                         .HasColumnType("uuid")
-                        .HasColumnName("pet_id");
+                        .HasColumnName("volunteer_id");
 
                     b.ComplexProperty<Dictionary<string, object>>("Address", "AnimalVolunteer.Domain.Entities.Pet.Address#Address", b1 =>
                         {
@@ -248,8 +244,8 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_pets");
 
-                    b.HasIndex("pet_id")
-                        .HasDatabaseName("ix_pets_pet_id");
+                    b.HasIndex("volunteer_id")
+                        .HasDatabaseName("ix_pets_volunteer_id");
 
                     b.ToTable("pets", null, t =>
                         {
@@ -429,16 +425,16 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                 {
                     b.HasOne("AnimalVolunteer.Domain.Aggregates.Species", null)
                         .WithMany("Breeds")
-                        .HasForeignKey("id")
-                        .HasConstraintName("fk_breeds_species_id");
+                        .HasForeignKey("species_id")
+                        .HasConstraintName("fk_breeds_species_species_id");
                 });
 
             modelBuilder.Entity("AnimalVolunteer.Domain.Entities.Pet", b =>
                 {
                     b.HasOne("AnimalVolunteer.Domain.Aggregates.Volunteer", null)
                         .WithMany("Pets")
-                        .HasForeignKey("pet_id")
-                        .HasConstraintName("fk_pets_volunteers_pet_id");
+                        .HasForeignKey("volunteer_id")
+                        .HasConstraintName("fk_pets_volunteers_volunteer_id");
 
                     b.OwnsOne("AnimalVolunteer.Domain.ValueObjects.Common.ContactInfoList", "ContactInfos", b1 =>
                         {

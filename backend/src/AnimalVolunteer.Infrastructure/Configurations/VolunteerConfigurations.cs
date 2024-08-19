@@ -114,6 +114,6 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
 
         builder.HasMany(x => x.Pets)
             .WithOne()
-            .HasForeignKey("pet_id");
+            .HasForeignKey("volunteer_id");
     }
 }

@@ -10,5 +10,4 @@ public class Breed : Entity<BreedId>
     // EF Core ctor
     private Breed(BreedId id) : base(id) { }
     public Title Title { get; private set; } = null!;
-    public SpeciesId SpeciesId { get; private set; } = null!;
 }

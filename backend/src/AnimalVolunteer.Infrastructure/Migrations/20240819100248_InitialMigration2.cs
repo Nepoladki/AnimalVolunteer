@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AnimalVolunteer.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialOne : Migration
+    public partial class InitialMigration2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,15 +50,15 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    id1 = table.Column<Guid>(type: "uuid", nullable: true),
+                    species_id = table.Column<Guid>(type: "uuid", nullable: true),
                     title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_breeds", x => x.id);
                     table.ForeignKey(
-                        name: "fk_breeds_species_id",
-                        column: x => x.id1,
+                        name: "fk_breeds_species_species_id",
+                        column: x => x.species_id,
                         principalTable: "species",
                         principalColumn: "id");
                 });
@@ -76,7 +76,7 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                     birth_date = table.Column<DateOnly>(type: "date", nullable: false),
                     current_status = table.Column<string>(type: "text", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    pet_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    volunteer_id = table.Column<Guid>(type: "uuid", nullable: true),
                     city = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     country = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     house = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
@@ -94,21 +94,21 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                 {
                     table.PrimaryKey("pk_pets", x => x.id);
                     table.ForeignKey(
-                        name: "fk_pets_volunteers_pet_id",
-                        column: x => x.pet_id,
+                        name: "fk_pets_volunteers_volunteer_id",
+                        column: x => x.volunteer_id,
                         principalTable: "volunteers",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_breeds_id",
+                name: "ix_breeds_species_id",
                 table: "breeds",
-                column: "id1");
+                column: "species_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_pets_pet_id",
+                name: "ix_pets_volunteer_id",
                 table: "pets",
-                column: "pet_id");
+                column: "volunteer_id");
         }
 
         /// <inheritdoc />

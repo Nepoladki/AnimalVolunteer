@@ -20,8 +20,7 @@ public class BreedConfigurations : IEntityTypeConfiguration<Breed>
         builder.Property(x => x.Id)
             .HasConversion(
                 id => id.Value,
-                value => BreedId.CreateWithGuid(value))
-            .HasColumnName("id");
+                value => BreedId.CreateWithGuid(value));
 
         builder.ComplexProperty(s => s.Title, t =>
         {
@@ -30,17 +29,5 @@ public class BreedConfigurations : IEntityTypeConfiguration<Breed>
             .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
             .HasColumnName("title");
         });
-
-        //builder.ComplexProperty(b => b.SpeciesId, i =>
-        //{
-        //    i.Property(i => i.Value)
-        //    .IsRequired()
-        //    .HasColumnName("species_id");
-        //});
-
-        builder.HasOne<Species>()
-            .WithMany(s => s.Breeds)
-            .HasForeignKey(s => s.SpeciesId)
-            .OnDelete(DeleteBehavior.NoAction);
     }
 }
