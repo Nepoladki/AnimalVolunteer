@@ -3,7 +3,7 @@
 public record ContactInfoList
 {
     private ContactInfoList() {}
-    private ContactInfoList(List<ContactInfo> list) { Contacts = list; }
-    public List<ContactInfo> Contacts { get; private set; } = null!;
-    public static ContactInfoList Create(List<ContactInfo> list) => new(list);
+    private ContactInfoList(IEnumerable<ContactInfo> list) => Contacts = list.ToList();
+    public IReadOnlyList<ContactInfo> Contacts { get; } = [];
+    public static ContactInfoList Create(IEnumerable<ContactInfo> list) => new(list);
 }

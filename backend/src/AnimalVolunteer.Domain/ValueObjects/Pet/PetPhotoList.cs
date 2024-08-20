@@ -3,5 +3,7 @@
 public record PetPhotoList
 {
     private PetPhotoList () {}
-    public List<PetPhoto> PetPhotos { get; private set; } = null!;
+    private PetPhotoList(IEnumerable<PetPhoto> photos) => PetPhotos = photos.ToList();
+    public IReadOnlyList<PetPhoto> PetPhotos { get; } = [];
+    public static PetPhotoList Create(IEnumerable<PetPhoto> photos) => new(photos);
 }

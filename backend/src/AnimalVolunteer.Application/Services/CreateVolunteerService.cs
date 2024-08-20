@@ -17,7 +17,7 @@ public class CreateVolunteerService
     {
         _volunteerRepository = volunteerRepository;
     }
-    public async Task<Result<Guid>> Create(CreateVolunteerRequest request)
+    public async Task<Result<Guid>> Create(CreateVolunteerRequest request, CancellationToken cancellationToken)
     {
         var fullNameResult = FullName.Create(request.FirstName, request.SurName, request.LastName);
 
@@ -74,7 +74,7 @@ public class CreateVolunteerService
                 SocialNetworkList.Create(socialNetworksList),
                 PaymentDetailsList.Create(paymentDetailsList));
 
-        await _volunteerRepository.CreateAsync(newVolunteer);
+        await _volunteerRepository.CreateAsync(newVolunteer, cancellationToken);
 
         return Result.Success<Guid>(newVolunteer.Id);
     }

@@ -16,9 +16,9 @@ public class VolunteerController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateVolunteerRequest request)
+    public async Task<IActionResult> Create(CreateVolunteerRequest request, CancellationToken cancellationToken)
     {
-        var creationResult = await _createVolunteerService.Create(request);
+        var creationResult = await _createVolunteerService.Create(request, cancellationToken);
 
         if (creationResult.IsFailure)
             return BadRequest(creationResult.Error);

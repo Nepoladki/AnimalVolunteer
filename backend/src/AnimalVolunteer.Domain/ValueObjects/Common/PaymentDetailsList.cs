@@ -5,7 +5,7 @@ namespace AnimalVolunteer.Domain.ValueObjects.Common;
 public record PaymentDetailsList
 {
     private PaymentDetailsList() {}
-    private PaymentDetailsList(List<PaymentDetails> list) { Payments = list; }
-    public List<PaymentDetails> Payments { get; private set; } = null!;
-    public static PaymentDetailsList Create(List<PaymentDetails> list) => new(list);
+    private PaymentDetailsList(IEnumerable<PaymentDetails> list) => Payments = list.ToList();
+    public IReadOnlyList<PaymentDetails> Payments { get; } = [];
+    public static PaymentDetailsList Create(IEnumerable<PaymentDetails> list) => new(list);
 }

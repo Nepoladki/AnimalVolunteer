@@ -13,7 +13,7 @@ public class VolunteerRepository : IVolunteerRepository
         _dbContext = dbContext;
     }
 
-    public async Task CreateAsync(Volunteer volunteer)
+    public async Task CreateAsync(Volunteer volunteer, CancellationToken cancellationToken)
     {
         _dbContext.Volunteers.Add(volunteer);
         await _dbContext.SaveChangesAsync();

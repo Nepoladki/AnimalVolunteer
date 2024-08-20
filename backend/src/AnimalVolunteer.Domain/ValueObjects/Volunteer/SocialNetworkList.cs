@@ -5,7 +5,7 @@ namespace AnimalVolunteer.Domain.ValueObjects.Volunteer;
 public record SocialNetworkList
 {
     private SocialNetworkList() {}
-    private SocialNetworkList(List<SocialNetwork> list) { SocialNetworks = list; }
-    public List<SocialNetwork> SocialNetworks { get; private set; } = null!;
-    public static SocialNetworkList Create(List<SocialNetwork> list) => new(list);
+    private SocialNetworkList(IEnumerable<SocialNetwork> list) => SocialNetworks = list.ToList();
+    public IReadOnlyList<SocialNetwork> SocialNetworks { get; } = null!;
+    public static SocialNetworkList Create(IEnumerable<SocialNetwork> list) => new(list);
 }
