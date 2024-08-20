@@ -1,3 +1,5 @@
+using AnimalVolunteer.Application.Interfaces;
+using AnimalVolunteer.Application.Services;
 using AnimalVolunteer.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ApplicationDbContext>();
+builder.Services.AddScoped<CreateVolunteerService>();
+builder.Services.AddScoped<IVolunteerRepository, VolunteerRepository>();
 
 var app = builder.Build();
 

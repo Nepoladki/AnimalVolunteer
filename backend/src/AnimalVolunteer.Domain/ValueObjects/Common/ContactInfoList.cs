@@ -2,5 +2,8 @@
 
 public record ContactInfoList
 {
-    public List<ContactInfo> Contacts { get; private set; } = null!;
+    private ContactInfoList() {}
+    private ContactInfoList(IEnumerable<ContactInfo> list) => Contacts = list.ToList();
+    public IReadOnlyList<ContactInfo> Contacts { get; } = [];
+    public static ContactInfoList Create(IEnumerable<ContactInfo> list) => new(list);
 }

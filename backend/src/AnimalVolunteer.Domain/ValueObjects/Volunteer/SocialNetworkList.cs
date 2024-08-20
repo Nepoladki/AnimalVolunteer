@@ -1,6 +1,11 @@
-﻿namespace AnimalVolunteer.Domain.ValueObjects.Volunteer;
+﻿using System.Runtime.InteropServices;
+
+namespace AnimalVolunteer.Domain.ValueObjects.Volunteer;
 
 public record SocialNetworkList
 {
-    public List<SocialNetwork> SocialNetworks { get; private set; } = null!;
+    private SocialNetworkList() {}
+    private SocialNetworkList(IEnumerable<SocialNetwork> list) => SocialNetworks = list.ToList();
+    public IReadOnlyList<SocialNetwork> SocialNetworks { get; } = null!;
+    public static SocialNetworkList Create(IEnumerable<SocialNetwork> list) => new(list);
 }

@@ -2,5 +2,8 @@
 
 public record PetPhotoList
 {
-    public List<PetPhoto> PetPhotos { get; private set; } = null!;
+    private PetPhotoList () {}
+    private PetPhotoList(IEnumerable<PetPhoto> photos) => PetPhotos = photos.ToList();
+    public IReadOnlyList<PetPhoto> PetPhotos { get; } = [];
+    public static PetPhotoList Create(IEnumerable<PetPhoto> photos) => new(photos);
 }
