@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AnimalVolunteer.API.Controllers;
 
-[Route("[Controller]")]
+[Route("api/[Controller]")]
 [ApiController]
 public class VolunteerController : ControllerBase
 {
