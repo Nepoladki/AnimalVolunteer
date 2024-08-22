@@ -10,5 +10,12 @@ public record VolunteerId
     public static VolunteerId Create() => new(Guid.NewGuid());
     public static VolunteerId CreateWithGuid(Guid value) => new(value);
     public static VolunteerId Empty() => new(Guid.Empty);
-    public static implicit operator Guid(VolunteerId v) => v.Value;
+
+    public static implicit operator VolunteerId(Guid value) => new(value);
+
+    public static implicit operator Guid(VolunteerId valueObj)
+    {
+        ArgumentNullException.ThrowIfNull(valueObj);
+        return valueObj.Value;
+    }
 }

@@ -63,7 +63,7 @@ public class CreateVolunteerService
             paymentDetailsList.Add(paymentResult.Value);
         }
 
-        var newVolunteer = Volunteer.Create(
+        var volunteerResult = Volunteer.Create(
                 fullNameResult.Value,
                 request.Description,
                 request.ExpirienceYears,
@@ -74,8 +74,11 @@ public class CreateVolunteerService
                 SocialNetworkList.Create(socialNetworksList),
                 PaymentDetailsList.Create(paymentDetailsList));
 
-        await _volunteerRepository.CreateAsync(newVolunteer, cancellationToken);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error;
 
-        return newVolunteer.Id;
+        await _volunteerRepository.CreateAsync(volunteerResult.Value, cancellationToken);
+
+        return volunteerResult.Value.Id;
     }
 }
