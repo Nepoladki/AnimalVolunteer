@@ -13,14 +13,14 @@ public record PaymentDetails
     }
     public string Name { get; } = null!;
     public string Description { get; } = null!;
-    public static Result<PaymentDetails> Create(string name, string description)
+    public static Result<PaymentDetails, Error> Create(string name, string description)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constants.TEXT_LENGTH_LIMIT_LOW)
-            return Result.Failure<PaymentDetails>("Invalid name");
+            return Errors.General.InvalidValue(nameof(name));
 
         if (string.IsNullOrWhiteSpace(description) || description.Length > Constants.TEXT_LENGTH_LIMIT_MEDIUM)
-            return Result.Failure<PaymentDetails>("Invalid description");
+            return Errors.General.InvalidValue(nameof(description));
 
-        return Result.Success(new PaymentDetails(name, description));
+        return new PaymentDetails(name, description);
     }
 }

@@ -13,14 +13,14 @@ public record SocialNetwork
     }
     public string Name { get; } = null!;
     public string URL { get; } = null!;
-    public static Result<SocialNetwork> Create(string name, string url)
+    public static Result<SocialNetwork, Error> Create(string name, string url)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constants.TEXT_LENGTH_LIMIT_LOW)
-            return Result.Failure<SocialNetwork>("Invalid name");
+            return Errors.General.InvalidValue(nameof(name));
 
         if (string.IsNullOrWhiteSpace(url) || url.Length > Constants.TEXT_LENGTH_LIMIT_MEDIUM)
-            return Result.Failure<SocialNetwork>("Invalid URL");
+            return Errors.General.InvalidValue(nameof(url));
 
-        return Result.Success(new SocialNetwork(name, url));
+        return new SocialNetwork(name, url);
     }
 }

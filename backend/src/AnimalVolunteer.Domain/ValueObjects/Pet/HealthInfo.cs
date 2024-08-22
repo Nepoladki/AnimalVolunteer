@@ -14,11 +14,11 @@ public record HealthInfo
     public string Description { get; } = null!;
     public bool IsVaccinated { get; }
     public bool IsNeutered { get; }
-    public static Result<HealthInfo> Create(string description, bool isVaccinated, bool isNeutered)
+    public static Result<HealthInfo, Error> Create(string description, bool isVaccinated, bool isNeutered)
     {
         if (string.IsNullOrWhiteSpace(description) || description.Length > Constants.TEXT_LENGTH_LIMIT_HIGH)
-            return Result.Failure<HealthInfo>("Invalid description");
+            return Errors.General.InvalidValue(nameof(description));
 
-        return Result.Success(new HealthInfo(description, isVaccinated, isNeutered));
+        return new HealthInfo(description, isVaccinated, isNeutered);
     }
 }

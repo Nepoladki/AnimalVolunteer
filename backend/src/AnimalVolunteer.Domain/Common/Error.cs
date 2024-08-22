@@ -1,4 +1,4 @@
-﻿namespace AnimalVolunteer.Domain.Errors;
+﻿namespace AnimalVolunteer.Domain.Common;
 
 public record Error
 {
@@ -13,7 +13,7 @@ public record Error
     {
         Code = code;
         Message = message;
-        Type = type;    
+        Type = type;
     }
 
     public static Error Validation(string code, string message) =>
