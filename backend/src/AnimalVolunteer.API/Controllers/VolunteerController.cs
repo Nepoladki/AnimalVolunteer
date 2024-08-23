@@ -1,24 +1,27 @@
 ﻿using AnimalVolunteer.API.Extensions;
-using AnimalVolunteer.Application.Requests;
-using AnimalVolunteer.Application.Services;
+using AnimalVolunteer.API.Response;
+using AnimalVolunteer.Application.Features.CreateVolunteer;
+using AnimalVolunteer.Domain.Common;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace AnimalVolunteer.API.Controllers;
 
-[Route("api/[Controller]")]
+[Route("api/[controller]")]
 [ApiController]
 public class VolunteerController : ControllerBase
 {
-    private readonly CreateVolunteerService _createVolunteerService;
+    private readonly CreateVolunteerHandler _createVolunteerService;
 
-    public VolunteerController(CreateVolunteerService createVolunteerService)
+    public VolunteerController(CreateVolunteerHandler createVolunteerService)
     {
         _createVolunteerService = createVolunteerService;
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(CreateVolunteerRequest request, CancellationToken cancellationToken)
-    {
+    {         
         var creationResult = await _createVolunteerService.Create(request, cancellationToken);
 
         if (creationResult.IsFailure)

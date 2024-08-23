@@ -1,23 +1,26 @@
-using AnimalVolunteer.Application.Interfaces;
-using AnimalVolunteer.Application.Services;
+using AnimalVolunteer.API;
+using AnimalVolunteer.Application;
 using AnimalVolunteer.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var services = builder.Services;
+var config = builder.Configuration;
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// Add other layers
+services.AddPresentation()
+    .AddApplication()
+    .AddInfrastructure();
 
-builder.Services.AddScoped<ApplicationDbContext>();
-builder.Services.AddScoped<CreateVolunteerService>();
-builder.Services.AddScoped<IVolunteerRepository, VolunteerRepository>();
+services.AddControllers(); 
+
+// Swagger Generation
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
