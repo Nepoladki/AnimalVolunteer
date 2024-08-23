@@ -1,4 +1,5 @@
-﻿using CSharpFunctionalExtensions;
+﻿using AnimalVolunteer.Domain.Common;
+using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.Domain.ValueObjects.Pet;
 
@@ -12,14 +13,14 @@ public record SpeciesAndBreed
         BreedId = breedId;
     }
 
-    public static Result<SpeciesAndBreed> Create(Guid speciesId, Guid breedId)
+    public static Result<SpeciesAndBreed, Error> Create(Guid speciesId, Guid breedId)
     {
         if (speciesId == Guid.Empty)
-            return Result.Failure<SpeciesAndBreed>("Invalid species id");
+            return Errors.General.InvalidValue(nameof(speciesId));
 
         if (breedId == Guid.Empty)
-            return Result.Failure<SpeciesAndBreed>("Invalid breed id");
+            return Errors.General.InvalidValue(nameof(breedId));
 
-        return Result.Success(new SpeciesAndBreed(speciesId, breedId));
+        return new SpeciesAndBreed(speciesId, breedId);
     }
 }

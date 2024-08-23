@@ -17,15 +17,15 @@ public class CreateVolunteerService
     {
         _volunteerRepository = volunteerRepository;
     }
-    public async Task<Result<Guid>> Create(CreateVolunteerRequest request, CancellationToken cancellationToken)
+    public async Task<Result<VolunteerId, Error>> Create(CreateVolunteerRequest request, CancellationToken cancellationToken)
     {
         var fullNameResult = FullName.Create(request.FirstName, request.SurName, request.LastName);
 
         if (fullNameResult.IsFailure)
-            return Result.Failure<Guid>(fullNameResult.Error);
+            return fullNameResult.Error;
 
         if (string.IsNullOrWhiteSpace(request.Description) || request.Description.Length > Constants.TEXT_LENGTH_LIMIT_HIGH)
-            return Result.Failure<Guid>("Invalid description");
+            return Errors.General.InvalidValue(nameof(request.Description));
 
         var contactList = new List<ContactInfo>();
 
@@ -34,7 +34,7 @@ public class CreateVolunteerService
             var infoResult = ContactInfo.Create(contact.PhoneNumber, contact.Name, contact.Note);
 
             if (infoResult.IsFailure)
-                return Result.Failure<Guid>(infoResult.Error);
+                return infoResult.Error;
 
             contactList.Add(infoResult.Value);
         }
@@ -46,7 +46,7 @@ public class CreateVolunteerService
             var networkResult = SocialNetwork.Create(network.Name, network.URL);
 
             if (networkResult.IsFailure)
-                return Result.Failure<Guid>(networkResult.Error);
+                return networkResult.Error;
 
             socialNetworksList.Add(networkResult.Value);
         }
@@ -58,12 +58,12 @@ public class CreateVolunteerService
             var paymentResult = PaymentDetails.Create(payment.Name, payment.Descrtiption);
 
             if (paymentResult.IsFailure)
-                return Result.Failure<Guid>(paymentResult.Error);
+                return paymentResult.Error;
 
             paymentDetailsList.Add(paymentResult.Value);
         }
 
-        var newVolunteer = Volunteer.Create(
+        var volunteerResult = Volunteer.Create(
                 fullNameResult.Value,
                 request.Description,
                 request.ExpirienceYears,
@@ -74,8 +74,11 @@ public class CreateVolunteerService
                 SocialNetworkList.Create(socialNetworksList),
                 PaymentDetailsList.Create(paymentDetailsList));
 
-        await _volunteerRepository.CreateAsync(newVolunteer, cancellationToken);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error;
 
-        return Result.Success<Guid>(newVolunteer.Id);
+        await _volunteerRepository.CreateAsync(volunteerResult.Value, cancellationToken);
+
+        return volunteerResult.Value.Id;
     }
 }

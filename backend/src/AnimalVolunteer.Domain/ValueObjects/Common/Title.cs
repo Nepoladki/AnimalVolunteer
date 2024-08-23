@@ -12,11 +12,11 @@ public record Title
     }
     public string Value { get; } = null!;
 
-    public static Result<Title> Create(string value)
+    public static Result<Title, Error> Create(string value)
     {
         if (value is null || value.Length > Constants.TEXT_LENGTH_LIMIT_LOW)
-            return Result.Failure<Title>("Invalid title");
+            return Errors.General.InvalidValue(nameof(Title));
 
-        return Result.Success(new Title(value));
+        return new Title(value);
     }
 }

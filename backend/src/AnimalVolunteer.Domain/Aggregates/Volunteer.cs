@@ -2,10 +2,11 @@
 using AnimalVolunteer.Domain.Entities;
 using AnimalVolunteer.Domain.ValueObjects.Common;
 using AnimalVolunteer.Domain.ValueObjects.Volunteer;
+using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.Domain.Aggregates;
 
-public sealed class Volunteer : Entity<VolunteerId>
+public sealed class Volunteer : Common.Entity<VolunteerId>
 {
     // EF Core ctor
     private Volunteer(VolunteerId id) : base(id) { }
@@ -19,7 +20,7 @@ public sealed class Volunteer : Entity<VolunteerId>
     public SocialNetworkList SocialNetworks { get; private set; } = null!;
     public PaymentDetailsList PaymentDetails { get; private set; } = null!;
     public List<Pet> Pets { get; private set; } = [];
-    public static Volunteer Create(
+    public static Result<Volunteer, Error> Create(
         FullName fullName, 
         string description, 
         int expirienceYears, 
@@ -30,6 +31,9 @@ public sealed class Volunteer : Entity<VolunteerId>
         SocialNetworkList socialNetworks,
         PaymentDetailsList paymentDetails)
     {
+        if (string.IsNullOrWhiteSpace(description))
+            return Errors.General.InvalidValue(nameof(description));
+
         return new Volunteer(VolunteerId.Create())
         {
             FullName = fullName,

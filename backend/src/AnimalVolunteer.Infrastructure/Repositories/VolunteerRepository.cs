@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Domain.Aggregates;
+using AnimalVolunteer.Domain.ValueObjects.Volunteer;
 using AnimalVolunteer.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 

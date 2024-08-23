@@ -16,20 +16,20 @@ public record Address
     public string City { get; }
     public string Street { get; }
     public string? House { get; }
-    public static Result<Address> Create(string country, string city, string street, string house)
+    public static Result<Address, Error> Create(string country, string city, string street, string house)
     {
         if (string.IsNullOrWhiteSpace(country) || country.Length > Constants.TEXT_LENGTH_LIMIT_LOW)
-            return Result.Failure<Address>("Invalid country");
+            return Errors.General.InvalidValue(nameof(country));
 
         if (string.IsNullOrWhiteSpace(city) || city.Length > Constants.TEXT_LENGTH_LIMIT_LOW)
-            return Result.Failure<Address>("Invalid city");
+            return Errors.General.InvalidValue(nameof(city));
 
         if (string.IsNullOrWhiteSpace(street) || street.Length > Constants.TEXT_LENGTH_LIMIT_LOW)
-            return Result.Failure<Address>("Invalid street");
+            return Errors.General.InvalidValue(nameof(street));
 
         if (house is not null && house.Length > Constants.TEXT_LENGTH_LIMIT_LOW)
-            return Result.Failure<Address>("Invalid house");
+            return Errors.General.InvalidValue(nameof(house));
 
-        return Result.Success(new Address(country, city, street, house));
+        return new Address(country, city, street, house);
     }
 }

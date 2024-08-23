@@ -1,10 +1,11 @@
-﻿using AnimalVolunteer.Application.Requests;
+﻿using AnimalVolunteer.API.Extensions;
+using AnimalVolunteer.Application.Requests;
 using AnimalVolunteer.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnimalVolunteer.API.Controllers;
 
-[Route("[Controller]")]
+[Route("api/[Controller]")]
 [ApiController]
 public class VolunteerController : ControllerBase
 {
@@ -21,8 +22,8 @@ public class VolunteerController : ControllerBase
         var creationResult = await _createVolunteerService.Create(request, cancellationToken);
 
         if (creationResult.IsFailure)
-            return BadRequest(creationResult.Error);
+            return creationResult.Error.ToResponse();
 
-        return Ok(creationResult.Value);
+        return Ok((Guid)creationResult.Value);
     }
 }
