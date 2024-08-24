@@ -1,5 +1,4 @@
 ﻿using AnimalVolunteer.Application.Interfaces;
-using AnimalVolunteer.Application.Requests;
 using AnimalVolunteer.Domain.Aggregates;
 using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.ValueObjects.Common;
@@ -7,22 +6,19 @@ using AnimalVolunteer.Domain.ValueObjects.Volunteer;
 using CSharpFunctionalExtensions;
 using System.ComponentModel;
 
-namespace AnimalVolunteer.Application.Services;
+namespace AnimalVolunteer.Application.Features.CreateVolunteer;
 
-public class CreateVolunteerService
+public class CreateVolunteerHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
 
-    public CreateVolunteerService(IVolunteerRepository volunteerRepository)
+    public CreateVolunteerHandler(IVolunteerRepository volunteerRepository)
     {
         _volunteerRepository = volunteerRepository;
     }
     public async Task<Result<VolunteerId, Error>> Create(CreateVolunteerRequest request, CancellationToken cancellationToken)
     {
-        var fullNameResult = FullName.Create(request.FirstName, request.SurName, request.LastName);
-
-        if (fullNameResult.IsFailure)
-            return fullNameResult.Error;
+        var fullName = FullName.Create(request.FirstName, request.SurName, request.LastName).Value;
 
         if (string.IsNullOrWhiteSpace(request.Description) || request.Description.Length > Constants.TEXT_LENGTH_LIMIT_HIGH)
             return Errors.General.InvalidValue(nameof(request.Description));
@@ -64,7 +60,7 @@ public class CreateVolunteerService
         }
 
         var volunteerResult = Volunteer.Create(
-                fullNameResult.Value,
+                fullName,
                 request.Description,
                 request.ExpirienceYears,
                 request.PetsFoundedHome,

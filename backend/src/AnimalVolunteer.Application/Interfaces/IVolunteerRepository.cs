@@ -1,5 +1,4 @@
-﻿using AnimalVolunteer.Application.Requests;
-using AnimalVolunteer.Domain.Aggregates;
+﻿using AnimalVolunteer.Domain.Aggregates;
 
 namespace AnimalVolunteer.Application.Interfaces;
 

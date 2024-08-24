@@ -18,11 +18,31 @@ public static class ResponseExtensions
             _ => StatusCodes.Status500InternalServerError
         };
 
-        var envelope = Envelope.Error(error);
+        var responseError = new ResponseError(error.Code, error.Message, null);
+
+        var envelope = Envelope.Error([responseError]);
 
         return new ObjectResult(envelope)
         {
             StatusCode = statusCode
+        };
+    }
+
+    public static ActionResult ToValidationErrorResponse(this FluentValidation.Results.ValidationResult result)
+    {
+        if (result.IsValid)
+            throw new InvalidOperationException("Cant reach to result");
+
+        var errors = from validationError in result.Errors
+                     let errorMessage = validationError.ErrorMessage
+                     let error = Error.Deserialize(errorMessage)
+                     select new ResponseError(error.Code, error.Message, validationError.PropertyName);
+
+        var envelope = Envelope.Error(errors);
+
+        return new ObjectResult(envelope)
+        {
+            StatusCode = StatusCodes.Status400BadRequest
         };
     }
 }

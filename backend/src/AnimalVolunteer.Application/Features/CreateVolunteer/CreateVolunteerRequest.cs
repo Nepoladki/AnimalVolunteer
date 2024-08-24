@@ -1,6 +1,6 @@
 ﻿using AnimalVolunteer.Application.DTOs;
 
-namespace AnimalVolunteer.Application.Requests
+namespace AnimalVolunteer.Application.Features.CreateVolunteer
 {
     public record CreateVolunteerRequest(
         string FirstName,
