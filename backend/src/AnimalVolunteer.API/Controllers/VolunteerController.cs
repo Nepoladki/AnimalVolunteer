@@ -20,7 +20,7 @@ public class VolunteerController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateVolunteerRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create(CreateVolunteerRequest request, CancellationToken cancellationToken = default)
     {         
         var creationResult = await _createVolunteerService.Create(request, cancellationToken);
 

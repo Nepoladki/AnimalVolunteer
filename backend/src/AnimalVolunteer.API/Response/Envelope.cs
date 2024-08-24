@@ -8,11 +8,12 @@ public record Envelope
 {
     public object? Result { get; }
     public List<ResponseError> Errors { get; }
-    public DateTime TimeGenerated { get; } = DateTime.UtcNow;
+    public DateTime TimeGenerated { get; }
     private Envelope(object? result, IEnumerable<ResponseError> error)
     {
         Result = result;
         Errors = error.ToList();
+        TimeGenerated = DateTime.Now;
     }
 
     public static Envelope Ok(object? result = null) => new(result, []);
