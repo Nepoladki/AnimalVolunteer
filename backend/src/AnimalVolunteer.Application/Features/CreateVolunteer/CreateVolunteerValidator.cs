@@ -1,6 +1,6 @@
 ﻿using AnimalVolunteer.Application.Validation;
-using AnimalVolunteer.Domain.ValueObjects.Common;
-using AnimalVolunteer.Domain.ValueObjects.Volunteer;
+using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
+using AnimalVolunteer.Domain.Common.ValueObjects;
 using FluentValidation;
 
 namespace AnimalVolunteer.Application.Features.CreateVolunteer;

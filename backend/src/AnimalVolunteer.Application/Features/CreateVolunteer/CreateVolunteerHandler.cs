@@ -1,10 +1,9 @@
 ﻿using AnimalVolunteer.Application.Interfaces;
-using AnimalVolunteer.Domain.Aggregates;
+using AnimalVolunteer.Domain.Aggregates.Volunteer;
+using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.ValueObjects.Common;
-using AnimalVolunteer.Domain.ValueObjects.Volunteer;
+using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
-using System.ComponentModel;
 
 namespace AnimalVolunteer.Application.Features.CreateVolunteer;
 
@@ -19,6 +18,14 @@ public class CreateVolunteerHandler
     public async Task<Result<VolunteerId, Error>> Create(CreateVolunteerRequest request, CancellationToken cancellationToken)
     {
         var fullName = FullName.Create(request.FirstName, request.SurName, request.LastName).Value;
+
+        var description = Description.Create(request.Description);
+
+        var statistics = Statistics.Create(
+            request.ExpirienceYears,
+            request.PetsFoundedHome,
+            request.PetsLookingForHome,
+            request.PetsInVetClinic);
 
         if (string.IsNullOrWhiteSpace(request.Description) || request.Description.Length > Constants.TEXT_LENGTH_LIMIT_HIGH)
             return Errors.General.InvalidValue(nameof(request.Description));
@@ -59,22 +66,17 @@ public class CreateVolunteerHandler
             paymentDetailsList.Add(paymentResult.Value);
         }
 
-        var volunteerResult = Volunteer.Create(
-                fullName,
-                request.Description,
-                request.ExpirienceYears,
-                request.PetsFoundedHome,
-                request.PetsLookingForHome,
-                request.PetsInVetClinic,
-                ContactInfoList.Create(contactList),
-                SocialNetworkList.Create(socialNetworksList),
-                PaymentDetailsList.Create(paymentDetailsList));
+        var volunteer = Volunteer.CreateWithLists(
+            VolunteerId.Create(),
+            fullName,
+            description.Value,
+            statistics.Value,
+            ContactInfoList.Create(contactList),
+            SocialNetworkList.Create(socialNetworksList),
+            PaymentDetailsList.Create(paymentDetailsList));
 
-        if (volunteerResult.IsFailure)
-            return volunteerResult.Error;
+        await _volunteerRepository.CreateAsync(volunteer, cancellationToken);
 
-        await _volunteerRepository.CreateAsync(volunteerResult.Value, cancellationToken);
-
-        return volunteerResult.Value.Id;
+        return volunteer.Id;
     }
 }

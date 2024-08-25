@@ -1,7 +1,4 @@
-﻿using AnimalVolunteer.Domain.Common;
-using System.Runtime.InteropServices;
-
-namespace AnimalVolunteer.API.Response;
+﻿namespace AnimalVolunteer.API.Response;
 
 public record ResponseError(string? ErrorCode, string? ErrorMessage, string? InvalidField);
 public record Envelope

@@ -1,7 +1,6 @@
-﻿using AnimalVolunteer.Domain.Aggregates;
+﻿using AnimalVolunteer.Domain.Aggregates.PetType;
+using AnimalVolunteer.Domain.Aggregates.PetType.ValueObjects;
 using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.ValueObjects.Common;
-using AnimalVolunteer.Domain.ValueObjects.Species;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
