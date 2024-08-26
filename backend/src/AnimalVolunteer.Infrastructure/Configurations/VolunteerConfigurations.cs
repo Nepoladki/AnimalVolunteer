@@ -72,12 +72,12 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
             ci.OwnsMany(i => i.Contacts, j =>
             {
                 j.Property(k => k.PhoneNumber)
-                .IsRequired()
+                .IsRequired(false)
                 .HasMaxLength(ContactInfo.MAX_PHONE_LENGTH)
                 .HasJsonPropertyName("phone_number");
 
                 j.Property(k => k.Name)
-                .IsRequired()
+                .IsRequired(false)
                 .HasMaxLength(ContactInfo.MAX_NAME_LENGTH)
                 .HasJsonPropertyName("name");
 
@@ -95,12 +95,12 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
             ci.OwnsMany(i => i.SocialNetworks, j =>
             {
                 j.Property(k => k.Name)
-                .IsRequired()
+                .IsRequired(false)
                 .HasMaxLength(SocialNetwork.MAX_NAME_LENGTH)
                 .HasJsonPropertyName("name");
 
                 j.Property(k => k.URL)
-                .IsRequired()
+                .IsRequired(false)
                 .HasMaxLength(SocialNetwork.MAX_URL_LENGTH)
                 .HasJsonPropertyName("url");
             });
@@ -113,12 +113,12 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
             pd.OwnsMany(i => i.Payments, j =>
             {
                 j.Property(k => k.Name)
-                .IsRequired()
+                .IsRequired(false)
                 .HasMaxLength(PaymentDetails.MAX_NAME_LENGTH)
                 .HasJsonPropertyName("name");
 
                 j.Property(k => k.Description)
-                .IsRequired()
+                .IsRequired(false)
                 .HasMaxLength(PaymentDetails.MAX_DESC_LENGTH)
                 .HasJsonPropertyName("description");
             });

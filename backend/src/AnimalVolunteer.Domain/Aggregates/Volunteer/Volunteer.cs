@@ -14,16 +14,6 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
         VolunteerId id,
         FullName fullName,
         Description description,
-        Statistics statistics) : base(id)
-    {
-        FullName = fullName;
-        Description = description;
-        Statistics = statistics;
-    }
-    private Volunteer(
-        VolunteerId id,
-        FullName fullName,
-        Description description,
         Statistics statistics,
         ContactInfoList contactInfoList,
         SocialNetworkList socialNetworkList,
@@ -36,6 +26,7 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
         SocialNetworks = socialNetworkList;
         PaymentDetails = paymentDetailsList;
     }
+
     public FullName FullName { get; private set; } = null!;
     public Description Description { get; private set; } = null!;
     public Statistics Statistics { get; private set; } = null!;
@@ -50,22 +41,16 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
         VolunteerId id,
         FullName fullName,
         Description description,
-        Statistics statistics) => new(id, fullName, description, statistics);
-
-    public static Volunteer CreateWithLists(
-        VolunteerId id,
-        FullName fullName,
-        Description description,
         Statistics statistics,
         ContactInfoList contactInfoList,
         SocialNetworkList socialNetworkList,
-        PaymentDetailsList paymentDetailsList)
-        => new(
-            id,
-            fullName,
-            description,
-            statistics,
-            contactInfoList,
-            socialNetworkList,
-            paymentDetailsList);
+        PaymentDetailsList paymentDetailsList) => 
+            new(
+                id,
+                fullName,
+                description,
+                statistics,
+                contactInfoList,
+                socialNetworkList,
+                paymentDetailsList);
 }

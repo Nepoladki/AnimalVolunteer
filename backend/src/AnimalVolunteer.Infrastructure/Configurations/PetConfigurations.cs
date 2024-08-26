@@ -21,16 +21,19 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
                 id => id.Value,
                 value => PetId.CreateWithGuid(value));
 
-        builder.ComplexProperty(x => x.NameAndDescription, nd =>
+        builder.ComplexProperty(x => x.Name, nd =>
         {
-            nd.Property(x => x.Name)
+            nd.Property(x => x.Value)
             .IsRequired()
-            .HasMaxLength(NameAndDescription.MAX_NAME_LENGTH)
+            .HasMaxLength(Name.MAX_NAME_LENGTH)
             .HasColumnName("name");
+        });
 
-            nd.Property(x => x.Description)
+        builder.ComplexProperty(x => x.Description, db =>
+        {
+            db.Property(x => x.Value)
             .IsRequired()
-            .HasMaxLength(NameAndDescription.MAX_DESC_LENGTH)
+            .HasMaxLength(Description.MAX_DESC_LENGTH)
             .HasColumnName("description");
         });
 

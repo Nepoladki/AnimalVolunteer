@@ -19,61 +19,24 @@ public class CreateVolunteerHandler
     {
         var fullName = FullName.Create(request.FirstName, request.SurName, request.LastName).Value;
 
-        var description = Description.Create(request.Description);
+        var description = Description.Create(request.Description).Value;
 
-        var statistics = Statistics.Create(
-            request.ExpirienceYears,
-            request.PetsFoundedHome,
-            request.PetsLookingForHome,
-            request.PetsInVetClinic);
+        var statistics = Statistics.CreateEmpty();
 
-        if (string.IsNullOrWhiteSpace(request.Description) || request.Description.Length > Constants.TEXT_LENGTH_LIMIT_HIGH)
-            return Errors.General.InvalidValue(nameof(request.Description));
+        var contactInfo = ContactInfoList.Create([]);
 
-        var contactList = new List<ContactInfo>();
+        var socialNetworks = SocialNetworkList.Create([]);
 
-        foreach (var contact in request.ContactInfoList)
-        {
-            var infoResult = ContactInfo.Create(contact.PhoneNumber, contact.Name, contact.Note);
+        var paymentDetails = PaymentDetailsList.Create([]);
 
-            if (infoResult.IsFailure)
-                return infoResult.Error;
-
-            contactList.Add(infoResult.Value);
-        }
-
-        var socialNetworksList = new List<SocialNetwork>();
-
-        foreach (var network in request.SocialNetworkList)
-        {
-            var networkResult = SocialNetwork.Create(network.Name, network.URL);
-
-            if (networkResult.IsFailure)
-                return networkResult.Error;
-
-            socialNetworksList.Add(networkResult.Value);
-        }
-
-        var paymentDetailsList = new List<PaymentDetails>();
-
-        foreach (var payment in request.PaymentDetailsList)
-        {
-            var paymentResult = PaymentDetails.Create(payment.Name, payment.Descrtiption);
-
-            if (paymentResult.IsFailure)
-                return paymentResult.Error;
-
-            paymentDetailsList.Add(paymentResult.Value);
-        }
-
-        var volunteer = Volunteer.CreateWithLists(
+        var volunteer = Volunteer.Create(
             VolunteerId.Create(),
             fullName,
-            description.Value,
-            statistics.Value,
-            ContactInfoList.Create(contactList),
-            SocialNetworkList.Create(socialNetworksList),
-            PaymentDetailsList.Create(paymentDetailsList));
+            description,
+            statistics,
+            contactInfo,
+            socialNetworks,
+            paymentDetails);
 
         await _volunteerRepository.CreateAsync(volunteer, cancellationToken);
 

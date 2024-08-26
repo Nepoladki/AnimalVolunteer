@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Domain.Common;
 using CSharpFunctionalExtensions;
+using System.Reflection.Metadata.Ecma335;
 
 namespace AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
 public record Statistics
@@ -44,4 +45,5 @@ public record Statistics
             petsLookingForHome, 
             petsInVetClinic);
     }
+    public static Statistics CreateEmpty() => new(0, 0, 0, 0);
 }

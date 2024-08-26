@@ -1,7 +1,6 @@
-﻿using AnimalVolunteer.Domain.Common;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 
-namespace AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
+namespace AnimalVolunteer.Domain.Common.ValueObjects;
 
 public record Description
 {

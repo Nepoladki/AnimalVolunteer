@@ -9,9 +9,10 @@ public sealed class Pet : Common.Entity<PetId>
 {
     // EF Core ctor
     private Pet(PetId id) : base(id) { }
-    private Pet(
+    public Pet(
         PetId id,
-        NameAndDescription nameAndDescription,
+        Name name,
+        Description description,
         PhysicalParameters physicalParameters,
         SpeciesAndBreed speciesAndBreed,
         HealthInfo healthInfo,
@@ -19,7 +20,8 @@ public sealed class Pet : Common.Entity<PetId>
         DateOnly birthDate,
         CurrentStatus currentStatus) : base(id)
     {
-        NameAndDescription = nameAndDescription;
+        Name = name;
+        Description = description;
         PhysicalParameters = physicalParameters;
         SpeciesAndBreed = speciesAndBreed;
         HealthInfo = healthInfo;
@@ -28,7 +30,8 @@ public sealed class Pet : Common.Entity<PetId>
         CurrentStatus = currentStatus;
         CreatedAt = DateTime.Now;
     }
-    public NameAndDescription NameAndDescription { get; private set; } = null!;
+    public Name Name { get; private set; } = null!;
+    public Description Description { get; private set; } = null!;
     public PhysicalParameters PhysicalParameters { get; private set; } = null!;
     public SpeciesAndBreed SpeciesAndBreed { get; private set; } = null!;
     public HealthInfo HealthInfo { get; private set; } = null!;
@@ -39,24 +42,4 @@ public sealed class Pet : Common.Entity<PetId>
     public DateTime CreatedAt { get; private set; } = default!;
     public PaymentDetailsList PaymentDetails { get; private set; } = null!;
     public PetPhotoList PetPhotos { get; private set; } = null!;
-    public static Pet Create(
-        PetId id,
-        NameAndDescription nameAndDescription,
-        PhysicalParameters physicalParameters,
-        SpeciesAndBreed speciesAndBreed,
-        HealthInfo healthInfo,
-        Address address,
-        DateOnly birthDate,
-        CurrentStatus currentStatus)
-    {
-        return new(
-            id,
-            nameAndDescription,
-            physicalParameters,
-            speciesAndBreed,
-            healthInfo,
-            address,
-            birthDate,
-            currentStatus);
-    }
 }
