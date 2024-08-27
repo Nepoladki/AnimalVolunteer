@@ -5,6 +5,7 @@ namespace AnimalVolunteer.Domain.Common.ValueObjects;
 
 public record Title
 {
+    public const int MAX_LENGTH = 30;
     private Title(string value)
     {
         Value = value;
@@ -13,7 +14,7 @@ public record Title
 
     public static Result<Title, Error> Create(string value)
     {
-        if (value is null || value.Length > Constants.TEXT_LENGTH_LIMIT_LOW)
+        if (value is null || value.Length > MAX_LENGTH)
             return Errors.General.InvalidValue(nameof(Title));
 
         return new Title(value);

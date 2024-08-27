@@ -2,5 +2,5 @@
 
 public record PaymentDetailsDto(
     string Name,
-    string Descrtiption);
+    string Description);
 

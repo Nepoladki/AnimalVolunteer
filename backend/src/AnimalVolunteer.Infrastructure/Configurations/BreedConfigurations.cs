@@ -1,6 +1,7 @@
 ﻿using AnimalVolunteer.Domain.Aggregates.PetType.Entities;
 using AnimalVolunteer.Domain.Aggregates.PetType.ValueObjects;
 using AnimalVolunteer.Domain.Common;
+using AnimalVolunteer.Domain.Common.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -23,7 +24,7 @@ public class BreedConfigurations : IEntityTypeConfiguration<Breed>
         {
             t.Property(i => i.Value)
             .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+            .HasMaxLength(Title.MAX_LENGTH)
             .HasColumnName("title");
         });
     }
