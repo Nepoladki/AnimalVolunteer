@@ -1,8 +1,10 @@
-﻿using AnimalVolunteer.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.ValueObjects.Pet;
+using AnimalVolunteer.Domain.Aggregates.Volunteer.Entities;
+using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
+using AnimalVolunteer.Domain.Aggregates.Volunteer.Enums;
+using AnimalVolunteer.Domain.Common.ValueObjects;
 
 namespace AnimalVolunteer.Infrastructure.Configurations;
 
@@ -19,17 +21,21 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
                 id => id.Value,
                 value => PetId.CreateWithGuid(value));
 
-        builder.Property(x => x.Name)
+        builder.ComplexProperty(x => x.Name, nd =>
+        {
+            nd.Property(x => x.Value)
             .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW);
+            .HasMaxLength(Name.MAX_NAME_LENGTH)
+            .HasColumnName("name");
+        });
 
-        builder.Property(x => x.Description)
+        builder.ComplexProperty(x => x.Description, db =>
+        {
+            db.Property(x => x.Value)
             .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_HIGH);
-
-        builder.Property(x => x.Color)
-            .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW);
+            .HasMaxLength(Description.MAX_DESC_LENGTH)
+            .HasColumnName("description");
+        });
 
         builder.ComplexProperty(x => x.SpeciesAndBreed, sb =>
         {
@@ -42,12 +48,28 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
             .HasColumnName("breed_id");
         });
 
+        builder.ComplexProperty(x => x.PhysicalParameters, sb =>
+        {
+            sb.Property(pp => pp.Color)
+            .IsRequired()
+            .HasMaxLength(PhysicalParameters.MAX_COLOR_LENGTH)
+            .HasColumnName("color");
+
+            sb.Property(pp => pp.Weight)
+            .IsRequired()
+            .HasColumnName("weight");
+
+            sb.Property(pp => pp.Height)
+            .IsRequired()
+            .HasColumnName("height");
+        });
+
         builder.ComplexProperty(x => x.HealthInfo, hi =>
         {
             hi.Property(j => j.Description)
             .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_HIGH)
-            .HasColumnName("description");
+            .HasMaxLength(HealthInfo.MAX_DESC_LENGTH)
+            .HasColumnName("health_description");
 
             hi.Property(j => j.IsVaccinated)
             .IsRequired()
@@ -62,30 +84,24 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
         {
             a.Property(j => j.Country)
             .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+            .HasMaxLength(Address.MAX_LENGTH)
             .HasColumnName("country");
 
             a.Property(j => j.City)
             .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+            .HasMaxLength(Address.MAX_LENGTH)
             .HasColumnName("city");
 
             a.Property(j => j.Street)
             .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+            .HasMaxLength(Address.MAX_LENGTH)
             .HasColumnName("street");
 
             a.Property(j => j.House)
             .IsRequired(false)
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+            .HasMaxLength(Address.MAX_LENGTH)
             .HasColumnName("house");
         });
-
-        builder.Property(x => x.Weight)
-            .IsRequired();
-
-        builder.Property(x => x.Height)
-            .IsRequired();
 
         builder.OwnsOne(x => x.ContactInfos, ci =>
         {
@@ -95,16 +111,17 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
             { 
                 j.Property(k => k.PhoneNumber)
                 .IsRequired()
-                .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+                .HasMaxLength(ContactInfo.MAX_PHONE_LENGTH)
                 .HasJsonPropertyName("phone_number");
 
                 j.Property(k => k.Name)
                 .IsRequired()
-                .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+                .HasMaxLength(ContactInfo.MAX_NAME_LENGTH)
                 .HasJsonPropertyName("name");
 
                 j.Property(k => k.Note)
                 .IsRequired(false)
+                .HasMaxLength(ContactInfo.MAX_NOTE_LENGTH)
                 .HasJsonPropertyName("note");
             });
         });
@@ -113,7 +130,10 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
             .IsRequired();
 
         builder.Property(x => x.CurrentStatus)
-            .IsRequired();
+            .IsRequired()
+            .HasConversion(
+                v => v.ToString(),
+                v => (CurrentStatus)Enum.Parse(typeof(CurrentStatus), v));
 
         builder.Property(x => x.CreatedAt)
             .IsRequired();
@@ -126,12 +146,12 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
             {
                 j.Property(k => k.Name)
                 .IsRequired()
-                .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+                .HasMaxLength(PaymentDetails.MAX_NAME_LENGTH)
                 .HasJsonPropertyName("name");
 
                 j.Property(k => k.Description)
                 .IsRequired()
-                .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+                .HasMaxLength(PaymentDetails.MAX_DESC_LENGTH)
                 .HasJsonPropertyName("description");
             });
         });
@@ -143,9 +163,9 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
             pp.OwnsMany(i => i.PetPhotos, j =>
             {
                 j.Property(k => k.FilePath)
-                .IsRequired()
-                .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_MEDIUM)
-                .HasJsonPropertyName("file_path");
+                .IsRequired() 
+                .HasMaxLength(PetPhoto.MAX_FILEPATH_LENGTH)
+                .HasJsonPropertyName("path");
 
                 j.Property(k => k.IsMain)
                 .IsRequired()

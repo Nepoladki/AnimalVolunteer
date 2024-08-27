@@ -1,6 +1,6 @@
 ﻿using AnimalVolunteer.Application.Validation;
-using AnimalVolunteer.Domain.ValueObjects.Common;
-using AnimalVolunteer.Domain.ValueObjects.Volunteer;
+using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
+using AnimalVolunteer.Domain.Common.ValueObjects;
 using FluentValidation;
 
 namespace AnimalVolunteer.Application.Features.CreateVolunteer;
@@ -9,16 +9,10 @@ public class CreateVolunteerValidator : AbstractValidator<CreateVolunteerRequest
 {
     public CreateVolunteerValidator()
     {
-        RuleFor(c => c.Description).NotEmpty();
+        RuleFor(c => c.Description).MustBeValueObject(Description.Create);
 
-        RuleFor(c => new { c.FirstName, c.SurName, c.LastName })
+        RuleFor(c => c.FullName)
             .MustBeValueObject(x => FullName.Create(x.FirstName, x.SurName, x.LastName));
-        
-        RuleForEach(c => c.ContactInfoList).ChildRules(contacts =>
-        {
-            contacts.RuleFor(x => new { x.PhoneNumber, x.Name, x.Note })
-                .MustBeValueObject(z => ContactInfo.Create(z.PhoneNumber, z.Name, z.Note));
-        });
 
         RuleForEach(c => c.SocialNetworkList).ChildRules(networks =>
         {
@@ -28,8 +22,8 @@ public class CreateVolunteerValidator : AbstractValidator<CreateVolunteerRequest
 
         RuleForEach(c => c.PaymentDetailsList).ChildRules(payments =>
         {
-            payments.RuleFor(x => new { x.Name, x.Descrtiption })
-                .MustBeValueObject(z => PaymentDetails.Create(z.Name, z.Descrtiption));
+            payments.RuleFor(x => new { x.Name, x.Description })
+                .MustBeValueObject(z => PaymentDetails.Create(z.Name, z.Description));
         });
     }
 }

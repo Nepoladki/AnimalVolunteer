@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.ValueObjects.Volunteer;
-using AnimalVolunteer.Domain.Aggregates;
+using AnimalVolunteer.Domain.Aggregates.Volunteer;
+using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
+using AnimalVolunteer.Domain.Common.ValueObjects;
 
 namespace AnimalVolunteer.Infrastructure.Configurations;
 
@@ -23,35 +24,46 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
         {
             fn.Property(i => i.FirstName)
             .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+            .HasMaxLength(FullName.MAX_NAME_LENGTH)
             .HasColumnName("first_name");
 
             fn.Property(i => i.SurName)
             .IsRequired(false)
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+            .HasMaxLength(FullName.MAX_NAME_LENGTH)
             .HasColumnName("surname");
 
             fn.Property(i => i.LastName)
             .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+            .HasMaxLength(FullName.MAX_NAME_LENGTH)
             .HasColumnName("last_name");
         });
 
-        builder.Property(x => x.Description)
+        builder.ComplexProperty(x => x.Description, db =>
+        {
+            db.Property(i => i.Value)
             .IsRequired()
-            .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_HIGH);
+            .HasMaxLength(Description.MAX_DESC_LENGTH)
+            .HasColumnName("description");
+        });
 
-        builder.Property(x => x.ExpirienceYears)
-            .IsRequired();
+        builder.ComplexProperty(x => x.Statistics, sb =>
+        {
+            sb.Property(i => i.ExpirienceYears)
+            .IsRequired()
+            .HasColumnName("expirience_years");
 
-        builder.Property(x => x.PetsFoundedHome)
-            .IsRequired();
+            sb.Property(i => i.PetsFoundedHome)
+            .IsRequired()
+            .HasColumnName("pets_founded_home");
 
-        builder.Property(x => x.PetsLookingForHome)
-            .IsRequired();
+            sb.Property(i => i.PetsLookingForHome)
+            .IsRequired()
+            .HasColumnName("pets_looking_for_home");
 
-        builder.Property(x => x.PetsInVetClinic)
-            .IsRequired();
+            sb.Property(i => i.PetsInVetClinic)
+            .IsRequired()
+            .HasColumnName("pets_in_vet_clinic");
+        });
 
         builder.OwnsOne(x => x.ContactInfos, ci => 
         {
@@ -60,18 +72,18 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
             ci.OwnsMany(i => i.Contacts, j =>
             {
                 j.Property(k => k.PhoneNumber)
-                .IsRequired()
-                .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+                .IsRequired(false)
+                .HasMaxLength(ContactInfo.MAX_PHONE_LENGTH)
                 .HasJsonPropertyName("phone_number");
 
                 j.Property(k => k.Name)
-                .IsRequired()
-                .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+                .IsRequired(false)
+                .HasMaxLength(ContactInfo.MAX_NAME_LENGTH)
                 .HasJsonPropertyName("name");
 
                 j.Property(k => k.Note)
                 .IsRequired(false)
-                .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_MEDIUM)
+                .HasMaxLength(ContactInfo.MAX_NOTE_LENGTH)
                 .HasJsonPropertyName("note");
             });
         });
@@ -83,13 +95,13 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
             ci.OwnsMany(i => i.SocialNetworks, j =>
             {
                 j.Property(k => k.Name)
-                .IsRequired()
-                .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+                .IsRequired(false)
+                .HasMaxLength(SocialNetwork.MAX_NAME_LENGTH)
                 .HasJsonPropertyName("name");
 
                 j.Property(k => k.URL)
-                .IsRequired()
-                .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_MEDIUM)
+                .IsRequired(false)
+                .HasMaxLength(SocialNetwork.MAX_URL_LENGTH)
                 .HasJsonPropertyName("url");
             });
         });
@@ -101,13 +113,13 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
             pd.OwnsMany(i => i.Payments, j =>
             {
                 j.Property(k => k.Name)
-                .IsRequired()
-                .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+                .IsRequired(false)
+                .HasMaxLength(PaymentDetails.MAX_NAME_LENGTH)
                 .HasJsonPropertyName("name");
 
                 j.Property(k => k.Description)
-                .IsRequired()
-                .HasMaxLength(Constants.TEXT_LENGTH_LIMIT_LOW)
+                .IsRequired(false)
+                .HasMaxLength(PaymentDetails.MAX_DESC_LENGTH)
                 .HasJsonPropertyName("description");
             });
         });

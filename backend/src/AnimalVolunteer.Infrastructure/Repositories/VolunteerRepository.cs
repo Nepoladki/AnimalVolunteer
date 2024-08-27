@@ -1,7 +1,5 @@
-﻿using AnimalVolunteer.Domain.Aggregates;
-using AnimalVolunteer.Domain.ValueObjects.Volunteer;
+﻿using AnimalVolunteer.Domain.Aggregates.Volunteer;
 using AnimalVolunteer.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 
 namespace AnimalVolunteer.Application.Interfaces;
 
