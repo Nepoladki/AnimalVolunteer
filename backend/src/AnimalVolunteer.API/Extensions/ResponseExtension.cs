@@ -35,7 +35,7 @@ public static class ResponseExtensions
 
         var errors = from validationError in result.Errors
                      let errorMessage = validationError.ErrorMessage
-                     let error = Error.Deserialize(errorMessage)
+                     let error = Deserialize(errorMessage)
                      select new ResponseError(error.Code, error.Message, validationError.PropertyName);
 
         var envelope = Envelope.Error(errors);

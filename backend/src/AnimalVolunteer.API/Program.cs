@@ -1,4 +1,5 @@
 using AnimalVolunteer.API;
+using AnimalVolunteer.API.Extensions;
 using AnimalVolunteer.Application;
 using AnimalVolunteer.Infrastructure;
 using Serilog;
@@ -10,11 +11,11 @@ var services = builder.Services;
 var config = builder.Configuration;
 
 // Add other layers
-services.AddPresentation(config)
+services.AddApi(config)
     .AddApplication()
     .AddInfrastructure();
 
-services.AddControllers(); 
+services.AddControllers();
 
 // Swagger Generation
 services.AddEndpointsApiExplorer();

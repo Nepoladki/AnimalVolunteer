@@ -1,5 +1,4 @@
 ﻿using AnimalVolunteer.API.Validation;
-using AnimalVolunteer.Infrastructure;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -10,7 +9,7 @@ namespace AnimalVolunteer.API;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddPresentation(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddApi(this IServiceCollection services, IConfiguration config)
     {
         services.AddFluentValidationAutoValidation(configBuilder =>
         {
@@ -35,14 +34,5 @@ public static class DependencyInjection
            .CreateLogger();
 
         services.AddSerilog();
-    }
-
-    public static async Task<WebApplication> AddAutoMigrations(this WebApplication app)
-    {
-        await using var scope = app.Services.CreateAsyncScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        await dbContext.Database.MigrateAsync();
-
-        return app;
     }
 }
