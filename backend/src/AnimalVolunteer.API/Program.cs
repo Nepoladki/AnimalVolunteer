@@ -1,5 +1,6 @@
 using AnimalVolunteer.API;
 using AnimalVolunteer.API.Extensions;
+using AnimalVolunteer.API.Middlewares;
 using AnimalVolunteer.Application;
 using AnimalVolunteer.Infrastructure;
 using Serilog;
@@ -22,6 +23,8 @@ services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
