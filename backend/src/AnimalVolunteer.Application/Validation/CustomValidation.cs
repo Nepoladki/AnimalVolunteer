@@ -1,6 +1,7 @@
 ﻿using AnimalVolunteer.Domain.Common;
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using System.Runtime.CompilerServices;
 
 namespace AnimalVolunteer.Application.Validation;
 
@@ -20,5 +21,11 @@ public static class CustomValidation
 
             context.AddFailure(result.Error.Serialize());
         });
+    }
+
+    public static IRuleBuilderOptions<T, TProperty> WithError<T, TProperty>(
+        this IRuleBuilderOptions<T, TProperty> rule, Error error)
+    {
+        return rule.WithMessage(error.Serialize());
     }
 }
