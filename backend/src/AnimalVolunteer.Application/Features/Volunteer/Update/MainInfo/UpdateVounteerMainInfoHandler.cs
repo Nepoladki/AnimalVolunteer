@@ -35,6 +35,10 @@ public class UpdateVounteerMainInfoHandler
 
         var description = Description.Create(request.Dto.Description).Value;
 
+        if (await _volunteerRepository.ExistByEmail(email, cancellationToken) && volunteer.Email != email)
+            return Errors.Volunteer.AlreadyExist();
+
+
         volunteer.UpdateMainInfo(fullName, email, description);
 
         await _volunteerRepository.Save(volunteer, cancellationToken);

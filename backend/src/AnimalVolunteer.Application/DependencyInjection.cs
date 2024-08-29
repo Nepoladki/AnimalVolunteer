@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
 using AnimalVolunteer.Application.Features.Volunteer.Update.MainInfo;
+using AnimalVolunteer.Application.Features.Volunteer.Update.PaymentDetails;
 using AnimalVolunteer.Application.Features.Volunteer.Update.SocialNetworks;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,8 @@ public static class DependencyInjection
         services.AddScoped<CreateVolunteerHandler>();
         services.AddScoped<UpdateVounteerMainInfoHandler>();
         services.AddScoped<UpdateVolunteerSocialNetworksHandler>();
+        services.AddScoped<UpdateVolunteerPaymentDetailsHandler>();
+        services.AddScoped<UpdateVolunteerContactInfoHandler>();
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 

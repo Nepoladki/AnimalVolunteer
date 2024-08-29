@@ -19,12 +19,15 @@ public class CreateVolunteerHandler
         CreateVolunteerRequest request,
         CancellationToken cancellationToken)
     {
-        var fullName = FullName.Create(
-            request.FullName.FirstName,
-            request.FullName.SurName,
-            request.FullName.LastName).Value;
-
         var email = Email.Create(request.Email).Value;
+
+        if (await _volunteerRepository.ExistByEmail(email, cancellationToken))
+            return Errors.Volunteer.AlreadyExist();
+
+        var fullName = FullName.Create(
+           request.FullName.FirstName,
+           request.FullName.SurName,
+           request.FullName.LastName).Value;
 
         var description = Description.Create(request.Description).Value;
 

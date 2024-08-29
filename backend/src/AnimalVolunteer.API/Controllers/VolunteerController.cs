@@ -3,6 +3,7 @@ using AnimalVolunteer.Application.DTOs.Volunteer;
 using AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
 using AnimalVolunteer.Application.Features.Volunteer.Update.MainInfo;
 using AnimalVolunteer.Application.Features.Volunteer.Update.SocialNetworks;
+using AnimalVolunteer.Application.Features.Volunteer.Update.PaymentDetails;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,7 +39,7 @@ public class VolunteerController : ApplicationController
         if (!validatonResult.IsValid)
             return validatonResult.ToValidationErrorResponse();
 
-         var handleResult = await _handler.Update(request, cancellationToken);
+        var handleResult = await _handler.Update(request, cancellationToken);
 
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
@@ -55,6 +56,29 @@ public class VolunteerController : ApplicationController
         CancellationToken cancellationToken = default)
     {
         var request = new UpdateVolunteerSocialNetworksRequest(id, socialNetworks);
+
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return validationResult.ToValidationErrorResponse();
+
+        var handleResult = await _handler.Update(request, cancellationToken);
+
+        if (handleResult.IsFailure)
+            return handleResult.Error.ToResponse();
+
+        return Ok(handleResult.Value);
+    }
+
+    [HttpPut("{id:guid}/payment-details")]
+    public async Task<IActionResult> UpdatePaymentDetails(
+        Guid id,
+        PaymentDetailsListDto paymentDetails,
+        [FromServices] UpdateVolunteerPaymentDetailsHandler _handler,
+        [FromServices] IValidator<UpdateVolunteerPaymentDetailsRequest> _validator,
+        CancellationToken cancellationToken = default)
+    {
+        var request = new UpdateVolunteerPaymentDetailsRequest(id, paymentDetails);
 
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
