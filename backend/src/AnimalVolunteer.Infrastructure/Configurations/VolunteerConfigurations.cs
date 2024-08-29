@@ -38,6 +38,14 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
             .HasColumnName("last_name");
         });
 
+        builder.ComplexProperty(x => x.Email, eb =>
+        {
+            eb.Property(i => i.Value)
+            .IsRequired()
+            .HasMaxLength(Email.MAX_LENGTH)
+            .HasColumnName("email");
+        });
+
         builder.ComplexProperty(x => x.Description, db =>
         {
             db.Property(i => i.Value)

@@ -14,4 +14,8 @@
     <ProjectReference Include="..\AnimalVolunteer.Domain\AnimalVolunteer.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Volunteer\Update\ContactInfo\" />
+  </ItemGroup>
+
 </Project>

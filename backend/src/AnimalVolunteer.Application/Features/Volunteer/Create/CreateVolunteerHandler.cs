@@ -1,11 +1,11 @@
 ﻿using AnimalVolunteer.Application.Interfaces;
-using AnimalVolunteer.Domain.Aggregates.Volunteer;
+using DomainEntity = AnimalVolunteer.Domain.Aggregates.Volunteer;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
 
-namespace AnimalVolunteer.Application.Features.CreateVolunteer;
+namespace AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
 
 public class CreateVolunteerHandler
 {
@@ -16,13 +16,15 @@ public class CreateVolunteerHandler
         _volunteerRepository = volunteerRepository;
     }
     public async Task<Result<VolunteerId, Error>> Create(
-        CreateVolunteerRequest request, 
+        CreateVolunteerRequest request,
         CancellationToken cancellationToken)
     {
         var fullName = FullName.Create(
-            request.FullName.FirstName, 
-            request.FullName.SurName, 
+            request.FullName.FirstName,
+            request.FullName.SurName,
             request.FullName.LastName).Value;
+
+        var email = Email.Create(request.Email).Value;
 
         var description = Description.Create(request.Description).Value;
 
@@ -36,16 +38,17 @@ public class CreateVolunteerHandler
         var paymentDetails = PaymentDetailsList.Create(request.PaymentDetailsList
             .Select(x => PaymentDetails.Create(x.Name, x.Description).Value));
 
-        var volunteer = Volunteer.Create(
+        var volunteer = DomainEntity.Volunteer.Create(
             VolunteerId.Create(),
             fullName,
+            email,
             description,
             statistics,
             contactInfo,
             socialNetworks,
             paymentDetails);
 
-        await _volunteerRepository.CreateAsync(volunteer, cancellationToken);
+        await _volunteerRepository.Create(volunteer, cancellationToken);
 
         return volunteer.Id;
     }

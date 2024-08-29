@@ -1,8 +1,6 @@
 ﻿using AnimalVolunteer.Domain.Aggregates.Volunteer.Entities;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common.ValueObjects;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.InteropServices;
 
 namespace AnimalVolunteer.Domain.Aggregates.Volunteer;
 
@@ -13,6 +11,7 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
     private Volunteer(
         VolunteerId id,
         FullName fullName,
+        Email email,
         Description description,
         Statistics statistics,
         ContactInfoList contactInfoList,
@@ -20,6 +19,7 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
         PaymentDetailsList paymentDetailsList) : base(id)
     {
         FullName = fullName;
+        Email = email;
         Description = description;
         Statistics = statistics;
         ContactInfos = contactInfoList;
@@ -27,19 +27,36 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
         PaymentDetails = paymentDetailsList;
     }
 
+    private readonly List<Pet> _pets = default!;
     public FullName FullName { get; private set; } = null!;
+    public Email Email { get; private set; } = null!;
     public Description Description { get; private set; } = null!;
     public Statistics Statistics { get; private set; } = null!;
     public ContactInfoList ContactInfos { get; private set; } = null!;
     public SocialNetworkList SocialNetworks { get; private set; } = null!;
     public PaymentDetailsList PaymentDetails { get; private set; } = null!;
-    public List<Pet> Pets { get; private set; } = [];
+    public IReadOnlyList<Pet> Pets => _pets;
     public int CountPetsFoundedHome() => Statistics.PetsFoundedHome;
     public int CountPetsLookingForHome() => Statistics.PetsLookingForHome;
     public int CountPetsInVetClinic() => Statistics.PetsInVetClinic;
+
+    public void UpdateMainInfo(FullName fullName, Email email, Description description)
+    {
+        FullName = fullName;
+        Email = email;
+        Description = description;
+    }
+
+    public void UpdateContactInfo(ContactInfoList contacts) => ContactInfos = contacts;
+
+    public void UpdateSocialNetworks(SocialNetworkList socialNetworks) => SocialNetworks = socialNetworks;
+
+    public void UpdatePaymentDetails(PaymentDetailsList paymentDetails) => PaymentDetails = paymentDetails;
+
     public static Volunteer Create(
         VolunteerId id,
         FullName fullName,
+        Email email,
         Description description,
         Statistics statistics,
         ContactInfoList contactInfoList,
@@ -48,6 +65,7 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
             new(
                 id,
                 fullName,
+                email,
                 description,
                 statistics,
                 contactInfoList,

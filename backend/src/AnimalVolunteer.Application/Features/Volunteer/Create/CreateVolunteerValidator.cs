@@ -3,7 +3,7 @@ using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using FluentValidation;
 
-namespace AnimalVolunteer.Application.Features.CreateVolunteer;
+namespace AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
 
 public class CreateVolunteerValidator : AbstractValidator<CreateVolunteerRequest>
 {
@@ -13,6 +13,8 @@ public class CreateVolunteerValidator : AbstractValidator<CreateVolunteerRequest
 
         RuleFor(c => c.FullName)
             .MustBeValueObject(x => FullName.Create(x.FirstName, x.SurName, x.LastName));
+
+        RuleFor(c => c.Email).MustBeValueObject(Email.Create);
 
         RuleForEach(c => c.SocialNetworkList).ChildRules(networks =>
         {
