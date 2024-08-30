@@ -9,6 +9,8 @@ public sealed class Species : Entity<SpeciesId>
 {
     // EF Core ctor
     private Species(SpeciesId id) : base(id) { }
+
+    private readonly List<Breed> _breeds = null!;
     public Title Title { get; private set; } = null!;
-    public List<Breed> Breeds { get; private set; } = [];
+    public IReadOnlyList<Breed> Breeds => _breeds;
 }
