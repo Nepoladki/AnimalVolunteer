@@ -13,10 +13,10 @@ public class VolunteerController : ApplicationController
     [HttpPost]
     public async Task<IActionResult> Create(
         CreateVolunteerRequest request,
-        [FromServices] CreateVolunteerHandler _handler,
+        [FromServices] CreateVolunteerHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var creationResult = await _handler.Create(request, cancellationToken);
+        var creationResult = await handler.Create(request, cancellationToken);
 
         if (creationResult.IsFailure)
             return creationResult.Error.ToResponse();
@@ -26,20 +26,20 @@ public class VolunteerController : ApplicationController
 
     [HttpPut("{id:guid}/main-info")]
     public async Task<IActionResult> UpdateMainInfo(
-        Guid id,
-        MainInfoDto mainInfo,
-        [FromServices] UpdateVounteerMainInfoHandler _handler,
-        [FromServices] IValidator<UpdateVounteerMainInfoRequest> _validator,
+        [FromRoute] Guid id,
+        [FromBody] MainInfoDto mainInfo,
+        [FromServices] UpdateVounteerMainInfoHandler handler,
+        [FromServices] IValidator<UpdateVounteerMainInfoRequest> validator,
         CancellationToken cancellationToken = default)
     {
         var request = new UpdateVounteerMainInfoRequest(id, mainInfo);
 
-        var validatonResult = await _validator.ValidateAsync(request, cancellationToken);
+        var validatonResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validatonResult.IsValid)
             return validatonResult.ToValidationErrorResponse();
 
-        var handleResult = await _handler.Update(request, cancellationToken);
+        var handleResult = await handler.Update(request, cancellationToken);
 
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
@@ -49,20 +49,20 @@ public class VolunteerController : ApplicationController
 
     [HttpPut("{id:guid}/social-networks")]
     public async Task<IActionResult> UpdateSocialNetworks(
-        Guid id,
-        SocialNetworksListDto socialNetworks,
-        [FromServices] UpdateVolunteerSocialNetworksHandler _handler,
-        [FromServices] IValidator<UpdateVolunteerSocialNetworksRequest> _validator,
+        [FromRoute] Guid id,
+        [FromBody] SocialNetworksListDto socialNetworks,
+        [FromServices] UpdateVolunteerSocialNetworksHandler handler,
+        [FromServices] IValidator<UpdateVolunteerSocialNetworksRequest> validator,
         CancellationToken cancellationToken = default)
     {
         var request = new UpdateVolunteerSocialNetworksRequest(id, socialNetworks);
 
-        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
             return validationResult.ToValidationErrorResponse();
 
-        var handleResult = await _handler.Update(request, cancellationToken);
+        var handleResult = await handler.Update(request, cancellationToken);
 
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
@@ -72,20 +72,20 @@ public class VolunteerController : ApplicationController
 
     [HttpPut("{id:guid}/payment-details")]
     public async Task<IActionResult> UpdatePaymentDetails(
-        Guid id,
-        PaymentDetailsListDto paymentDetails,
-        [FromServices] UpdateVolunteerPaymentDetailsHandler _handler,
-        [FromServices] IValidator<UpdateVolunteerPaymentDetailsRequest> _validator,
+        [FromRoute] Guid id,
+        [FromBody] PaymentDetailsListDto paymentDetails,
+        [FromServices] UpdateVolunteerPaymentDetailsHandler handler,
+        [FromServices] IValidator<UpdateVolunteerPaymentDetailsRequest> validator,
         CancellationToken cancellationToken = default)
     {
         var request = new UpdateVolunteerPaymentDetailsRequest(id, paymentDetails);
 
-        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
             return validationResult.ToValidationErrorResponse();
 
-        var handleResult = await _handler.Update(request, cancellationToken);
+        var handleResult = await handler.Update(request, cancellationToken);
 
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
