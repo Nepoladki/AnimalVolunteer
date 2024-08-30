@@ -1,5 +1,4 @@
 ﻿using AnimalVolunteer.API.Response;
-using AnimalVolunteer.Domain.Common;
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
