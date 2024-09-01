@@ -30,6 +30,8 @@ public sealed class Pet : Common.Entity<PetId>
         CurrentStatus = currentStatus;
         CreatedAt = DateTime.Now;
     }
+
+    private bool _isDeleted;
     public Name Name { get; private set; } = null!;
     public Description Description { get; private set; } = null!;
     public PhysicalParameters PhysicalParameters { get; private set; } = null!;
@@ -42,4 +44,6 @@ public sealed class Pet : Common.Entity<PetId>
     public DateTime CreatedAt { get; private set; } = default!;
     public PaymentDetailsList PaymentDetails { get; private set; } = null!;
     public PetPhotoList PetPhotos { get; private set; } = null!;
+    public void Delete() => _isDeleted = true;
+    public void Restore() => _isDeleted = false;
 }
