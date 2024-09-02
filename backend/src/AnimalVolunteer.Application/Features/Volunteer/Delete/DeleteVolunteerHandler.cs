@@ -15,7 +15,7 @@ public class DeleteVolunteerHandler
         DeleteVolunteerRequest request,
         CancellationToken cancellationToken)
     {
-        var volunteer = await _volunteerRepository.GetByID(
+        var volunteer = await _volunteerRepository.GetById(
             request.Id,
             cancellationToken);
 
