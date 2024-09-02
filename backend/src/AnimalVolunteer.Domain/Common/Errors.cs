@@ -31,4 +31,16 @@ public static class Errors
         public static Error AlreadyExist() =>
             Error.Validation("Volunteer.AlreadyExist", $"Volunteer Already Exist");
     }
+
+    public static class Minio
+    {
+        public static Error BucketNotFound(string name) =>
+            Error.Failure("Minio.BucketNotFound", $"Tried to access unexisting minio bucket {name}");
+
+        public static Error GetUrlFailure(string name) =>
+            Error.Failure("Minio.GetUrlFailure", $"Failed to fetch {name} from Minio");
+
+        public static Error DeleteFailure(string name) =>
+            Error.Failure("Minio.DeleteFailure", $"Failed to delete {name} from Minio");
+    }
 }

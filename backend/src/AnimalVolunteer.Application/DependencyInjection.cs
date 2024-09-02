@@ -1,4 +1,7 @@
-﻿using AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
+﻿using AnimalVolunteer.Application.Features.Files.Delete;
+using AnimalVolunteer.Application.Features.Files.Download;
+using AnimalVolunteer.Application.Features.Files.Upload;
+using AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
 using AnimalVolunteer.Application.Features.Volunteer.Delete;
 using AnimalVolunteer.Application.Features.Volunteer.Update.MainInfo;
 using AnimalVolunteer.Application.Features.Volunteer.Update.PaymentDetails;
@@ -19,6 +22,9 @@ public static class DependencyInjection
         services.AddScoped<UpdateVolunteerPaymentDetailsHandler>();
         services.AddScoped<UpdateVolunteerContactInfoHandler>();
         services.AddScoped<DeleteVolunteerHandler>();
+        services.AddScoped<UploadFileHandler>();
+        services.AddScoped<DownloadFileHandler>();
+        services.AddScoped<DeleteFileHandler>();
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
