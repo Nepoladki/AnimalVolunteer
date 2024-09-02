@@ -20,6 +20,10 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
             id => id.Value,
             value => VolunteerId.CreateWithGuid(value));
 
+        builder.Property<bool>("_isDeleted")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .HasColumnName("is_deleted");
+
         builder.ComplexProperty(x => x.FullName, fn =>
         {
             fn.Property(i => i.FirstName)

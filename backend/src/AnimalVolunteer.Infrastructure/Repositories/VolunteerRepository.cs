@@ -14,7 +14,7 @@ public class VolunteerRepository : IVolunteerRepository
         _dbContext = dbContext;
     }
 
-    public async Task<Volunteer?> GetByID(VolunteerId id, CancellationToken cancellationToken = default)
+    public async Task<Volunteer?> GetById(VolunteerId id, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Volunteers
             .Include(v => v.Pets).FirstOrDefaultAsync(v => v.Id == id, cancellationToken);

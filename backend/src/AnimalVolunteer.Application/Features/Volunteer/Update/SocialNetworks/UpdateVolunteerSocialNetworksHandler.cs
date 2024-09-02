@@ -18,7 +18,7 @@ public class UpdateVolunteerSocialNetworksHandler
 
     public async Task<Result<Guid, Error>> Update(UpdateVolunteerSocialNetworksRequest request, CancellationToken cancellationToken)
     {
-        var volunteer = await _volunteerRepository.GetByID(request.Id, cancellationToken);
+        var volunteer = await _volunteerRepository.GetById(request.Id, cancellationToken);
 
         if (volunteer is null)
             return Errors.General.NotFound(request.Id);

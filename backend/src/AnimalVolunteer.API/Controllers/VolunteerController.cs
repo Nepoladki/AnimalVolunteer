@@ -6,6 +6,7 @@ using AnimalVolunteer.Application.Features.Volunteer.Update.SocialNetworks;
 using AnimalVolunteer.Application.Features.Volunteer.Update.PaymentDetails;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using AnimalVolunteer.Application.Features.Volunteer.Delete;
 
 namespace AnimalVolunteer.API.Controllers;
 public class VolunteerController : ApplicationController
@@ -91,5 +92,19 @@ public class VolunteerController : ApplicationController
             return handleResult.Error.ToResponse();
 
         return Ok(handleResult.Value);
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(
+        Guid id,
+        [FromServices] DeleteVolunteerHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var deleteResult = await handler.Delete(new DeleteVolunteerRequest(id), cancellationToken);
+
+        if (deleteResult.IsFailure)
+            return deleteResult.Error.ToResponse();
+
+        return Ok(deleteResult.Value);
     }
 }

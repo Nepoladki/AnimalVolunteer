@@ -28,6 +28,8 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
     }
 
     private readonly List<Pet> _pets = default!;
+
+    private bool _isDeleted;
     public FullName FullName { get; private set; } = null!;
     public Email Email { get; private set; } = null!;
     public Description Description { get; private set; } = null!;
@@ -52,6 +54,26 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
     public void UpdateSocialNetworks(SocialNetworkList socialNetworks) => SocialNetworks = socialNetworks;
 
     public void UpdatePaymentDetails(PaymentDetailsList paymentDetails) => PaymentDetails = paymentDetails;
+
+    public void Delete()
+    {
+        _isDeleted = true;
+
+        foreach (var pet in _pets)
+        {
+            pet.Delete();
+        }
+    }
+
+    public void Restore()
+    {
+        _isDeleted = false;
+
+        foreach (var pet in _pets)
+        {
+            pet.Restore();
+        }
+    }
 
     public static Volunteer Create(
         VolunteerId id,

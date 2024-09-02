@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
+using AnimalVolunteer.Application.Features.Volunteer.Delete;
 using AnimalVolunteer.Application.Features.Volunteer.Update.MainInfo;
 using AnimalVolunteer.Application.Features.Volunteer.Update.PaymentDetails;
 using AnimalVolunteer.Application.Features.Volunteer.Update.SocialNetworks;
@@ -17,6 +18,7 @@ public static class DependencyInjection
         services.AddScoped<UpdateVolunteerSocialNetworksHandler>();
         services.AddScoped<UpdateVolunteerPaymentDetailsHandler>();
         services.AddScoped<UpdateVolunteerContactInfoHandler>();
+        services.AddScoped<DeleteVolunteerHandler>();
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
