@@ -14,7 +14,7 @@ var config = builder.Configuration;
 // Add other layers
 services.AddApi(config)
     .AddApplication()
-    .AddInfrastructure();
+    .AddInfrastructure(config);
 
 services.AddControllers();
 
