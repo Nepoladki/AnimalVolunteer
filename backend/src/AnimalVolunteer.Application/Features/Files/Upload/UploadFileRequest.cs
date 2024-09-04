@@ -2,4 +2,7 @@
 
 namespace AnimalVolunteer.Application.Features.Files.Upload;
 
-public record UploadFileRequest(UploadFileData FileData);
+public record UploadFileRequest(
+    Stream FileStream,
+    string BucketName,
+    string ObjectName);

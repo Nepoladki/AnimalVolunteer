@@ -11,7 +11,8 @@ public class DeleteFileHandler
     {
         _fileProvider = fileProvider;
     }
-    public async Task<Result<bool, Error>> Delete(DeleteFileRequest request, CancellationToken cancellationToken)
+    public async Task<UnitResult<Error>> Delete(
+        DeleteFileRequest request, CancellationToken cancellationToken)
     {
         return await _fileProvider.DeleteFile(request, cancellationToken);
     }

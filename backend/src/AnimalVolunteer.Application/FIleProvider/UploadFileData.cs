@@ -1,6 +1,6 @@
 ﻿namespace AnimalVolunteer.Application.FileProvider;
 
-public record UploadFileData(
+public record FileData(
     Stream FileStream,
     string BucketName,
     string ObjectName);

@@ -10,8 +10,13 @@ public class UploadFileHandler
     {
         _fileProvider = fileProvider;
     }
-    public async Task<Result<string, Error>> Upload(UploadFileRequest request, CancellationToken cancellationToken)
+    public async Task<UnitResult<Error>> Upload(
+        UploadFileRequest request, CancellationToken cancellationToken)
     {
-        return await _fileProvider.UploadFile(request.FileData, cancellationToken);
+        return await _fileProvider.UploadFile(
+            request.FileStream,
+            request.BucketName,
+            request.ObjectName,
+            cancellationToken);
     }
 }

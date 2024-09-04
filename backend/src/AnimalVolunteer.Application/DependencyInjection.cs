@@ -6,6 +6,7 @@ using AnimalVolunteer.Application.Features.Volunteer.Delete;
 using AnimalVolunteer.Application.Features.Volunteer.Update.MainInfo;
 using AnimalVolunteer.Application.Features.Volunteer.Update.PaymentDetails;
 using AnimalVolunteer.Application.Features.Volunteer.Update.SocialNetworks;
+using AnimalVolunteer.Application.Interfaces;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;

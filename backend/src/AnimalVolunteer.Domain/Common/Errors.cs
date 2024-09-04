@@ -35,7 +35,10 @@ public static class Errors
     public static class Minio
     {
         public static Error BucketNotFound(string name) =>
-            Error.Failure("Minio.BucketNotFound", $"Tried to access unexisting minio bucket {name}");
+            Error.NotFound("Minio.BucketNotFound", $"Tried to access unexisting minio bucket {name}");
+
+        public static Error ObjectNotFound(string name) =>
+            Error.NotFound("Minio.ObjectNotFound", $"Tried to access unexisting minio object {name}");
 
         public static Error GetUrlFailure(string name) =>
             Error.Failure("Minio.GetUrlFailure", $"Failed to fetch {name} from Minio");

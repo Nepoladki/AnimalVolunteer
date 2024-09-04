@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Application.Interfaces;
 using AnimalVolunteer.Infrastructure.Options;
+using AnimalVolunteer.Infrastructure.Providers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
@@ -14,6 +15,7 @@ public static class DependencyInjection
         services.AddScoped<ApplicationDbContext>();
 
         services.AddScoped<IVolunteerRepository, VolunteerRepository>();
+        services.AddScoped<IFileProvider, MinioProvider>();
 
         services.AddMinio(configuration);
 

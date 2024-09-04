@@ -8,5 +8,5 @@ public class MinioOptions
     public string Password { get; init; } = string.Empty;
     public bool EnableSsl { get; init; } = false;
     public int UrlExpirySeconds { get; init; }
-
+    public string BucketName { get; init; } = string.Empty;
 }
