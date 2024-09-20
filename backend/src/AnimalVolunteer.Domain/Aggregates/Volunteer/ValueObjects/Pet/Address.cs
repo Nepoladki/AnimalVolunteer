@@ -17,7 +17,7 @@ public record Address
     public string City { get; }
     public string Street { get; }
     public string? House { get; }
-    public static Result<Address, Error> Create(string country, string city, string street, string house)
+    public static Result<Address, Error> Create(string country, string city, string street, string? house)
     {
         if (string.IsNullOrWhiteSpace(country) || country.Length > MAX_LENGTH)
             return Errors.General.InvalidValue(nameof(country));

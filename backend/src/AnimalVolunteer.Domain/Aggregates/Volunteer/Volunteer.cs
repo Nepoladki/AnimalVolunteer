@@ -1,6 +1,8 @@
 ﻿using AnimalVolunteer.Domain.Aggregates.Volunteer.Entities;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
+using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
+using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.Domain.Aggregates.Volunteer;
 
@@ -75,6 +77,15 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
         }
     }
 
+    public UnitResult<Error> AddPet(Pet pet)
+    {
+        // валидация
+
+        _pets.Add(pet);
+
+        return Result.Success<Error>();
+    }
+
     public static Volunteer Create(
         VolunteerId id,
         FullName fullName,
@@ -83,7 +94,7 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
         Statistics statistics,
         ContactInfoList contactInfoList,
         SocialNetworkList socialNetworkList,
-        PaymentDetailsList paymentDetailsList) => 
+        PaymentDetailsList paymentDetailsList) =>
             new(
                 id,
                 fullName,

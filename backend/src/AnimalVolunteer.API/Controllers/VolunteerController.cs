@@ -7,6 +7,8 @@ using AnimalVolunteer.Application.Features.Volunteer.Update.PaymentDetails;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using AnimalVolunteer.Application.Features.Volunteer.Delete;
+using AnimalVolunteer.API.Contracts;
+using AnimalVolunteer.Application.Features.Volunteer.AddPet;
 
 namespace AnimalVolunteer.API.Controllers;
 public class VolunteerController : ApplicationController
@@ -106,5 +108,61 @@ public class VolunteerController : ApplicationController
             return deleteResult.Error.ToResponse();
 
         return Ok(deleteResult.Value);
+    }
+
+    [HttpPost("{id:guid}/pet")]
+    public async Task<IActionResult> AddPet(
+        [FromRoute] Guid id,
+        [FromForm] AddPetRequest request,
+        [FromServices] AddPetHandler handler,
+        CancellationToken cancellationToken)
+    {
+
+        List<FileDto> fileList = [];
+
+        try
+        {
+            foreach (var file in request.Files)
+            {
+                var stream = file.OpenReadStream();
+
+                fileList.Add(new FileDto(file.FileName, stream, false)); // hardcoded false
+            }
+
+            var command = new AddPetCommand(
+                    id,
+                    request.Name,
+                    request.Description,
+                    request.Color,
+                    request.Weight,
+                    request.Height,
+                    request.SpeciesId,
+                    request.BreedId,
+                    request.HealthDescription,
+                    request.IsVaccinated,
+                    request.IsNeutered,
+                    request.Country,
+                    request.City,
+                    request.Street,
+                    request.House,
+                    request.BirthDate,
+                    request.CurrentStatus,
+                    fileList);
+
+            var addResult = await handler.Add(command, cancellationToken);
+
+            if (addResult.IsFailure)
+                return addResult.Error.ToResponse();
+
+            return Ok(addResult.Value);
+        }
+        finally
+        {
+            foreach (var fileDto in fileList)
+            {
+                await fileDto.Content.DisposeAsync();
+            }
+        }
+
     }
 }

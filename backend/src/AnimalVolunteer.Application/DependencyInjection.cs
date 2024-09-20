@@ -1,6 +1,7 @@
 ﻿using AnimalVolunteer.Application.Features.Files.Delete;
 using AnimalVolunteer.Application.Features.Files.Download;
 using AnimalVolunteer.Application.Features.Files.Upload;
+using AnimalVolunteer.Application.Features.Volunteer.AddPet;
 using AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
 using AnimalVolunteer.Application.Features.Volunteer.Delete;
 using AnimalVolunteer.Application.Features.Volunteer.Update.MainInfo;
@@ -26,6 +27,7 @@ public static class DependencyInjection
         services.AddScoped<UploadFileHandler>();
         services.AddScoped<DownloadFileHandler>();
         services.AddScoped<DeleteFileHandler>();
+        services.AddScoped<AddPetHandler>();
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
