@@ -1,4 +1,5 @@
-﻿using AnimalVolunteer.Application.Features.Files.Delete;
+﻿using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
+using AnimalVolunteer.Application.Features.Files.Delete;
 using AnimalVolunteer.Application.Features.Files.GetUrl;
 using AnimalVolunteer.Domain.Common;
 using CSharpFunctionalExtensions;
@@ -11,6 +12,11 @@ public interface IFileProvider
         Stream file, 
         string bucketName, 
         string objectName,
+        CancellationToken cancellationToken);
+
+    Task<UnitResult<Error>> UploadFiles(
+        IEnumerable<PetPhotoDto> petPhotos,
+        string bucketName,
         CancellationToken cancellationToken);
     Task<Result<string, Error>> GetFileUrl(
         DownloadFileRequest fileData, 

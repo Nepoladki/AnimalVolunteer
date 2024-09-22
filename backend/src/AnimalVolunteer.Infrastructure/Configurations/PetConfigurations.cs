@@ -167,8 +167,11 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
             pp.OwnsMany(i => i.PetPhotos, j =>
             {
                 j.Property(k => k.FilePath)
+                .HasConversion(
+                    p => p.Path,
+                    value => FilePath.Create(value).Value)
                 .IsRequired() 
-                .HasMaxLength(PetPhoto.MAX_FILEPATH_LENGTH)
+                .HasMaxLength(FilePath.MAX_FILEPATH_LENGTH)
                 .HasJsonPropertyName("path");
 
                 j.Property(k => k.IsMain)

@@ -9,4 +9,5 @@ public class MinioOptions
     public bool EnableSsl { get; init; } = false;
     public int UrlExpirySeconds { get; init; }
     public string BucketName { get; init; } = string.Empty;
+    public int SemaphoreThreadLimit { get; init; }
 }

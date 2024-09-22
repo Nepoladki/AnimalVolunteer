@@ -17,8 +17,11 @@ public sealed class Pet : Common.Entity<PetId>
         SpeciesAndBreed speciesAndBreed,
         HealthInfo healthInfo,
         Address address,
+        ContactInfoList contactInfos,
         DateOnly birthDate,
-        CurrentStatus currentStatus) : base(id)
+        CurrentStatus currentStatus,
+        PaymentDetailsList paymentDetailsList,
+        PetPhotoList photos) : base(id)
     {
         Name = name;
         Description = description;
@@ -26,9 +29,12 @@ public sealed class Pet : Common.Entity<PetId>
         SpeciesAndBreed = speciesAndBreed;
         HealthInfo = healthInfo;
         Address = address;
+        ContactInfos = contactInfos;
         BirthDate = birthDate;
         CurrentStatus = currentStatus;
-        CreatedAt = DateTime.Now;
+        CreatedAt = DateTime.UtcNow;
+        PaymentDetails = paymentDetailsList; 
+        PetPhotos = photos;
     }
 
     private bool _isDeleted;

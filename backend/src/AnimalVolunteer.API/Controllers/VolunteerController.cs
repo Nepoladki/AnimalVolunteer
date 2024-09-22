@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using AnimalVolunteer.Application.Features.Volunteer.Delete;
 using AnimalVolunteer.API.Contracts;
 using AnimalVolunteer.Application.Features.Volunteer.AddPet;
+using AnimalVolunteer.API.Processors;
 
 namespace AnimalVolunteer.API.Controllers;
 public class VolunteerController : ApplicationController
@@ -117,52 +118,34 @@ public class VolunteerController : ApplicationController
         [FromServices] AddPetHandler handler,
         CancellationToken cancellationToken)
     {
+        await using var fileProcessor = new FormFileProcessor();
+        var fileList = fileProcessor.Process(request.Files);
 
-        List<FileDto> fileList = [];
+        var command = new AddPetCommand(
+                id,
+                request.Name,
+                request.Description,
+                request.Color,
+                request.Weight,
+                request.Height,
+                request.SpeciesId,
+                request.BreedId,
+                request.HealthDescription,
+                request.IsVaccinated,
+                request.IsNeutered,
+                request.Country,
+                request.City,
+                request.Street,
+                request.House,
+                request.BirthDate,
+                request.CurrentStatus,
+                fileList);
 
-        try
-        {
-            foreach (var file in request.Files)
-            {
-                var stream = file.OpenReadStream();
+        var addResult = await handler.Add(command, cancellationToken);
 
-                fileList.Add(new FileDto(file.FileName, stream, false)); // hardcoded false
-            }
+        if (addResult.IsFailure)
+            return addResult.Error.ToResponse();
 
-            var command = new AddPetCommand(
-                    id,
-                    request.Name,
-                    request.Description,
-                    request.Color,
-                    request.Weight,
-                    request.Height,
-                    request.SpeciesId,
-                    request.BreedId,
-                    request.HealthDescription,
-                    request.IsVaccinated,
-                    request.IsNeutered,
-                    request.Country,
-                    request.City,
-                    request.Street,
-                    request.House,
-                    request.BirthDate,
-                    request.CurrentStatus,
-                    fileList);
-
-            var addResult = await handler.Add(command, cancellationToken);
-
-            if (addResult.IsFailure)
-                return addResult.Error.ToResponse();
-
-            return Ok(addResult.Value);
-        }
-        finally
-        {
-            foreach (var fileDto in fileList)
-            {
-                await fileDto.Content.DisposeAsync();
-            }
-        }
-
+        return Ok(addResult.Value);
     }
 }

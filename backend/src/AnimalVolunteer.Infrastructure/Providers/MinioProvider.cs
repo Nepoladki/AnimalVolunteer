@@ -1,4 +1,5 @@
-﻿using AnimalVolunteer.Application.Features.Files.Delete;
+﻿using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
+using AnimalVolunteer.Application.Features.Files.Delete;
 using AnimalVolunteer.Application.Features.Files.GetUrl;
 using AnimalVolunteer.Application.FileProvider;
 using AnimalVolunteer.Application.Interfaces;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Minio;
 using Minio.DataModel.Args;
+using System.Security.AccessControl;
 
 namespace AnimalVolunteer.Infrastructure.Providers;
 
@@ -118,6 +120,57 @@ public class MinioProvider : IFileProvider
         {
             _logger.LogError(ex, "Failed to upload file to Minio");
             return Error.Failure("file.upload", "Failed to upload file in Minio");
+        }
+    }
+
+    public async Task<UnitResult<Error>> UploadFiles(
+        IEnumerable<PetPhotoDto> petPhotos,
+        string bucketName, 
+        CancellationToken cancellationToken = default)
+    {
+        var semaphoreSlim = new SemaphoreSlim(_options.SemaphoreThreadLimit);
+
+        try
+        {
+            if ((await BucketExists(bucketName, cancellationToken)).IsFailure)
+            {
+                var makeBucketArgs = new MakeBucketArgs()
+                    .WithBucket(bucketName);
+
+                await _minioClient.MakeBucketAsync(makeBucketArgs, cancellationToken);
+            }
+
+            List<Task> tasks = [];
+
+            foreach (var file in petPhotos)
+            {
+                await semaphoreSlim.WaitAsync(cancellationToken);
+
+                var putObjectArgs = new PutObjectArgs()
+                .WithBucket(bucketName)
+                .WithStreamData(file.Content)
+                .WithObjectSize(file.Content.Length)
+                .WithObject(file.FileName);
+
+                var task = _minioClient.PutObjectAsync(putObjectArgs, cancellationToken);
+
+                semaphoreSlim.Release();
+
+                tasks.Add(task);
+            } // урок 1:45
+
+            await Task.WhenAll(tasks);
+
+            return Result.Success<Error>();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to upload file to Minio");
+            return Error.Failure("file.upload", "Failed to upload file in Minio");
+        }
+        finally
+        {
+            semaphoreSlim.Release();
         }
     }
 
