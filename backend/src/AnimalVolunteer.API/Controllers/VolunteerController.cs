@@ -10,6 +10,8 @@ using AnimalVolunteer.Application.Features.Volunteer.Delete;
 using AnimalVolunteer.API.Contracts;
 using AnimalVolunteer.Application.Features.Volunteer.AddPet;
 using AnimalVolunteer.API.Processors;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using AnimalVolunteer.Application.Features.Volunteer.AddPetPhotos;
 
 namespace AnimalVolunteer.API.Controllers;
 public class VolunteerController : ApplicationController
@@ -147,5 +149,16 @@ public class VolunteerController : ApplicationController
             return addResult.Error.ToResponse();
 
         return Ok(addResult.Value);
+    }
+
+    [HttpPost("{volunteerId:guid}/pet/{petId:guid}/photos")]
+    public async Task<IActionResult> AddPetPhotos(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromForm] AddPetPhotosRequest request,
+        [FromServices] AddPetPhotosHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+
     }
 }
