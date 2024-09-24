@@ -2,6 +2,6 @@
 
 namespace AnimalVolunteer.Application.Features.Volunteer.Update.SocialNetworks;
 
-public record UpdateVolunteerSocialNetworksRequest(
+public record UpdateVolunteerSocialNetworksCommand(
     Guid Id,
     SocialNetworksListDto SocialNetworksList);

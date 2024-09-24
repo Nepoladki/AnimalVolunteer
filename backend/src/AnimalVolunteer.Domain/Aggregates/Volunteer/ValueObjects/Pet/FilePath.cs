@@ -6,10 +6,10 @@ namespace AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
 public record FilePath
  {
     public const int MAX_FILEPATH_LENGTH = 200;
-    public string Path { get; }
+    public string Value { get; }
     private FilePath(string path)
     {
-        Path = path;
+        Value = path;
     }
     public static Result<FilePath, Error> Create(Guid path, string extension)
     {

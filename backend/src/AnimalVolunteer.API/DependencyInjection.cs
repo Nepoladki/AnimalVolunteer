@@ -11,10 +11,10 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApi(this IServiceCollection services, IConfiguration config)
     {
-        services.AddFluentValidationAutoValidation(configBuilder =>
-        {
-            configBuilder.OverrideDefaultResultFactoryWith<CustomResultFactory>();
-        });
+        //services.AddFluentValidationAutoValidation(configBuilder =>
+        //{
+        //    configBuilder.OverrideDefaultResultFactoryWith<CustomResultFactory>();
+        //});
 
         AddSerilogLogger(services, config);
 

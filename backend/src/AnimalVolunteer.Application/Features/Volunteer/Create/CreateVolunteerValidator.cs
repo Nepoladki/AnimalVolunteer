@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
 
-public class CreateVolunteerValidator : AbstractValidator<CreateVolunteerRequest>
+public class CreateVolunteerValidator : AbstractValidator<CreateVolunteerCommand>
 {
     public CreateVolunteerValidator()
     {

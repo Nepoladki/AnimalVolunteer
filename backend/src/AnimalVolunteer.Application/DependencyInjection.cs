@@ -19,7 +19,7 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<CreateVolunteerHandler>();
-        services.AddScoped<UpdateVounteerMainInfoHandler>();
+        services.AddScoped<UpdateVolunteerMainInfoHandler>();
         services.AddScoped<UpdateVolunteerSocialNetworksHandler>();
         services.AddScoped<UpdateVolunteerPaymentDetailsHandler>();
         services.AddScoped<UpdateVolunteerContactInfoHandler>();

@@ -1,4 +1,5 @@
-﻿using AnimalVolunteer.Application.Interfaces;
+﻿using AnimalVolunteer.Application.Database;
+using AnimalVolunteer.Application.Interfaces;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common;
 using CSharpFunctionalExtensions;
@@ -10,28 +11,37 @@ public class UpdateVolunteerSocialNetworksHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly ILogger<UpdateVolunteerSocialNetworksHandler> _logger;
-    public UpdateVolunteerSocialNetworksHandler(IVolunteerRepository volunteerRepository, ILogger<UpdateVolunteerSocialNetworksHandler> logger)
+    private readonly IApplicationDbContext _dbContext;
+    public UpdateVolunteerSocialNetworksHandler(
+        IVolunteerRepository volunteerRepository,
+        ILogger<UpdateVolunteerSocialNetworksHandler> logger,
+        IApplicationDbContext dbContext)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;
+        _dbContext = dbContext;
     }
 
-    public async Task<Result<Guid, Error>> Update(UpdateVolunteerSocialNetworksRequest request, CancellationToken cancellationToken)
+    public async Task<Result<Guid, Error>> Update(
+        UpdateVolunteerSocialNetworksCommand request, 
+        CancellationToken cancellationToken)
     {
-        var volunteer = await _volunteerRepository.GetById(request.Id, cancellationToken);
+        var volunteerResult = await _volunteerRepository
+            .GetById(request.Id, cancellationToken);
 
-        if (volunteer is null)
-            return Errors.General.NotFound(request.Id);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error;
 
         var socialNetworks = SocialNetworkList.Create(
-            request.SocialNetworksList.Value.Select(x => SocialNetwork.Create(x.Name, x.URL).Value));
+            request.SocialNetworksList.Value
+            .Select(x => SocialNetwork.Create(x.Name, x.URL).Value));
 
-        volunteer.UpdateSocialNetworks(socialNetworks);
+        volunteerResult.Value.UpdateSocialNetworks(socialNetworks);
 
-        await _volunteerRepository.Save(volunteer, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("Volunteer {ID} updated", volunteer.Id);
+        _logger.LogInformation("Volunteer {ID} updated", volunteerResult.Value.Id);
 
-        return (Guid)volunteer.Id;
+        return (Guid)volunteerResult.Value.Id;
     }
 }

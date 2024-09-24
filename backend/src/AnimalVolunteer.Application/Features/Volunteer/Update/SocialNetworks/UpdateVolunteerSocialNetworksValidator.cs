@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace AnimalVolunteer.Application.Features.Volunteer.Update.SocialNetworks;
 
-public class UpdateVolunteerSocialNetworksValidator : AbstractValidator<UpdateVolunteerSocialNetworksRequest>
+public class UpdateVolunteerSocialNetworksValidator : AbstractValidator<UpdateVolunteerSocialNetworksCommand>
 {
     public UpdateVolunteerSocialNetworksValidator()
     {

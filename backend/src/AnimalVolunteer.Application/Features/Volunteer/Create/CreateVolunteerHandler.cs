@@ -4,19 +4,22 @@ using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
+using AnimalVolunteer.Application.Database;
 
 namespace AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
 
 public class CreateVolunteerHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
+    private readonly IApplicationDbContext _dbContext;
 
-    public CreateVolunteerHandler(IVolunteerRepository volunteerRepository)
+    public CreateVolunteerHandler(IVolunteerRepository volunteerRepository, IApplicationDbContext dbContext)
     {
         _volunteerRepository = volunteerRepository;
+        _dbContext = dbContext;
     }
     public async Task<Result<VolunteerId, Error>> Create(
-        CreateVolunteerRequest request,
+        CreateVolunteerCommand request,
         CancellationToken cancellationToken)
     {
         var email = Email.Create(request.Email).Value;
@@ -51,7 +54,8 @@ public class CreateVolunteerHandler
             socialNetworks,
             paymentDetails);
 
-        await _volunteerRepository.Create(volunteer, cancellationToken);
+        await _dbContext.Volunteers.AddAsync(volunteer, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return volunteer.Id;
     }

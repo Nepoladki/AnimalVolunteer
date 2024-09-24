@@ -1,4 +1,5 @@
-﻿using AnimalVolunteer.Application.Interfaces;
+﻿using AnimalVolunteer.Application.Database;
+using AnimalVolunteer.Application.Interfaces;
 using AnimalVolunteer.Domain.Common;
 using CSharpFunctionalExtensions;
 
@@ -7,25 +8,28 @@ namespace AnimalVolunteer.Application.Features.Volunteer.Delete;
 public class DeleteVolunteerHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
-    public DeleteVolunteerHandler(IVolunteerRepository volunteerRepository)
+    private readonly IApplicationDbContext _dbContext;
+    public DeleteVolunteerHandler(
+        IVolunteerRepository volunteerRepository, IApplicationDbContext dbContext)
     {
         _volunteerRepository = volunteerRepository;
+        _dbContext = dbContext;
     }
     public async Task<Result<Guid, Error>> Delete(
-        DeleteVolunteerRequest request,
+        DeleteVolunteerCommand request,
         CancellationToken cancellationToken)
     {
-        var volunteer = await _volunteerRepository.GetById(
+        var volunteerResult = await _volunteerRepository.GetById(
             request.Id,
             cancellationToken);
 
-        if (volunteer is null)
-            return Errors.General.NotFound(request.Id);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error;
 
-        volunteer.Delete();
+        volunteerResult.Value.Delete();
 
-        await _volunteerRepository.Save(volunteer, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return (Guid)volunteer.Id;
+        return (Guid)volunteerResult.Value.Id;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using AnimalVolunteer.Application.DTOs.Volunteer;
 
-namespace AnimalVolunteer.API.Contracts;
+namespace AnimalVolunteer.API.Controllers.Volunteer.Requests.Pet;
 
 public record AddPetRequest(
     string Name,

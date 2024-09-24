@@ -1,7 +1,6 @@
 ﻿using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
 using AnimalVolunteer.Application.Features.Files.Delete;
 using AnimalVolunteer.Application.Features.Files.GetUrl;
-using AnimalVolunteer.Application.FileProvider;
 using AnimalVolunteer.Application.Interfaces;
 using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Infrastructure.Options;
@@ -10,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Minio;
 using Minio.DataModel.Args;
-using System.Security.AccessControl;
 
 namespace AnimalVolunteer.Infrastructure.Providers;
 
@@ -124,7 +122,7 @@ public class MinioProvider : IFileProvider
     }
 
     public async Task<UnitResult<Error>> UploadFiles(
-        IEnumerable<PetPhotoDto> petPhotos,
+        IEnumerable<FileToUploadDto> petPhotos,
         string bucketName, 
         CancellationToken cancellationToken = default)
     {
@@ -150,14 +148,14 @@ public class MinioProvider : IFileProvider
                 .WithBucket(bucketName)
                 .WithStreamData(file.Content)
                 .WithObjectSize(file.Content.Length)
-                .WithObject(file.FileName);
+                .WithObject(file.ObjectName);
 
                 var task = _minioClient.PutObjectAsync(putObjectArgs, cancellationToken);
 
                 semaphoreSlim.Release();
 
                 tasks.Add(task);
-            } // урок 1:45
+            }
 
             await Task.WhenAll(tasks);
 

@@ -15,7 +15,7 @@ public interface IFileProvider
         CancellationToken cancellationToken);
 
     Task<UnitResult<Error>> UploadFiles(
-        IEnumerable<PetPhotoDto> petPhotos,
+        IEnumerable<FileToUploadDto> petPhotos,
         string bucketName,
         CancellationToken cancellationToken);
     Task<Result<string, Error>> GetFileUrl(

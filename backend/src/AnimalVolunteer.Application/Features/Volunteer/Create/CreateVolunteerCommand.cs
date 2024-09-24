@@ -2,7 +2,7 @@
 
 namespace AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
 
-public record CreateVolunteerRequest(
+public record CreateVolunteerCommand(
     FullNameDto FullName,
     string Email,
     string Description,

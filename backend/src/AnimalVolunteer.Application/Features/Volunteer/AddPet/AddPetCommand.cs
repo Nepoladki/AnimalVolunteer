@@ -17,10 +17,4 @@ public record AddPetCommand(
     string Street,
     string? House,
     DateOnly BirthDate,
-    string CurrentStatus,
-    IEnumerable<FileDto> Files);
-
-public record FileDto(
-    string Filename,
-    Stream Content,
-    bool IsMain);
+    string CurrentStatus);

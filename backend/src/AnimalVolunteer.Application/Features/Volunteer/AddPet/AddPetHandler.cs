@@ -1,5 +1,4 @@
 ﻿using AnimalVolunteer.Application.Database;
-using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
 using AnimalVolunteer.Application.Interfaces;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.Entities;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.Enums;
@@ -8,7 +7,6 @@ using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
-using System.Runtime.CompilerServices;
 
 namespace AnimalVolunteer.Application.Features.Volunteer.AddPet;
 
@@ -16,32 +14,30 @@ public class AddPetHandler
 {
     private const string BUCKET_NAME = "photos";
     private readonly IVolunteerRepository _volunteerRepository;
+    private readonly IApplicationDbContext _dbContext;
     private readonly IFileProvider _fileProvider;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AddPetHandler> _logger;
 
     public AddPetHandler(
         IVolunteerRepository volunteerRepository,
         IFileProvider fileProvider,
-        IUnitOfWork unitOfWork,
-        ILogger<AddPetHandler> logger)
+        ILogger<AddPetHandler> logger,
+        IApplicationDbContext dbContext)
     {
         _volunteerRepository = volunteerRepository;
         _fileProvider = fileProvider;
-        _unitOfWork = unitOfWork;
         _logger = logger;
+        _dbContext = dbContext;
     }
 
     public async Task<Result<Guid, Error>> Add(
         AddPetCommand command, CancellationToken cancellationToken = default)
     {
-        var transaction = await _unitOfWork.BeginTransaction(cancellationToken);
-
-        var volunteer = await _volunteerRepository
+        var volunteerResult = await _volunteerRepository
             .GetById(command.VolunteerId, cancellationToken);
 
-        if (volunteer is null)
-            return Errors.General.NotFound(command.VolunteerId);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error;
         try
         {
             var petId = PetId.Create();
@@ -80,29 +76,7 @@ public class AddPetHandler
             var status = (CurrentStatus)Enum
                 .Parse(typeof(CurrentStatus), command.CurrentStatus);
 
-            List<PetPhoto> domainPhotoFiles = [];
-            List<PetPhotoDto> photosToUpload = [];
-
-            foreach (var file in command.Files)
-            {
-                var extension = Path.GetExtension(file.Filename);
-
-                var filePathResult = FilePath.Create(Guid.NewGuid(), extension);
-
-                if (filePathResult.IsFailure)
-                    return filePathResult.Error;
-
-                var photoToUpload = new PetPhotoDto(
-                    filePathResult.Value.Path, file.Content, file.IsMain);
-
-                photosToUpload.Add(photoToUpload);
-
-                var domainPetPhoto = PetPhoto.Create(filePathResult.Value, file.IsMain);
-
-                domainPhotoFiles.Add(domainPetPhoto.Value);
-            }
-
-            var domainPhotoList = PetPhotoList.Create(domainPhotoFiles);
+            PetPhotoList photos = PetPhotoList.Create([]);
 
             var pet = new Pet(
                 petId,
@@ -116,31 +90,17 @@ public class AddPetHandler
                 command.BirthDate,
                 status,
                 paymentDetails,
-                domainPhotoList);
+                photos);
 
-            volunteer.AddPet(pet);
+            volunteerResult.Value.AddPet(pet);
 
-            var uploadResult = await _fileProvider
-                    .UploadFiles(
-                    photosToUpload,
-                    BUCKET_NAME,
-                    cancellationToken);
+            await _dbContext.SaveChanges(cancellationToken);
 
-            if (uploadResult.IsFailure)
-                return uploadResult.Error;
-
-            await _unitOfWork.SaveChanges(cancellationToken);
-
-            transaction.Commit();
-
-            return (Guid)volunteer.Id;
+            return (Guid)volunteerResult.Value.Id;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Cannot add pet to volunteer with id: {id}", command.VolunteerId);
-
-            transaction.Rollback();
-
             return Error.Failure("volunteer.pet.failure", "Cannot add pet to volunteer with id: {id}");
         }
     }
