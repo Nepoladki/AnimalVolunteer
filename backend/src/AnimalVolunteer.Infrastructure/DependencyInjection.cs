@@ -17,6 +17,7 @@ public static class DependencyInjection
 
         services.AddScoped<IVolunteerRepository, VolunteerRepository>();
         services.AddScoped<IFileProvider, MinioProvider>();
+        services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 
         services.AddMinio(configuration);
 

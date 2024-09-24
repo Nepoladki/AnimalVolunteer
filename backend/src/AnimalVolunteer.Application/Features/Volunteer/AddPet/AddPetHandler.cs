@@ -94,7 +94,7 @@ public class AddPetHandler
 
             volunteerResult.Value.AddPet(pet);
 
-            await _dbContext.SaveChanges(cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
 
             return (Guid)volunteerResult.Value.Id;
         }
