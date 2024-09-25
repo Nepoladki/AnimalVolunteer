@@ -12,9 +12,8 @@ namespace AnimalVolunteer.Application.Features.Volunteer.AddPet;
 
 public class AddPetHandler
 {
-    private const string BUCKET_NAME = "photos";
     private readonly IVolunteerRepository _volunteerRepository;
-    private readonly IApplicationDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IFileProvider _fileProvider;
     private readonly ILogger<AddPetHandler> _logger;
 
@@ -22,12 +21,12 @@ public class AddPetHandler
         IVolunteerRepository volunteerRepository,
         IFileProvider fileProvider,
         ILogger<AddPetHandler> logger,
-        IApplicationDbContext dbContext)
+        IUnitOfWork unitOfWork)
     {
         _volunteerRepository = volunteerRepository;
         _fileProvider = fileProvider;
         _logger = logger;
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<Guid, Error>> Add(
@@ -76,7 +75,7 @@ public class AddPetHandler
             var status = (CurrentStatus)Enum
                 .Parse(typeof(CurrentStatus), command.CurrentStatus);
 
-            PetPhotoList photos = PetPhotoList.Create([]);
+            var photos = PetPhotoList.Create([]);
 
             var pet = new Pet(
                 petId,
@@ -94,7 +93,7 @@ public class AddPetHandler
 
             volunteerResult.Value.AddPet(pet);
 
-            await _dbContext.SaveChanges(cancellationToken);
+            await _unitOfWork.SaveChanges(cancellationToken);
 
             return (Guid)volunteerResult.Value.Id;
         }

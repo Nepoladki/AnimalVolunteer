@@ -4,6 +4,7 @@ using AnimalVolunteer.Application.Interfaces;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
 using AnimalVolunteer.Domain.Common;
 using CSharpFunctionalExtensions;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 
 namespace AnimalVolunteer.Application.Features.Volunteer.AddPetPhotos;
@@ -12,35 +13,44 @@ public class AddPetPhotosHandler
 {
     private const string BUCKET_NAME = "photos";
     private readonly IVolunteerRepository _volunteerRepository;
-    private readonly IApplicationDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IFileProvider _fileProvider;
     private readonly ILogger<AddPetPhotosHandler> _logger;
+    private readonly IValidator<AddPetPhotosHandler> _validator;
 
     public AddPetPhotosHandler(
         IVolunteerRepository volunteerRepository,
+        IUnitOfWork unitOfWork,
         IFileProvider fileProvider,
         ILogger<AddPetPhotosHandler> logger,
-        IApplicationDbContext dbContext)
+        IValidator<AddPetPhotosHandler> validator)
     {
         _volunteerRepository = volunteerRepository;
+        _unitOfWork = unitOfWork;
         _fileProvider = fileProvider;
         _logger = logger;
-        _dbContext = dbContext;
+        _validator = validator;
     }
 
-    public async Task<UnitResult<Error>> Handle(
+    public async Task<UnitResult<ErrorList>> Handle(
         AddPetPhotosCommand command, 
         CancellationToken cancellationToken = default)
     {
-        var transaction = await _dbContext.BeginTransaction(cancellationToken);
+        var transaction = await _unitOfWork.BeginTransaction(cancellationToken);
 
         var volunteerResult = await _volunteerRepository
             .GetById(command.VolunteerId, cancellationToken);
 
         if (volunteerResult.IsFailure)
-            return volunteerResult.Error;
+            return volunteerResult.Error.ToErrorList();
 
-        List<FileToUploadDto> files = [];
+        var petResult = volunteerResult.Value
+            .GetPetById(PetId.CreateWithGuid(command.PetId));
+
+        if (petResult.IsFailure)
+            return petResult.Error.ToErrorList();
+
+        List<UploadingFileDto> files = [];
 
         try
         {
@@ -51,26 +61,32 @@ public class AddPetPhotosHandler
                 var filePathResult = FilePath.Create(Guid.NewGuid(), extension);
 
                 if (filePathResult.IsFailure)
-                    return filePathResult.Error;
+                    return filePathResult.Error.ToErrorList();
 
-                var fileToUpload = new FileToUploadDto(
-                    filePathResult.Value.Value,
+                var fileToUpload = new UploadingFileDto(
+                    file.FileName,
+                    filePathResult.Value,
                     file.Content);
 
                 files.Add(fileToUpload);
             }
 
-            // Сохранение в бд
-
             var uploadResult = await _fileProvider
                 .UploadFiles(files, BUCKET_NAME, cancellationToken);
 
             if (uploadResult.IsFailure)
-                return uploadResult.Error;
+                return uploadResult.Error.ToErrorList();
+
+            var petPhotos = files.Select(f => new PetPhoto()).ToList();
+
+            petResult.Value.UpdatePhotos(files);
+            // Сохранение в бд
+
+            
             
             transaction.Commit();
 
-            return Result.Success<Error>();
+            return Result.Success<ErrorList>();
         }
         catch (Exception ex)
         {
@@ -82,7 +98,7 @@ public class AddPetPhotosHandler
             transaction.Rollback();
 
             return Error.Failure("volunteer.pet.photos.failure",
-                "Error occured while uploading pet photos");
+                "Error occured while uploading pet photos").ToErrorList();
         }
     }
 }

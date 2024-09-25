@@ -11,16 +11,16 @@ public class UpdateVolunteerSocialNetworksHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly ILogger<UpdateVolunteerSocialNetworksHandler> _logger;
-    private readonly IApplicationDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
     public UpdateVolunteerSocialNetworksHandler(
         IVolunteerRepository volunteerRepository,
         ILogger<UpdateVolunteerSocialNetworksHandler> logger,
-        IApplicationDbContext dbContext)
+        IUnitOfWork unitOfWork)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;
-        _dbContext = dbContext;
-    }
+        _unitOfWork = unitOfWork;
+}
 
     public async Task<Result<Guid, Error>> Update(
         UpdateVolunteerSocialNetworksCommand request, 
@@ -38,7 +38,7 @@ public class UpdateVolunteerSocialNetworksHandler
 
         volunteerResult.Value.UpdateSocialNetworks(socialNetworks);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChanges(cancellationToken);
 
         _logger.LogInformation("Volunteer {ID} updated", volunteerResult.Value.Id);
 

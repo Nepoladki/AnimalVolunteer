@@ -1,7 +1,7 @@
 ﻿using AnimalVolunteer.Domain.Common;
 using CSharpFunctionalExtensions;
 
-namespace AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
+namespace AnimalVolunteer.Application.DTOs.Volunteer.Pet;
 
 public record FilePath
  {
@@ -29,4 +29,4 @@ public record FilePath
     {
         return new FilePath(fullPath);
     }
- }
+}

@@ -8,12 +8,12 @@ namespace AnimalVolunteer.Application.Features.Volunteer.Delete;
 public class DeleteVolunteerHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
-    private readonly IApplicationDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
     public DeleteVolunteerHandler(
-        IVolunteerRepository volunteerRepository, IApplicationDbContext dbContext)
+        IVolunteerRepository volunteerRepository, IUnitOfWork unitOfWork)
     {
         _volunteerRepository = volunteerRepository;
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
     public async Task<Result<Guid, Error>> Delete(
         DeleteVolunteerCommand request,
@@ -28,7 +28,7 @@ public class DeleteVolunteerHandler
 
         volunteerResult.Value.Delete();
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChanges(cancellationToken);
 
         return (Guid)volunteerResult.Value.Id;
     }

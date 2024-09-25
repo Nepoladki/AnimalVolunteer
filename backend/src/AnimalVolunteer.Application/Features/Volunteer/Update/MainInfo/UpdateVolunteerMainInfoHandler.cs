@@ -13,17 +13,17 @@ public class UpdateVolunteerMainInfoHandler
 {
     private readonly ILogger<UpdateVolunteerMainInfoHandler> _logger;
     private readonly IVolunteerRepository _volunteerRepository;
-    private readonly IApplicationDbContext _dbContext;
     private readonly IValidator<UpdateVolunteerMainInfoCommand> _validator;
+    private readonly IUnitOfWork _unitOfWork;
     public UpdateVolunteerMainInfoHandler(
         IVolunteerRepository volunteerRepository,
         ILogger<UpdateVolunteerMainInfoHandler> logger,
-        IApplicationDbContext dbContext,
-        IValidator<UpdateVolunteerMainInfoCommand> validator)
+        IValidator<UpdateVolunteerMainInfoCommand> validator,
+        IUnitOfWork unitOfWork)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
         _validator = validator;
     }
     public async Task<Result<Guid, ErrorList>> Update(
@@ -61,12 +61,11 @@ public class UpdateVolunteerMainInfoHandler
 
         if (await _volunteerRepository.ExistByEmail(email, cancellationToken) 
             && volunteerResult.Value.Email != email)
-            return Errors.Volunteer.AlreadyExist();
-
+            return Errors.Volunteer.AlreadyExist().ToErrorList();
 
         volunteerResult.Value.UpdateMainInfo(fullName, email, description);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChanges(cancellationToken);
 
         _logger.LogInformation("Volunteer {ID} updated", volunteerResult.Value.Id);
 

@@ -1,6 +1,5 @@
 ﻿namespace AnimalVolunteer.Application.DTOs.Volunteer.Pet;
 
-public record PetPhotoDto(
+public record UploadFileDto(
     string FileName,
-    Stream Content,
-    bool IsMain);
+    Stream Content);

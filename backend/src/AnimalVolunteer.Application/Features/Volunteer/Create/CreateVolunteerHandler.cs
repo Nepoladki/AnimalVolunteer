@@ -11,12 +11,10 @@ namespace AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
 public class CreateVolunteerHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
-    private readonly IApplicationDbContext _dbContext;
 
-    public CreateVolunteerHandler(IVolunteerRepository volunteerRepository, IApplicationDbContext dbContext)
+    public CreateVolunteerHandler(IVolunteerRepository volunteerRepository)
     {
         _volunteerRepository = volunteerRepository;
-        _dbContext = dbContext;
     }
     public async Task<Result<VolunteerId, Error>> Create(
         CreateVolunteerCommand request,
@@ -54,9 +52,8 @@ public class CreateVolunteerHandler
             socialNetworks,
             paymentDetails);
 
-        await _dbContext.Volunteers.AddAsync(volunteer, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
+        await _volunteerRepository.Create(volunteer, cancellationToken);
+        
         return volunteer.Id;
     }
 }

@@ -105,6 +105,8 @@ public class VolunteerController : ApplicationController
         return Ok(handleResult.Value);
     }
 
+    //Insert Update contact info controller
+
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(
         Guid id,
@@ -119,7 +121,7 @@ public class VolunteerController : ApplicationController
         return Ok(deleteResult.Value);
     }
 
-    [HttpPost("{id:guid}/pet")]
+    [HttpPost("{id:guid}/pets")]
     public async Task<IActionResult> AddPet(
         [FromRoute] Guid id,
         [FromForm] AddPetRequest request,
@@ -153,7 +155,7 @@ public class VolunteerController : ApplicationController
         return Ok(addResult.Value);
     }
 
-    [HttpPost("{volunteerId:guid}/pet/{petId:guid}/photos")]
+    [HttpPost("{volunteerId:guid}/pets/{petId:guid}/photos")]
     public async Task<IActionResult> AddPetPhotos(
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
@@ -161,7 +163,6 @@ public class VolunteerController : ApplicationController
         [FromServices] AddPetPhotosHandler handler,
         CancellationToken cancellationToken = default)
     {
-
         await using var fileProcessor = new FormFileProcessor();
 
         var fileList = fileProcessor.Process(request.Files);
@@ -173,7 +174,7 @@ public class VolunteerController : ApplicationController
             .Handle(command, cancellationToken);
 
         if (handleResult.IsFailure)
-            return handleResult.Error.ToResponse();
+            return handleResult.Error;
 
         return Ok();
     }

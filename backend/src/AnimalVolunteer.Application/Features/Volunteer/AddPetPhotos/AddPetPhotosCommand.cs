@@ -6,6 +6,6 @@ namespace AnimalVolunteer.Application.Features.Volunteer.AddPetPhotos;
 public record AddPetPhotosCommand(
     Guid VolunteerId,
     Guid PetId,
-    IEnumerable<PetPhotoDto> Files);
+    IEnumerable<UploadFileDto> Files);
 
 

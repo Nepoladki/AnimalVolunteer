@@ -12,18 +12,18 @@ public class UpdateVolunteerContactInfoHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly ILogger<UpdateVolunteerContactInfoHandler> _logger;
-    private readonly IApplicationDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
     public UpdateVolunteerContactInfoHandler(
         IVolunteerRepository volunteerRepository, 
         ILogger<UpdateVolunteerContactInfoHandler> logger,
-        IApplicationDbContext dbContext)
+        IUnitOfWork unitOfWork)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<Guid, Error>> Update(
+    public async Task<Result<Guid, Error>> Handle(
         UpdateVolunteerContactInfoComand request, 
         CancellationToken cancellationToken)
     {
@@ -39,7 +39,7 @@ public class UpdateVolunteerContactInfoHandler
 
         volunteerResult.Value.UpdateContactInfo(paymentDetails);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChanges(cancellationToken);
 
         _logger.LogInformation("Volunteer {ID} updated", volunteerResult.Value.Id);
 

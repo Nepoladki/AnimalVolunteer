@@ -12,15 +12,15 @@ public class UpdateVolunteerPaymentDetailsHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly ILogger<UpdateVolunteerPaymentDetailsHandler> _logger;
-    private readonly IApplicationDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
     public UpdateVolunteerPaymentDetailsHandler
         (IVolunteerRepository volunteerRepository,
         ILogger<UpdateVolunteerPaymentDetailsHandler> logger,
-        IApplicationDbContext dbContext)
+        IUnitOfWork unitOfWork)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<Guid, Error>> Update(
@@ -39,7 +39,7 @@ public class UpdateVolunteerPaymentDetailsHandler
 
         volunteerResult.Value.UpdatePaymentDetails(paymentDetails);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChanges(cancellationToken);
 
         _logger.LogInformation("Volunteer {ID} updated", volunteerResult.Value.Id);
 

@@ -21,7 +21,7 @@ public sealed class Pet : Common.Entity<PetId>
         DateOnly birthDate,
         CurrentStatus currentStatus,
         PaymentDetailsList paymentDetailsList,
-        PetPhotoList photos) : base(id)
+        ValueObjectList<PetPhoto> photos) : base(id)
     {
         Name = name;
         Description = description;
@@ -49,7 +49,9 @@ public sealed class Pet : Common.Entity<PetId>
     public CurrentStatus CurrentStatus { get; private set; }
     public DateTime CreatedAt { get; private set; } = default!;
     public PaymentDetailsList PaymentDetails { get; private set; } = null!;
-    public PetPhotoList PetPhotos { get; private set; } = null!;
+    public ValueObjectList<PetPhoto> PetPhotos { get; private set; } = null!;
     public void Delete() => _isDeleted = true;
     public void Restore() => _isDeleted = false;
+    public void UpdatePhotos(ValueObjectList<PetPhoto> files) =>
+        PetPhotos = files;
 }
