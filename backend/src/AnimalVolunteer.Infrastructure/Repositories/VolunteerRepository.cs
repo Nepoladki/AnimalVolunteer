@@ -1,7 +1,7 @@
-﻿using AnimalVolunteer.Domain.Aggregates.Volunteer;
+﻿using AnimalVolunteer.Application.Database;
+using AnimalVolunteer.Domain.Aggregates.Volunteer;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Infrastructure;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,9 +9,9 @@ namespace AnimalVolunteer.Application.Interfaces;
 
 public class VolunteerRepository : IVolunteerRepository
 {
-    private readonly ApplicationDbContext _dbContext;
+    private readonly IApplicationDbContext _dbContext;
 
-    public VolunteerRepository(ApplicationDbContext dbContext)
+    public VolunteerRepository(IApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
     }

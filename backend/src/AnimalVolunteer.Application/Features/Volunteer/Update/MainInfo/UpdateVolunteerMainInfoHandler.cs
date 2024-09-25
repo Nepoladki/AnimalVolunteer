@@ -6,6 +6,7 @@ using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using AnimalVolunteer.Application.Database;
 using FluentValidation;
+using AnimalVolunteer.Application.Extensions;
 
 namespace AnimalVolunteer.Application.Features.Volunteer.Update.MainInfo;
 
@@ -34,14 +35,7 @@ public class UpdateVolunteerMainInfoHandler
 
         if (!validationResult.IsValid)
         { 
-            var validationErrors = validationResult.Errors;
-
-            var errors = from validationError in validationErrors
-                         let errorMessage = validationError.ErrorMessage
-                         let error = Error.Deserialize(errorMessage)
-                         select Error.Validation(error.Code, error.Message, error.InvalidField);
-
-            return new ErrorList(errors);
+            return validationResult.ToErrorList();
         }
 
         var volunteerResult = await _volunteerRepository
