@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Domain.Common;
+using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;

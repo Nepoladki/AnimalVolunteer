@@ -1,8 +1,8 @@
 ﻿using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
 using AnimalVolunteer.Application.Features.Files.Delete;
 using AnimalVolunteer.Application.Features.Files.GetUrl;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
 using AnimalVolunteer.Domain.Common;
+using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.Application.Interfaces;

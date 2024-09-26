@@ -5,36 +5,46 @@ using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
 using AnimalVolunteer.Application.Database;
+using FluentValidation;
+using AnimalVolunteer.Application.Extensions;
 
 namespace AnimalVolunteer.Application.Features.Volunteer.Update.PaymentDetails;
 
 public class UpdateVolunteerPaymentDetailsHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
+    private readonly IValidator<UpdateVolunteerPaymentDetailsCommand> _validator;
     private readonly ILogger<UpdateVolunteerPaymentDetailsHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
     public UpdateVolunteerPaymentDetailsHandler
         (IVolunteerRepository volunteerRepository,
         ILogger<UpdateVolunteerPaymentDetailsHandler> logger,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IValidator<UpdateVolunteerPaymentDetailsCommand> validator)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;
         _unitOfWork = unitOfWork;
+        _validator = validator;
     }
 
-    public async Task<Result<Guid, Error>> Update(
-        UpdateVolunteerPaymentDetailsCommand request, 
+    public async Task<Result<Guid, ErrorList>> Update(
+        UpdateVolunteerPaymentDetailsCommand command, 
         CancellationToken cancellationToken)
     {
         var volunteerResult = await _volunteerRepository
-            .GetById(request.Id, cancellationToken);
+            .GetById(command.Id, cancellationToken);
 
         if (volunteerResult.IsFailure)
-            return volunteerResult.Error;
+            return volunteerResult.Error.ToErrorList();
+
+        var validationResult = await _validator.ValidateAsync(command, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return validationResult.ToErrorList();
 
         var paymentDetails = PaymentDetailsList.Create(
-            request.PaymentDetailsList.Value.Select(x => 
+            command.PaymentDetailsList.Value.Select(x => 
                 DomainPaymentDetails.Create(x.Name, x.Description).Value));
 
         volunteerResult.Value.UpdatePaymentDetails(paymentDetails);

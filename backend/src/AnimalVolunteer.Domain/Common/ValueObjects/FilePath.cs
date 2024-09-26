@@ -1,7 +1,6 @@
-﻿using AnimalVolunteer.Domain.Common;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 
-namespace AnimalVolunteer.Application.DTOs.Volunteer.Pet;
+namespace AnimalVolunteer.Domain.Common.ValueObjects;
 
 public record FilePath
  {

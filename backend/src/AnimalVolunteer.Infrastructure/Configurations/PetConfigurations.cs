@@ -168,7 +168,7 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
             {
                 j.Property(k => k.FilePath)
                 .HasConversion(
-                    p => p.Path,
+                    p => p.Value,
                     value => FilePath.Create(value).Value)
                 .IsRequired() 
                 .HasMaxLength(FilePath.MAX_FILEPATH_LENGTH)

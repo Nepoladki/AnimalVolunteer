@@ -16,13 +16,13 @@ public class CustomResultFactory : IFluentValidationAutoValidationResultFactory
         if (validationProblemDetails is null)
             throw new InvalidOperationException("ValidationProblemDetails is null");
 
-        List<ResponseError> allErrors = []; 
+        List<Error> allErrors = []; 
 
         foreach (var (fieldName, validationErrors) in validationProblemDetails.Errors)
         {
             var errors = from errorMessage in validationErrors
                          let error = Error.Deserialize(errorMessage)
-                         select new ResponseError(error.Code, error.Message, fieldName);
+                         select Error.Validation(error.Code, error.Message, fieldName);
 
             allErrors.AddRange(errors);
         }

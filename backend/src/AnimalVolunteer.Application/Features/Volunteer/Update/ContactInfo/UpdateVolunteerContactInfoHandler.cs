@@ -5,6 +5,8 @@ using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
 using AnimalVolunteer.Application.Database;
+using FluentValidation;
+using AnimalVolunteer.Application.Extensions;
 
 namespace AnimalVolunteer.Application.Features.Volunteer.Update.PaymentDetails;
 
@@ -12,32 +14,41 @@ public class UpdateVolunteerContactInfoHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly ILogger<UpdateVolunteerContactInfoHandler> _logger;
+    private readonly IValidator<UpdateVolunteerContactInfoCommand> _validator;
     private readonly IUnitOfWork _unitOfWork;
     public UpdateVolunteerContactInfoHandler(
-        IVolunteerRepository volunteerRepository, 
+        IVolunteerRepository volunteerRepository,
         ILogger<UpdateVolunteerContactInfoHandler> logger,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IValidator<UpdateVolunteerContactInfoCommand> validator)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;
         _unitOfWork = unitOfWork;
+        _validator = validator;
     }
 
-    public async Task<Result<Guid, Error>> Handle(
-        UpdateVolunteerContactInfoComand request, 
+    public async Task<Result<Guid, ErrorList>> Handle(
+        UpdateVolunteerContactInfoCommand command, 
         CancellationToken cancellationToken)
     {
         var volunteerResult = await _volunteerRepository
-            .GetById(request.Id, cancellationToken);
+            .GetById(command.Id, cancellationToken);
 
         if (volunteerResult.IsFailure)
-            return volunteerResult.Error;
+            return volunteerResult.Error.ToErrorList();
 
-        var paymentDetails = ContactInfoList.Create(
-            request.ContactInfoList.Value.Select(x =>
+        var validationResult = await _validator
+            .ValidateAsync(command, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return validationResult.ToErrorList();
+
+        var contactInfo = ContactInfoList.Create(
+            command.ContactInfoList.Value.Select(x =>
                 DomainContactInfo.Create(x.PhoneNumber, x.Name, x.Note).Value));
 
-        volunteerResult.Value.UpdateContactInfo(paymentDetails);
+        volunteerResult.Value.UpdateContactInfo(contactInfo);
 
         await _unitOfWork.SaveChanges(cancellationToken);
 

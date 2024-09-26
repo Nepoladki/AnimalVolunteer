@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnimalVolunteer.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240922115210_NullablePetContactInfos")]
-    partial class NullablePetContactInfos
+    [Migration("20240926132734_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -467,7 +467,8 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                             b1.Navigation("PetPhotos");
                         });
 
-                    b.Navigation("ContactInfos");
+                    b.Navigation("ContactInfos")
+                        .IsRequired();
 
                     b.Navigation("PaymentDetails")
                         .IsRequired();

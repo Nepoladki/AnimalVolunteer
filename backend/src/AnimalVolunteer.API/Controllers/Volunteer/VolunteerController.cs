@@ -4,7 +4,6 @@ using AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
 using AnimalVolunteer.Application.Features.Volunteer.Update.MainInfo;
 using AnimalVolunteer.Application.Features.Volunteer.Update.SocialNetworks;
 using AnimalVolunteer.Application.Features.Volunteer.Update.PaymentDetails;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using AnimalVolunteer.Application.Features.Volunteer.Delete;
 using AnimalVolunteer.Application.Features.Volunteer.AddPet;
@@ -35,7 +34,6 @@ public class VolunteerController : ApplicationController
         [FromRoute] Guid id,
         [FromBody] UpdateMainInfoRequest request,
         [FromServices] UpdateVolunteerMainInfoHandler handler,
-        [FromServices] IValidator<UpdateVolunteerMainInfoCommand> validator,
         CancellationToken cancellationToken = default)
     {
         var command = new UpdateVolunteerMainInfoCommand(
@@ -45,11 +43,6 @@ public class VolunteerController : ApplicationController
             request.LastName, 
             request.Email, 
             request.Description);
-
-        var validatonResult = await validator.ValidateAsync(command, cancellationToken);
-
-        if (!validatonResult.IsValid)
-            return validatonResult.ToValidationErrorResponse();
 
         var handleResult = await handler.Update(command, cancellationToken);
 
@@ -64,17 +57,11 @@ public class VolunteerController : ApplicationController
         [FromRoute] Guid id,
         [FromBody] SocialNetworksListDto socialNetworks,
         [FromServices] UpdateVolunteerSocialNetworksHandler handler,
-        [FromServices] IValidator<UpdateVolunteerSocialNetworksCommand> validator,
         CancellationToken cancellationToken = default)
     {
-        var request = new UpdateVolunteerSocialNetworksCommand(id, socialNetworks);
+        var command = new UpdateVolunteerSocialNetworksCommand(id, socialNetworks);
 
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
-        if (!validationResult.IsValid)
-            return validationResult.ToValidationErrorResponse();
-
-        var handleResult = await handler.Update(request, cancellationToken);
+        var handleResult = await handler.Update(command, cancellationToken);
 
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
@@ -87,17 +74,11 @@ public class VolunteerController : ApplicationController
         [FromRoute] Guid id,
         [FromBody] PaymentDetailsListDto paymentDetails,
         [FromServices] UpdateVolunteerPaymentDetailsHandler handler,
-        [FromServices] IValidator<UpdateVolunteerPaymentDetailsCommand> validator,
         CancellationToken cancellationToken = default)
     {
-        var request = new UpdateVolunteerPaymentDetailsCommand(id, paymentDetails);
+        var command = new UpdateVolunteerPaymentDetailsCommand(id, paymentDetails);
 
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
-        if (!validationResult.IsValid)
-            return validationResult.ToValidationErrorResponse();
-
-        var handleResult = await handler.Update(request, cancellationToken);
+        var handleResult = await handler.Update(command, cancellationToken);
 
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
@@ -105,7 +86,22 @@ public class VolunteerController : ApplicationController
         return Ok(handleResult.Value);
     }
 
-    //Insert Update contact info controller
+    [HttpPut("{id:guid}/contact-info")]
+    public async Task<IActionResult> UpdateContactInfo(
+        [FromRoute] Guid id,
+        [FromBody] ContactInfoListDto contactInfo,
+        [FromServices] UpdateVolunteerContactInfoHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new UpdateVolunteerContactInfoCommand(id, contactInfo);
+
+        var handleResult = await handler.Handle(command, cancellationToken);
+
+        if (handleResult.IsFailure)
+            return handleResult.Error.ToResponse();
+
+        return Ok(handleResult.Value);
+    }
 
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(
@@ -174,7 +170,7 @@ public class VolunteerController : ApplicationController
             .Handle(command, cancellationToken);
 
         if (handleResult.IsFailure)
-            return handleResult.Error;
+            return handleResult.Error.ToResponse();
 
         return Ok();
     }

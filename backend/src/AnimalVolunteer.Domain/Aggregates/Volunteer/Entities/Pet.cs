@@ -9,7 +9,7 @@ public sealed class Pet : Common.Entity<PetId>
 {
     // EF Core ctor
     private Pet(PetId id) : base(id) { }
-    public Pet(
+    private Pet(
         PetId id,
         Name name,
         Description description,
@@ -21,7 +21,7 @@ public sealed class Pet : Common.Entity<PetId>
         DateOnly birthDate,
         CurrentStatus currentStatus,
         PaymentDetailsList paymentDetailsList,
-        ValueObjectList<PetPhoto> photos) : base(id)
+        PetPhotoList photos) : base(id)
     {
         Name = name;
         Description = description;
@@ -49,9 +49,37 @@ public sealed class Pet : Common.Entity<PetId>
     public CurrentStatus CurrentStatus { get; private set; }
     public DateTime CreatedAt { get; private set; } = default!;
     public PaymentDetailsList PaymentDetails { get; private set; } = null!;
-    public ValueObjectList<PetPhoto> PetPhotos { get; private set; } = null!;
+    public PetPhotoList PetPhotos { get; private set; } = null!;
     public void Delete() => _isDeleted = true;
     public void Restore() => _isDeleted = false;
-    public void UpdatePhotos(ValueObjectList<PetPhoto> files) =>
-        PetPhotos = files;
+    public void UpdatePhotos(PetPhotoList photos) =>
+        PetPhotos = photos;
+    public static Pet InitialCreate(
+        PetId id,
+        Name name,
+        Description description,
+        PhysicalParameters physicalParameters,
+        SpeciesAndBreed speciesAndBreed,
+        HealthInfo healthInfo,
+        Address address,
+        DateOnly birthDate,
+        CurrentStatus currentStatus)
+    {
+        var contactInfo = ContactInfoList.CreateEmpty();
+        var paymentDetails = PaymentDetailsList.CreateEmpty();
+        var photos = PetPhotoList.CreateEmpty();
+
+        return new Pet(
+            id,
+            name,
+            description,
+            physicalParameters,
+            speciesAndBreed,
+            healthInfo, address,
+            contactInfo,
+            birthDate,
+            currentStatus,
+            paymentDetails,
+            photos);
+    }
 }

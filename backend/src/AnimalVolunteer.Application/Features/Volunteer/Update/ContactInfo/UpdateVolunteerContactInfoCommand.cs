@@ -2,6 +2,6 @@
 
 namespace AnimalVolunteer.Application.Features.Volunteer.Update.PaymentDetails;
 
-public record UpdateVolunteerContactInfoComand(
+public record UpdateVolunteerContactInfoCommand(
     Guid Id,
     ContactInfoListDto ContactInfoList);

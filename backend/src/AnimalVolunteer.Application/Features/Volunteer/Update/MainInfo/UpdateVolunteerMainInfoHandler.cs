@@ -34,9 +34,8 @@ public class UpdateVolunteerMainInfoHandler
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
 
         if (!validationResult.IsValid)
-        { 
             return validationResult.ToErrorList();
-        }
+        
 
         var volunteerResult = await _volunteerRepository
             .GetById(command.Id, cancellationToken);

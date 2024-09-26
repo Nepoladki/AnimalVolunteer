@@ -2,6 +2,7 @@
 using AnimalVolunteer.Application.Interfaces;
 using AnimalVolunteer.Infrastructure.Options;
 using AnimalVolunteer.Infrastructure.Providers;
+using AnimalVolunteer.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;

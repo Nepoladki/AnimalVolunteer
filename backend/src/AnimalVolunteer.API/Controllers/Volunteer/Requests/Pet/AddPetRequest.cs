@@ -18,5 +18,4 @@ public record AddPetRequest(
     string Street,
     string? House,
     DateOnly BirthDate,
-    string CurrentStatus,
-    IFormFileCollection Files);
+    string CurrentStatus);

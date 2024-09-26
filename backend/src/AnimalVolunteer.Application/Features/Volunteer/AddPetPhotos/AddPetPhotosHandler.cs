@@ -3,6 +3,7 @@ using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
 using AnimalVolunteer.Application.Interfaces;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
 using AnimalVolunteer.Domain.Common;
+using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
@@ -16,14 +17,14 @@ public class AddPetPhotosHandler
     private readonly IUnitOfWork _unitOfWork;
     private readonly IFileProvider _fileProvider;
     private readonly ILogger<AddPetPhotosHandler> _logger;
-    private readonly IValidator<AddPetPhotosHandler> _validator;
+    private readonly IValidator<AddPetPhotosCommand> _validator;
 
     public AddPetPhotosHandler(
         IVolunteerRepository volunteerRepository,
         IUnitOfWork unitOfWork,
         IFileProvider fileProvider,
         ILogger<AddPetPhotosHandler> logger,
-        IValidator<AddPetPhotosHandler> validator)
+        IValidator<AddPetPhotosCommand> validator)
     {
         _volunteerRepository = volunteerRepository;
         _unitOfWork = unitOfWork;
@@ -77,12 +78,12 @@ public class AddPetPhotosHandler
             if (uploadResult.IsFailure)
                 return uploadResult.Error.ToErrorList();
 
-            var petPhotos = files.Select(f => new PetPhoto()).ToList();
+            var petPhotos = PetPhotoList.Create(
+                files.Select(f => PetPhoto.Create(f.FilePath, false).Value).ToList());
 
-            petResult.Value.UpdatePhotos(files);
-            // Сохранение в бд
+            petResult.Value.UpdatePhotos(petPhotos);
 
-            
+            await _unitOfWork.SaveChanges(cancellationToken);
             
             transaction.Commit();
 

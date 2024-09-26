@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Application.Database;
+using AnimalVolunteer.Application.Extensions;
 using AnimalVolunteer.Application.Interfaces;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.Entities;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.Enums;
@@ -6,6 +7,7 @@ using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
 using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 
 namespace AnimalVolunteer.Application.Features.Volunteer.AddPet;
@@ -14,29 +16,35 @@ public class AddPetHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IFileProvider _fileProvider;
+    private readonly IValidator<AddPetCommand> _validator;
     private readonly ILogger<AddPetHandler> _logger;
 
     public AddPetHandler(
         IVolunteerRepository volunteerRepository,
-        IFileProvider fileProvider,
         ILogger<AddPetHandler> logger,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IValidator<AddPetCommand> validator)
     {
         _volunteerRepository = volunteerRepository;
-        _fileProvider = fileProvider;
         _logger = logger;
         _unitOfWork = unitOfWork;
+        _validator = validator;
     }
 
-    public async Task<Result<Guid, Error>> Add(
+    public async Task<Result<Guid, ErrorList>> Add(
         AddPetCommand command, CancellationToken cancellationToken = default)
     {
         var volunteerResult = await _volunteerRepository
             .GetById(command.VolunteerId, cancellationToken);
 
+        var validationResult = await _validator
+            .ValidateAsync(command, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return validationResult.ToErrorList();
+
         if (volunteerResult.IsFailure)
-            return volunteerResult.Error;
+            return volunteerResult.Error.ToErrorList();
         try
         {
             var petId = PetId.Create();
@@ -68,16 +76,10 @@ public class AddPetHandler
                 command.Street,
                 command.House).Value;
 
-            var contactInfos = ContactInfoList.CreateEmpty();
-
-            var paymentDetails = PaymentDetailsList.CreateEmpty();
-
             var status = (CurrentStatus)Enum
                 .Parse(typeof(CurrentStatus), command.CurrentStatus);
 
-            var photos = PetPhotoList.Create([]);
-
-            var pet = new Pet(
+            var pet = Pet.InitialCreate(
                 petId,
                 name,
                 description,
@@ -85,11 +87,8 @@ public class AddPetHandler
                 speciesAndBreed,
                 healthInfo,
                 address,
-                contactInfos,
                 command.BirthDate,
-                status,
-                paymentDetails,
-                photos);
+                status);
 
             volunteerResult.Value.AddPet(pet);
 
@@ -100,7 +99,7 @@ public class AddPetHandler
         catch (Exception ex)
         {
             _logger.LogError(ex, "Cannot add pet to volunteer with id: {id}", command.VolunteerId);
-            return Error.Failure("volunteer.pet.failure", "Cannot add pet to volunteer with id: {id}");
+            return Error.Failure("volunteer.pet.failure", "Cannot add pet to volunteer with id: {id}").ToErrorList();
         }
     }
 }

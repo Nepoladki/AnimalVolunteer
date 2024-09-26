@@ -464,7 +464,8 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                             b1.Navigation("PetPhotos");
                         });
 
-                    b.Navigation("ContactInfos");
+                    b.Navigation("ContactInfos")
+                        .IsRequired();
 
                     b.Navigation("PaymentDetails")
                         .IsRequired();
