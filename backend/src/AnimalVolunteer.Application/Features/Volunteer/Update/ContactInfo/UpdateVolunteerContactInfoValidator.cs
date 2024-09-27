@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace AnimalVolunteer.Application.Features.Volunteer.Update.PaymentDetails;
 
-public class UpdateVolunteerContactInfoValidator : AbstractValidator<UpdateVolunteerContactInfoRequest>
+public class UpdateVolunteerContactInfoValidator : AbstractValidator<UpdateVolunteerContactInfoCommand>
 {
     public UpdateVolunteerContactInfoValidator()
     {

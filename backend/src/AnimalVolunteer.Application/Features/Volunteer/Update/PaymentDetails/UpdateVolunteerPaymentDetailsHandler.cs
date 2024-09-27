@@ -4,38 +4,55 @@ using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
+using AnimalVolunteer.Application.Database;
+using FluentValidation;
+using AnimalVolunteer.Application.Extensions;
 
 namespace AnimalVolunteer.Application.Features.Volunteer.Update.PaymentDetails;
 
 public class UpdateVolunteerPaymentDetailsHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
+    private readonly IValidator<UpdateVolunteerPaymentDetailsCommand> _validator;
     private readonly ILogger<UpdateVolunteerPaymentDetailsHandler> _logger;
-    public UpdateVolunteerPaymentDetailsHandler(IVolunteerRepository volunteerRepository, ILogger<UpdateVolunteerPaymentDetailsHandler> logger)
+    private readonly IUnitOfWork _unitOfWork;
+    public UpdateVolunteerPaymentDetailsHandler
+        (IVolunteerRepository volunteerRepository,
+        ILogger<UpdateVolunteerPaymentDetailsHandler> logger,
+        IUnitOfWork unitOfWork,
+        IValidator<UpdateVolunteerPaymentDetailsCommand> validator)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;
+        _unitOfWork = unitOfWork;
+        _validator = validator;
     }
 
-    public async Task<Result<Guid, Error>> Update(
-        UpdateVolunteerPaymentDetailsRequest request, 
+    public async Task<Result<Guid, ErrorList>> Update(
+        UpdateVolunteerPaymentDetailsCommand command, 
         CancellationToken cancellationToken)
     {
-        var volunteer = await _volunteerRepository.GetById(request.Id, cancellationToken);
+        var volunteerResult = await _volunteerRepository
+            .GetById(command.Id, cancellationToken);
 
-        if (volunteer is null)
-            return Errors.General.NotFound(request.Id);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error.ToErrorList();
+
+        var validationResult = await _validator.ValidateAsync(command, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return validationResult.ToErrorList();
 
         var paymentDetails = PaymentDetailsList.Create(
-            request.PaymentDetailsList.Value.Select(x => 
+            command.PaymentDetailsList.Value.Select(x => 
                 DomainPaymentDetails.Create(x.Name, x.Description).Value));
 
-        volunteer.UpdatePaymentDetails(paymentDetails);
+        volunteerResult.Value.UpdatePaymentDetails(paymentDetails);
 
-        await _volunteerRepository.Save(volunteer, cancellationToken);
+        await _unitOfWork.SaveChanges(cancellationToken);
 
-        _logger.LogInformation("Volunteer {ID} updated", volunteer.Id);
+        _logger.LogInformation("Volunteer {ID} updated", volunteerResult.Value.Id);
 
-        return (Guid)volunteer.Id;
+        return (Guid)volunteerResult.Value.Id;
     }
 }

@@ -9,7 +9,7 @@ public sealed class Pet : Common.Entity<PetId>
 {
     // EF Core ctor
     private Pet(PetId id) : base(id) { }
-    public Pet(
+    private Pet(
         PetId id,
         Name name,
         Description description,
@@ -17,8 +17,11 @@ public sealed class Pet : Common.Entity<PetId>
         SpeciesAndBreed speciesAndBreed,
         HealthInfo healthInfo,
         Address address,
+        ContactInfoList contactInfos,
         DateOnly birthDate,
-        CurrentStatus currentStatus) : base(id)
+        CurrentStatus currentStatus,
+        PaymentDetailsList paymentDetailsList,
+        PetPhotoList photos) : base(id)
     {
         Name = name;
         Description = description;
@@ -26,9 +29,12 @@ public sealed class Pet : Common.Entity<PetId>
         SpeciesAndBreed = speciesAndBreed;
         HealthInfo = healthInfo;
         Address = address;
+        ContactInfos = contactInfos;
         BirthDate = birthDate;
         CurrentStatus = currentStatus;
-        CreatedAt = DateTime.Now;
+        CreatedAt = DateTime.UtcNow;
+        PaymentDetails = paymentDetailsList; 
+        PetPhotos = photos;
     }
 
     private bool _isDeleted;
@@ -46,4 +52,34 @@ public sealed class Pet : Common.Entity<PetId>
     public PetPhotoList PetPhotos { get; private set; } = null!;
     public void Delete() => _isDeleted = true;
     public void Restore() => _isDeleted = false;
+    public void UpdatePhotos(PetPhotoList photos) =>
+        PetPhotos = photos;
+    public static Pet InitialCreate(
+        PetId id,
+        Name name,
+        Description description,
+        PhysicalParameters physicalParameters,
+        SpeciesAndBreed speciesAndBreed,
+        HealthInfo healthInfo,
+        Address address,
+        DateOnly birthDate,
+        CurrentStatus currentStatus)
+    {
+        var contactInfo = ContactInfoList.CreateEmpty();
+        var paymentDetails = PaymentDetailsList.CreateEmpty();
+        var photos = PetPhotoList.CreateEmpty();
+
+        return new Pet(
+            id,
+            name,
+            description,
+            physicalParameters,
+            speciesAndBreed,
+            healthInfo, address,
+            contactInfo,
+            birthDate,
+            currentStatus,
+            paymentDetails,
+            photos);
+    }
 }

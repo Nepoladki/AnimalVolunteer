@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnimalVolunteer.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240826093938_MoreValueObjects")]
-    partial class MoreValueObjects
+    [Migration("20240926132734_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,8 +42,8 @@ namespace AnimalVolunteer.Infrastructure.Migrations
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
+                                .HasMaxLength(30)
+                                .HasColumnType("character varying(30)")
                                 .HasColumnName("title");
                         });
 
@@ -68,8 +68,8 @@ namespace AnimalVolunteer.Infrastructure.Migrations
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
+                                .HasMaxLength(30)
+                                .HasColumnType("character varying(30)")
                                 .HasColumnName("title");
                         });
 
@@ -97,6 +97,10 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("current_status");
+
+                    b.Property<bool>("_isDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<Guid?>("volunteer_id")
                         .HasColumnType("uuid")
@@ -218,6 +222,10 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<bool>("_isDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
                     b.ComplexProperty<Dictionary<string, object>>("Description", "AnimalVolunteer.Domain.Aggregates.Volunteer.Volunteer.Description#Description", b1 =>
                         {
                             b1.IsRequired();
@@ -227,6 +235,17 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                                 .HasMaxLength(1000)
                                 .HasColumnType("character varying(1000)")
                                 .HasColumnName("description");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("Email", "AnimalVolunteer.Domain.Aggregates.Volunteer.Volunteer.Email#Email", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)")
+                                .HasColumnName("email");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("FullName", "AnimalVolunteer.Domain.Aggregates.Volunteer.Volunteer.FullName#FullName", b1 =>

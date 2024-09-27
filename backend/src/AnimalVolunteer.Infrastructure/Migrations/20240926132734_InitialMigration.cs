@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AnimalVolunteer.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration2 : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
+                    title = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,14 +28,16 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    email = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    first_name = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
+                    last_name = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
+                    surname = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: true),
                     expirience_years = table.Column<int>(type: "integer", nullable: false),
                     pets_founded_home = table.Column<int>(type: "integer", nullable: false),
-                    pets_looking_for_home = table.Column<int>(type: "integer", nullable: false),
                     pets_in_vet_clinic = table.Column<int>(type: "integer", nullable: false),
-                    first_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    last_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    surname = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    pets_looking_for_home = table.Column<int>(type: "integer", nullable: false),
                     contact_infos = table.Column<string>(type: "jsonb", nullable: false),
                     payment_details = table.Column<string>(type: "jsonb", nullable: false),
                     social_networks = table.Column<string>(type: "jsonb", nullable: false)
@@ -51,7 +53,7 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     species_id = table.Column<Guid>(type: "uuid", nullable: true),
-                    title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
+                    title = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -68,22 +70,23 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    pet_description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
-                    color = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    weight = table.Column<float>(type: "real", nullable: false),
-                    height = table.Column<float>(type: "real", nullable: false),
                     birth_date = table.Column<DateOnly>(type: "date", nullable: false),
                     current_status = table.Column<string>(type: "text", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
                     volunteer_id = table.Column<Guid>(type: "uuid", nullable: true),
-                    city = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    country = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    house = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    street = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
+                    city = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    country = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    house = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    street = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    health_description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
                     is_neutered = table.Column<bool>(type: "boolean", nullable: false),
                     is_vaccinated = table.Column<bool>(type: "boolean", nullable: false),
+                    name = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
+                    color = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    height = table.Column<double>(type: "double precision", nullable: false),
+                    weight = table.Column<double>(type: "double precision", nullable: false),
                     breed_id = table.Column<Guid>(type: "uuid", nullable: false),
                     species_id = table.Column<Guid>(type: "uuid", nullable: false),
                     contact_infos = table.Column<string>(type: "jsonb", nullable: false),

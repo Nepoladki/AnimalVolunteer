@@ -4,6 +4,7 @@ using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
+using AnimalVolunteer.Application.Database;
 
 namespace AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
 
@@ -16,7 +17,7 @@ public class CreateVolunteerHandler
         _volunteerRepository = volunteerRepository;
     }
     public async Task<Result<VolunteerId, Error>> Create(
-        CreateVolunteerRequest request,
+        CreateVolunteerCommand request,
         CancellationToken cancellationToken)
     {
         var email = Email.Create(request.Email).Value;
@@ -52,7 +53,7 @@ public class CreateVolunteerHandler
             paymentDetails);
 
         await _volunteerRepository.Create(volunteer, cancellationToken);
-
+        
         return volunteer.Id;
     }
 }

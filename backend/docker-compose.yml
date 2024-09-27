@@ -1,6 +1,6 @@
 services:
   postgres: 
-    container_name: postgres
+    container_name: AnimaVolunteerDataBase
     image: postgres
     restart: always
     environment: 
@@ -13,24 +13,22 @@ services:
     - postgres-data:/var/lib/postgresql/data
   seq:
     image: datalust/seq:latest
-    container_name: seq
+    container_name: seq-logs
     restart: always
-    environment:
-     - ACCEPT-EULA=Y
-    ports:
-     - 5341:5341
-     - 8081:80
-  minio:
-    container_name: minio
-    image: minio/minio
+    environment: 
+      - ACCEPT_EULA=Y
     ports: 
-      - 9000:9000
-      - 9001:9001
-    volumes:
-      - minio-data:/data
-    command: server --console-address ":9001" /data
-    restart: always
-
+      - 5341:5341
+      - 8081:80
+  minio:
+   container_name: minio
+   image: minio/minio
+   ports:
+    - 9000:9000
+    - 9001:9001
+   volumes:
+    - minio_data:/data
+   command: server --console-address ":9001" /data
 volumes:
   postgres-data:
-  minio-data:  
+  minio_data:  
