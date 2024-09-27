@@ -109,7 +109,8 @@ public class VolunteerController : ApplicationController
         [FromServices] DeleteVolunteerHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var deleteResult = await handler.Delete(new DeleteVolunteerCommand(id), cancellationToken);
+        var deleteResult = await handler
+            .Delete(new DeleteVolunteerCommand(id), cancellationToken);
 
         if (deleteResult.IsFailure)
             return deleteResult.Error.ToResponse();

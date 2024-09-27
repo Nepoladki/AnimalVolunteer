@@ -164,7 +164,7 @@ public class MinioProvider : IFileProvider
             .WithBucket(bucketName)
             .WithStreamData(fileData.Content)
             .WithObjectSize(fileData.Content.Length)
-            .WithObject(fileData.ObjectName);
+            .WithObject(fileData.FilePath.Value);
 
         try
         {
@@ -178,7 +178,7 @@ public class MinioProvider : IFileProvider
             _logger.LogError(
                 ex,
                 "Fail to upload file in minio with path {path} in bucket {bucket}",
-                fileData.ObjectName,
+                fileData.FilePath.Value,
                 bucketName);
 
             return Error.Failure("file.upload", "Fail to upload file in minio");

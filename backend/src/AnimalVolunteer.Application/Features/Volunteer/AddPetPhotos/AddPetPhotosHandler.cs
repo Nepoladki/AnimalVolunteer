@@ -65,7 +65,6 @@ public class AddPetPhotosHandler
                     return filePathResult.Error.ToErrorList();
 
                 var fileToUpload = new UploadingFileDto(
-                    file.FileName,
                     filePathResult.Value,
                     file.Content);
 
