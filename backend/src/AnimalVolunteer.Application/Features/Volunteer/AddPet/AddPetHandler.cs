@@ -45,61 +45,55 @@ public class AddPetHandler
 
         if (volunteerResult.IsFailure)
             return volunteerResult.Error.ToErrorList();
-        try
-        {
-            var petId = PetId.Create();
+        
+        var petId = PetId.Create();
 
-            var name = Name.Create(command.Name).Value;
+        var name = Name.Create(command.Name).Value;
 
-            var description = Description
-                .Create(command.Description).Value;
+        var description = Description
+            .Create(command.Description).Value;
 
-            var physicalParamaters = PhysicalParameters
-                .Create(
-                command.Color,
-                command.Weight,
-                command.Height).Value;
+        var physicalParamaters = PhysicalParameters
+            .Create(
+            command.Color,
+            command.Weight,
+            command.Height).Value;
 
-            var speciesAndBreed = SpeciesAndBreed
-                .Create(command.SpeciesId, command.BreedId).Value;
+        var speciesAndBreed = SpeciesAndBreed
+            .Create(command.SpeciesId, command.BreedId).Value;
 
-            var healthInfo = HealthInfo
-                .Create(
-                command.HealthDescription,
-                command.IsVaccinated,
-                command.IsNeutered).Value;
+        var healthInfo = HealthInfo
+            .Create(
+            command.HealthDescription,
+            command.IsVaccinated,
+            command.IsNeutered).Value;
 
-            var address = Address
-                .Create(
-                command.Country,
-                command.City,
-                command.Street,
-                command.House).Value;
+        var address = Address
+            .Create(
+            command.Country,
+            command.City,
+            command.Street,
+            command.House).Value;
 
-            var status = (CurrentStatus)Enum
-                .Parse(typeof(CurrentStatus), command.CurrentStatus);
+        var status = (CurrentStatus)Enum
+            .Parse(typeof(CurrentStatus), command.CurrentStatus);
 
-            var pet = Pet.InitialCreate(
-                petId,
-                name,
-                description,
-                physicalParamaters,
-                speciesAndBreed,
-                healthInfo,
-                address,
-                command.BirthDate,
-                status);
+        var pet = Pet.InitialCreate(
+            petId,
+            name,
+            description,
+            physicalParamaters,
+            speciesAndBreed,
+            healthInfo,
+            address,
+            command.BirthDate,
+            status);
 
-            volunteerResult.Value.AddPet(pet);
+        volunteerResult.Value.AddPet(pet);
 
-            await _unitOfWork.SaveChanges(cancellationToken);
+        await _unitOfWork.SaveChanges(cancellationToken);
 
-            return (Guid)volunteerResult.Value.Id;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Cannot add pet to volunteer with id: {id}", command.VolunteerId);
-            return Error.Failure("volunteer.pet.failure", "Cannot add pet to volunteer with id: {id}").ToErrorList();
-        }
+        return (Guid)volunteerResult.Value.Id;
+        
     }
 }
