@@ -48,8 +48,7 @@ namespace AnimalVolunteer.Application.Features.Volunteer.AddPet
             RuleFor(x => x.BirthDate).NotEmpty()
                 .WithError(Errors.General.InvalidValue());
 
-            RuleFor(x => x.CurrentStatus).IsEnumName(typeof(CurrentStatus))
-                .WithError(Errors.General.InvalidValue());
+            RuleFor(x => x.CurrentStatus).IsInEnum();
         }
     }
 }

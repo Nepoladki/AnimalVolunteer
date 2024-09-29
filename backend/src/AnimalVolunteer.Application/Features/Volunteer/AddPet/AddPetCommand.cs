@@ -1,4 +1,6 @@
-﻿namespace AnimalVolunteer.Application.Features.Volunteer.AddPet;
+﻿using AnimalVolunteer.Domain.Aggregates.Volunteer.Enums;
+
+namespace AnimalVolunteer.Application.Features.Volunteer.AddPet;
 
 public record AddPetCommand(
     Guid VolunteerId,
@@ -17,4 +19,4 @@ public record AddPetCommand(
     string Street,
     string? House,
     DateOnly BirthDate,
-    string CurrentStatus);
+    CurrentStatus CurrentStatus);

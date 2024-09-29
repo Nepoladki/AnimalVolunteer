@@ -1,5 +1,5 @@
 ﻿using AnimalVolunteer.Domain.Aggregates.PetType;
-using AnimalVolunteer.Domain.Aggregates.Volunteer;
+using AnimalVolunteer.Domain.Aggregates.Volunteer.Root;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

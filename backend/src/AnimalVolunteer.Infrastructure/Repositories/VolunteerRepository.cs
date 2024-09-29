@@ -1,5 +1,5 @@
 ﻿using AnimalVolunteer.Application.Interfaces;
-using AnimalVolunteer.Domain.Aggregates.Volunteer;
+using AnimalVolunteer.Domain.Aggregates.Volunteer.Root;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common;
 using CSharpFunctionalExtensions;
@@ -20,7 +20,8 @@ public class VolunteerRepository : IVolunteerRepository
         (VolunteerId id, CancellationToken cancellationToken = default)
     {
         var volunteer = await _dbContext.Volunteers
-            .Include(v => v.Pets).FirstOrDefaultAsync(v => v.Id == id, cancellationToken);
+            .Include(v => v.Pets)
+            .FirstOrDefaultAsync(v => v.Id == id, cancellationToken);
 
         if (volunteer is null)
             return Errors.General.NotFound(id);
@@ -31,8 +32,9 @@ public class VolunteerRepository : IVolunteerRepository
     public async Task<Volunteer?> GetByEmail(
         Email email, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Volunteers.
-            FirstOrDefaultAsync(v => v.Email == email, cancellationToken);
+        return await _dbContext.Volunteers
+            .Include(v => v.Pets)
+            .FirstOrDefaultAsync(v => v.Email == email, cancellationToken);
     }
 
     public async Task<bool> ExistByEmail(

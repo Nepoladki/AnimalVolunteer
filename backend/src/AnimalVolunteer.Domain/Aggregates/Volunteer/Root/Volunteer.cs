@@ -5,7 +5,7 @@ using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
 
-namespace AnimalVolunteer.Domain.Aggregates.Volunteer;
+namespace AnimalVolunteer.Domain.Aggregates.Volunteer.Root;
 
 public sealed class Volunteer : Common.Entity<VolunteerId>
 {
@@ -21,6 +21,7 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
         SocialNetworkList socialNetworkList,
         PaymentDetailsList paymentDetailsList) : base(id)
     {
+        _pets = [];
         FullName = fullName;
         Email = email;
         Description = description;
@@ -90,9 +91,76 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
 
     public UnitResult<Error> AddPet(Pet pet)
     {
-        // валидация
+        var position = Position.Create(_pets.Count + 1);
+        if (position.IsFailure)
+            return position.Error;
+
+        pet.UpdatePosition(position.Value);
 
         _pets.Add(pet);
+
+        return Result.Success<Error>();
+    }
+
+    public UnitResult<Error> MovePet(Pet pet, Position newPosition)
+    {
+        var currentPosition = pet.Position;
+
+        if (currentPosition == newPosition || _pets.Count == 1)
+            return Result.Success<Error>();
+
+        var ajustedPosition = AjustPositionIfOutOfRange(newPosition);
+        if (ajustedPosition.IsFailure)
+            return ajustedPosition.Error;
+
+        newPosition = ajustedPosition.Value;
+
+        var arrangeResult = ArrangePets(newPosition, currentPosition);
+        if (arrangeResult.IsFailure)
+            return arrangeResult.Error;
+
+        pet.MoveToPosition(newPosition);
+
+        return Result.Success<Error>();
+    }
+
+    private Result<Position, Error> AjustPositionIfOutOfRange(Position newPosition)
+    {
+        if (newPosition.Value <= _pets.Count)
+            return newPosition;
+
+        var lastPosition = Position.Create(_pets.Count);
+        if (lastPosition.IsFailure)
+            return lastPosition.Error;
+
+        return lastPosition.Value;
+    }
+    private UnitResult<Error> ArrangePets(Position newPosition, Position currentPosition)
+    {
+        if (newPosition < currentPosition)
+        {
+            var petsToMove = _pets
+                .Where(x => x.Position >= newPosition && x.Position < currentPosition);
+
+            foreach (var petToMove in petsToMove)
+            {
+                var result = petToMove.MoveForward();
+                if (result.IsFailure)
+                    return result.Error;
+            }
+        }
+        else //if (newPosition > currentPosition)
+        {
+            var petsToMove = _pets
+                .Where(x => x.Position > currentPosition && x.Position <= newPosition);
+
+            foreach (var petToMove in petsToMove)
+            {
+                var result = petToMove.MoveBackward();
+                if (result.IsFailure)
+                    return result.Error;
+            }
+        }
 
         return Result.Success<Error>();
     }

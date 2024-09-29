@@ -111,7 +111,6 @@ public class VolunteerController : ApplicationController
     {
         var deleteResult = await handler
             .Delete(new DeleteVolunteerCommand(id), cancellationToken);
-
         if (deleteResult.IsFailure)
             return deleteResult.Error.ToResponse();
 
@@ -145,7 +144,6 @@ public class VolunteerController : ApplicationController
                 request.CurrentStatus);
 
         var addResult = await handler.Add(command, cancellationToken);
-
         if (addResult.IsFailure)
             return addResult.Error.ToResponse();
 

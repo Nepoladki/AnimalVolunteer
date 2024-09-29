@@ -1,4 +1,5 @@
-﻿using CSharpFunctionalExtensions;
+﻿using AnimalVolunteer.Domain.Common;
+using CSharpFunctionalExtensions;
 using System.Runtime.InteropServices;
 
 namespace AnimalVolunteer.Domain.Common.ValueObjects;
