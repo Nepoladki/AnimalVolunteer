@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common.ValueObjects;
-using AnimalVolunteer.Domain.Aggregates.Volunteer;
+using AnimalVolunteer.Domain.Aggregates.Volunteer.Root;
 
 namespace AnimalVolunteer.Infrastructure.Configurations;
 

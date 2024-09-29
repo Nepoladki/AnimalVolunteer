@@ -1,10 +1,10 @@
 ﻿using AnimalVolunteer.Application.Interfaces;
 using DomainEntity = AnimalVolunteer.Domain.Aggregates.Volunteer;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
-using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
 using AnimalVolunteer.Application.Database;
+using AnimalVolunteer.Domain.Common;
+using AnimalVolunteer.Domain.Common.ValueObjects;
 
 namespace AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
 
@@ -42,7 +42,7 @@ public class CreateVolunteerHandler
         var paymentDetails = PaymentDetailsList.Create(request.PaymentDetailsList
             .Select(x => PaymentDetails.Create(x.Name, x.Description).Value));
 
-        var volunteer = DomainEntity.Volunteer.Create(
+        var volunteer = DomainEntity.Root.Volunteer.Create(
             VolunteerId.Create(),
             fullName,
             email,

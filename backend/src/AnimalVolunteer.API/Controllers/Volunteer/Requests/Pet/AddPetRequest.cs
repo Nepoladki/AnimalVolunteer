@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Application.DTOs.Volunteer;
+using AnimalVolunteer.Domain.Aggregates.Volunteer.Enums;
 
 namespace AnimalVolunteer.API.Controllers.Volunteer.Requests.Pet;
 
@@ -18,4 +19,4 @@ public record AddPetRequest(
     string Street,
     string? House,
     DateOnly BirthDate,
-    string CurrentStatus);
+    CurrentStatus CurrentStatus);

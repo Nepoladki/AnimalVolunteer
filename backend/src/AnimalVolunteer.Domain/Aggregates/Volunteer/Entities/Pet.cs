@@ -1,7 +1,8 @@
 ﻿using AnimalVolunteer.Domain.Aggregates.Volunteer.Enums;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
+using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
-using System.Runtime.InteropServices;
+using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.Domain.Aggregates.Volunteer.Entities;
 
@@ -33,7 +34,7 @@ public sealed class Pet : Common.Entity<PetId>
         BirthDate = birthDate;
         CurrentStatus = currentStatus;
         CreatedAt = DateTime.UtcNow;
-        PaymentDetails = paymentDetailsList; 
+        PaymentDetails = paymentDetailsList;
         PetPhotos = photos;
     }
 
@@ -50,10 +51,7 @@ public sealed class Pet : Common.Entity<PetId>
     public DateTime CreatedAt { get; private set; } = default!;
     public PaymentDetailsList PaymentDetails { get; private set; } = null!;
     public PetPhotoList PetPhotos { get; private set; } = null!;
-    public void Delete() => _isDeleted = true;
-    public void Restore() => _isDeleted = false;
-    public void UpdatePhotos(PetPhotoList photos) =>
-        PetPhotos = photos;
+    public Position Position { get; private set; } = null!;
     public static Pet InitialCreate(
         PetId id,
         Name name,
@@ -82,4 +80,37 @@ public sealed class Pet : Common.Entity<PetId>
             paymentDetails,
             photos);
     }
+    public void Delete() => _isDeleted = true;
+    public void Restore() => _isDeleted = false;
+    public void UpdatePhotos(PetPhotoList photos) =>
+        PetPhotos = photos;
+    public void UpdatePosition(Position number)
+        => Position = number;
+    public UnitResult<Error> MoveForward()
+    {
+        var newPosition = Position.Forward();
+        if (newPosition.IsFailure)
+            return newPosition.Error;
+
+        Position = newPosition.Value;
+
+        return Result.Success<Error>();
+    }
+
+    public UnitResult<Error> MoveBackward()
+    {
+        var newPosition = Position.Backward();
+        if (newPosition.IsFailure)
+            return newPosition.Error;
+
+        Position = newPosition.Value;
+
+        return Result.Success<Error>();
+    }
+
+    public void MoveToPosition(Position position)
+    {
+        Position = position;
+    }
+    
 }

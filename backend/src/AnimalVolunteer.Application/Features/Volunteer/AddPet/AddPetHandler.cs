@@ -36,25 +36,22 @@ public class AddPetHandler
     {
         var volunteerResult = await _volunteerRepository
             .GetById(command.VolunteerId, cancellationToken);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error.ToErrorList();
 
         var validationResult = await _validator
             .ValidateAsync(command, cancellationToken);
-
         if (!validationResult.IsValid)
             return validationResult.ToErrorList();
 
-        if (volunteerResult.IsFailure)
-            return volunteerResult.Error.ToErrorList();
-        
         var petId = PetId.Create();
 
         var name = Name.Create(command.Name).Value;
 
-        var description = Description
-            .Create(command.Description).Value;
+        var description = Description.Create(
+            command.Description).Value;
 
-        var physicalParamaters = PhysicalParameters
-            .Create(
+        var physicalParamaters = PhysicalParameters.Create(
             command.Color,
             command.Weight,
             command.Height).Value;
@@ -62,21 +59,18 @@ public class AddPetHandler
         var speciesAndBreed = SpeciesAndBreed
             .Create(command.SpeciesId, command.BreedId).Value;
 
-        var healthInfo = HealthInfo
-            .Create(
+        var healthInfo = HealthInfo.Create(
             command.HealthDescription,
             command.IsVaccinated,
             command.IsNeutered).Value;
 
-        var address = Address
-            .Create(
+        var address = Address.Create(
             command.Country,
             command.City,
             command.Street,
             command.House).Value;
 
-        var status = (CurrentStatus)Enum
-            .Parse(typeof(CurrentStatus), command.CurrentStatus);
+        var status = command.CurrentStatus;
 
         var pet = Pet.InitialCreate(
             petId,

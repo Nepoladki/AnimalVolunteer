@@ -11,9 +11,9 @@ public record Error
     public string? InvalidField { get; } = null;
 
     private Error(
-        string code, 
-        string message, 
-        ErrorType type, 
+        string code,
+        string message,
+        ErrorType type,
         string? invalidField = null)
     {
         Code = code;

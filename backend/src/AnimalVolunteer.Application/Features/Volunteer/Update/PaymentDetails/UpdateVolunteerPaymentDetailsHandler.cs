@@ -1,12 +1,12 @@
 ﻿using DomainPaymentDetails = AnimalVolunteer.Domain.Common.ValueObjects.PaymentDetails;
 using AnimalVolunteer.Application.Interfaces;
-using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
 using AnimalVolunteer.Application.Database;
 using FluentValidation;
 using AnimalVolunteer.Application.Extensions;
+using AnimalVolunteer.Domain.Common;
+using AnimalVolunteer.Domain.Common.ValueObjects;
 
 namespace AnimalVolunteer.Application.Features.Volunteer.Update.PaymentDetails;
 

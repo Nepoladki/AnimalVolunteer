@@ -14,9 +14,9 @@ public class ValueObjectList<T> : IReadOnlyList<T>
     public IEnumerator<T> GetEnumerator() => Values.GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => Values.GetEnumerator();
 
-    public static implicit operator ValueObjectList<T>(List<T> list) => 
+    public static implicit operator ValueObjectList<T>(List<T> list) =>
         new(list);
 
-    public static implicit operator List<T>(ValueObjectList<T> list) => 
+    public static implicit operator List<T>(ValueObjectList<T> list) =>
         list.Values.ToList();
 }

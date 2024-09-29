@@ -1,9 +1,10 @@
-﻿using CSharpFunctionalExtensions;
+﻿using AnimalVolunteer.Domain.Common;
+using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.Domain.Common.ValueObjects;
 
 public record FilePath
- {
+{
     public const int MAX_FILEPATH_LENGTH = 200;
     public string Value { get; }
     private FilePath(string path)
@@ -22,7 +23,7 @@ public record FilePath
 
         var fullPath = path + extension;
 
-        return new FilePath(fullPath); 
+        return new FilePath(fullPath);
     }
     public static Result<FilePath, Error> Create(string fullPath)
     {
