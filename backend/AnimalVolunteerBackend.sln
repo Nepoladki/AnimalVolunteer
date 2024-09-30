@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 		launchSettings.json = launchSettings.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Application.UnitTests", "tests\AnimalVolunteer.Application.UnitTests\AnimalVolunteer.Application.UnitTests.csproj", "{D98B0C6F-DC7E-47D5-87E8-08D8770CC37A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{AA0A19E2-2A15-4759-9571-55645757C162}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA0A19E2-2A15-4759-9571-55645757C162}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA0A19E2-2A15-4759-9571-55645757C162}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D98B0C6F-DC7E-47D5-87E8-08D8770CC37A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D98B0C6F-DC7E-47D5-87E8-08D8770CC37A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D98B0C6F-DC7E-47D5-87E8-08D8770CC37A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D98B0C6F-DC7E-47D5-87E8-08D8770CC37A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
