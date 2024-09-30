@@ -18,9 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 		launchSettings.json = launchSettings.json
 	EndProjectSection
 EndProject
+<<<<<<< HEAD
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Domain.UnitTests", "tests\AnimalVolunteer.Domain.UnitTests\AnimalVolunteer.Domain.UnitTests.csproj", "{88B80E7A-9A10-49A2-B895-2674CB3EBC44}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Application.UnitTests", "tests\AnimalVolunteer.Application.UnitTests\AnimalVolunteer.Application.UnitTests.csproj", "{86E9C0CA-2BEE-4E1B-B7FA-A9AD0E236CB2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Application.UnitTests", "tests\AnimalVolunteer.Application.UnitTests\AnimalVolunteer.Application.UnitTests.csproj", "{D98B0C6F-DC7E-47D5-87E8-08D8770CC37A}"
+>>>>>>> ea3b53f77a13ceff944596c5d869cfaeefbd33cf
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

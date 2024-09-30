@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Application.Database;
 using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
+using AnimalVolunteer.Application.Extensions;
 using AnimalVolunteer.Application.Interfaces;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
 using AnimalVolunteer.Domain.Common;
@@ -37,17 +38,20 @@ public class AddPetPhotosHandler
         AddPetPhotosCommand command, 
         CancellationToken cancellationToken = default)
     {
+        var validationResult = await _validator
+            .ValidateAsync(command, cancellationToken);
+        if (!validationResult.IsValid)
+            return validationResult.ToErrorList();
+
         var transaction = await _unitOfWork.BeginTransaction(cancellationToken);
 
         var volunteerResult = await _volunteerRepository
             .GetById(command.VolunteerId, cancellationToken);
-
         if (volunteerResult.IsFailure)
             return volunteerResult.Error.ToErrorList();
 
         var petResult = volunteerResult.Value
             .GetPetById(PetId.CreateWithGuid(command.PetId));
-
         if (petResult.IsFailure)
             return petResult.Error.ToErrorList();
 
@@ -73,7 +77,6 @@ public class AddPetPhotosHandler
 
             var uploadResult = await _fileProvider
                 .UploadFiles(files, BUCKET_NAME, cancellationToken);
-
             if (uploadResult.IsFailure)
                 return uploadResult.Error.ToErrorList();
 

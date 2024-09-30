@@ -143,7 +143,7 @@ public class VolunteerController : ApplicationController
                 request.BirthDate,
                 request.CurrentStatus);
 
-        var addResult = await handler.Add(command, cancellationToken);
+        var addResult = await handler.Handle(command, cancellationToken);
         if (addResult.IsFailure)
             return addResult.Error.ToResponse();
 
