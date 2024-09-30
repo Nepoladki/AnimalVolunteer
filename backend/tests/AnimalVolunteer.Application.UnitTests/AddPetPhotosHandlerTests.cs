@@ -1,6 +1,5 @@
 ﻿using AnimalVolunteer.Application.Database;
 using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
-using AnimalVolunteer.Application.Features.Volunteer.AddPet;
 using AnimalVolunteer.Application.Features.Volunteer.AddPetPhotos;
 using AnimalVolunteer.Application.Interfaces;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.Entities;
@@ -16,40 +15,45 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using System.Data.Common;
 
 namespace AnimalVolunteer.Application.UnitTests;
 
 public class AddPetPhotosHandlerTests
 {
+    private readonly IVolunteerRepository _volunteerRepository = Substitute
+        .For<IVolunteerRepository>();
+
+    private readonly IUnitOfWork _unitOfWork = Substitute.For<IUnitOfWork>();
+
+    private readonly IFileProvider _fileProvider = Substitute
+        .For<IFileProvider>();
+
+    private readonly ILogger<AddPetPhotosHandler> _logger = Substitute
+        .For<ILogger<AddPetPhotosHandler>>();
+
+    private readonly IValidator<AddPetPhotosCommand> _validator = Substitute
+        .For<IValidator<AddPetPhotosCommand>>();
+
+    private readonly CancellationToken _cancellationToken = 
+        new CancellationTokenSource().Token;
+
     [Fact]
     public async Task Handle_SuccsessfullAddedPhotos_ReturnsSuccess()
     {
         // Arrange
-        var ct = new CancellationTokenSource().Token;
+        var files = GetFilesToUpload(["TestName1.jpg", "TestName2.jpg"]);
 
-        var files = new List<UploadFileDto>
-        {
-            new UploadFileDto("TestName.jpg", new MemoryStream()),
-            new UploadFileDto("TestName2.jpg", new MemoryStream())
-        };
-
-        var command = new AddPetPhotosCommand(
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            files);
+        var command = GetCommand(files);
 
         var volunteerId = VolunteerId.CreateWithGuid(command.VolunteerId);
 
         var volunteer = GetVolunteer(volunteerId);
         AddPetWithId(volunteer, command.PetId);
 
-        var repository = Substitute.For<IVolunteerRepository>();
-        repository.GetById(volunteerId, ct)
+        _volunteerRepository.GetById(volunteerId, _cancellationToken)
             .Returns(Result.Success<Volunteer, Error>(volunteer));
         
-        var unitOfWork = Substitute.For<IUnitOfWork>();
-        unitOfWork.SaveChanges(ct).Returns(Task.CompletedTask);
+        _unitOfWork.SaveChanges(_cancellationToken).Returns(Task.CompletedTask);
 
         IReadOnlyList<FilePath> pathsList = 
         [ 
@@ -57,33 +61,157 @@ public class AddPetPhotosHandlerTests
             FilePath.Create(Guid.NewGuid(), ".jpg").Value
         ];
 
-        var fileProvider = Substitute.For<IFileProvider>();
-        fileProvider.UploadFiles(
+        _fileProvider.UploadFiles(
             Arg.Any<IEnumerable<UploadingFileDto>>(), 
             Arg.Any<string>(), 
-            ct)
+            _cancellationToken)
             .Returns(Result.Success<IReadOnlyList<FilePath>, Error>(pathsList));
 
-
-        var logger = Substitute.For<ILogger<AddPetPhotosHandler>>();
-
-        var validator = Substitute.For<IValidator<AddPetPhotosCommand>>();
-        validator.ValidateAsync(Arg.Any<AddPetPhotosCommand>(), ct)
+        _validator.ValidateAsync(Arg.Any<AddPetPhotosCommand>(), _cancellationToken)
             .Returns(new ValidationResult());
 
         var handler = new AddPetPhotosHandler(
-            repository, unitOfWork, fileProvider, logger, validator);
+            _volunteerRepository, _unitOfWork, _fileProvider, _logger, _validator);
 
         // Act
-        var result = await handler.Handle(command, ct);
+        var result = await handler.Handle(command, _cancellationToken);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
     }
     [Fact]
-    public async Task Handle_FailedValidation_ReturnsErrorList()
+    public async Task Handle_FailValidation_ReturnsErrorList()
     {
+        // Arrange
+        var files = GetFilesToUpload(["invalidFileName1", "InvalidFileName2"]);
 
+        var command = GetCommand(files);
+
+        var volunteerId = VolunteerId.CreateWithGuid(command.VolunteerId);
+
+        var volunteer = GetVolunteer(volunteerId);
+        AddPetWithId(volunteer, command.PetId);
+
+        _volunteerRepository.GetById(volunteerId, _cancellationToken)
+            .Returns(Result.Success<Volunteer, Error>(volunteer));
+
+        _unitOfWork.SaveChanges(_cancellationToken).Returns(Task.CompletedTask);
+
+        IReadOnlyList<FilePath> pathsList =
+        [
+            FilePath.Create(Guid.NewGuid(), ".jpg").Value,
+            FilePath.Create(Guid.NewGuid(), ".jpg").Value
+        ];
+
+        _fileProvider.UploadFiles(
+            Arg.Any<IEnumerable<UploadingFileDto>>(),
+            Arg.Any<string>(),
+            _cancellationToken)
+            .Returns(Result.Success<IReadOnlyList<FilePath>, Error>(pathsList));
+
+        _validator.ValidateAsync(Arg.Any<AddPetPhotosCommand>(), _cancellationToken)
+            .Returns(new ValidationResult(
+                [new ValidationFailure("TestPropName", "500 || Prop || Validation")]));
+
+        var handler = new AddPetPhotosHandler(
+            _volunteerRepository, _unitOfWork, _fileProvider, _logger, _validator);
+
+        // Act
+        var result = await handler.Handle(command, _cancellationToken);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().BeOfType(typeof(ErrorList));
+    }
+
+    [Fact]
+    public async Task Handle_VolunteerNotFoundInRepository_ReturnsErrorList()
+    {
+        // Arrange
+        var files = GetFilesToUpload(["TestName1.jpg", "TestName2.jpg"]);
+
+        var command = GetCommand(files);
+
+        var volunteerId = VolunteerId.CreateWithGuid(command.VolunteerId);
+
+        //var volunteer = GetVolunteer(volunteerId);
+        //AddPetWithId(volunteer, command.PetId);
+
+        _volunteerRepository.GetById(volunteerId, _cancellationToken)
+            .Returns(
+            Result.Failure<Volunteer, Error>(Errors.General.NotFound(volunteerId)));
+
+        _unitOfWork.SaveChanges(_cancellationToken).Returns(Task.CompletedTask);
+
+        IReadOnlyList<FilePath> pathsList =
+        [
+            FilePath.Create(Guid.NewGuid(), ".jpg").Value,
+            FilePath.Create(Guid.NewGuid(), ".jpg").Value
+        ];
+
+        _fileProvider.UploadFiles(
+            Arg.Any<IEnumerable<UploadingFileDto>>(),
+            Arg.Any<string>(),
+            _cancellationToken)
+            .Returns(Result.Success<IReadOnlyList<FilePath>, Error>(pathsList));
+
+        _validator.ValidateAsync(Arg.Any<AddPetPhotosCommand>(), _cancellationToken)
+            .Returns(new ValidationResult());
+
+        var handler = new AddPetPhotosHandler(
+            _volunteerRepository, _unitOfWork, _fileProvider, _logger, _validator);
+
+        // Act
+        var result = await handler.Handle(command, _cancellationToken);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().BeOfType(typeof(ErrorList));
+    }
+
+    [Fact]
+    public async Task Handle_PetNotFoundInRepository_ReturnsErrorList()
+    {
+        // Arrange
+        var files = GetFilesToUpload(["TestName1.jpg", "TestName2.jpg"]);
+
+        var command = GetCommand(files);
+
+        var volunteerId = VolunteerId.CreateWithGuid(command.VolunteerId);
+
+        var volunteer = GetVolunteer(volunteerId);
+
+        _volunteerRepository.GetById(volunteerId, _cancellationToken)
+            .Returns(Result.Success<Volunteer, Error>(volunteer));
+
+        _unitOfWork.SaveChanges(_cancellationToken).Returns(Task.CompletedTask);
+
+        IReadOnlyList<FilePath> pathsList =
+        [
+            FilePath.Create(Guid.NewGuid(), ".jpg").Value,
+            FilePath.Create(Guid.NewGuid(), ".jpg").Value
+        ];
+
+        _fileProvider.UploadFiles(
+            Arg.Any<IEnumerable<UploadingFileDto>>(),
+            Arg.Any<string>(),
+            _cancellationToken)
+            .Returns(Result.Success<IReadOnlyList<FilePath>, Error>(pathsList));
+
+        _validator.ValidateAsync(Arg.Any<AddPetPhotosCommand>(), _cancellationToken)
+            .Returns(new ValidationResult());
+
+        var handler = new AddPetPhotosHandler(
+            _volunteerRepository, _unitOfWork, _fileProvider, _logger, _validator);
+
+        // Act
+        var result = await handler.Handle(command, _cancellationToken);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().BeOfType(typeof(ErrorList));
+        //result.Error.First().Message.Should()
+        //    .BeEquivalentTo($"Record {command.PetId} not found");
     }
 
     private Volunteer GetVolunteer(VolunteerId id)
@@ -106,6 +234,7 @@ public class AddPetPhotosHandlerTests
             socials,
             payments);
     }
+
     private void AddPetWithId(Volunteer volunteer, PetId id)
     {
         var name = Name.Create("TestName").Value;
@@ -131,5 +260,23 @@ public class AddPetPhotosHandlerTests
             status);
 
         volunteer.AddPet(pet);
+    }
+    
+    private static List<UploadFileDto> GetFilesToUpload(params string[] filenames)
+    {
+        List<UploadFileDto> files = [];
+
+        foreach (var name in filenames)
+            files.Add(new UploadFileDto(name, new MemoryStream()));
+        
+        return files;
+    }
+
+    private AddPetPhotosCommand GetCommand(List<UploadFileDto> files)
+    {
+        return new AddPetPhotosCommand(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            files);
     }
 }

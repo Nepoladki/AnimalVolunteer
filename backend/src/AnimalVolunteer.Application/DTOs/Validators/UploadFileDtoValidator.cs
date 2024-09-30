@@ -12,7 +12,7 @@ namespace AnimalVolunteer.Application.DTOs.Validators
             RuleFor(x => x.FileName).NotEmpty()
                 .WithError(Errors.General.InvalidValue());
 
-            RuleFor(x => x.Content.Length).LessThan(5000000);
+            RuleFor(x => x.Content.Length).LessThan(5_000_000);
         }
     }
 }
