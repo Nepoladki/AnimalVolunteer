@@ -1,6 +1,4 @@
 ﻿using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
-using AnimalVolunteer.Application.Features.Files.Delete;
-using AnimalVolunteer.Application.Features.Files.GetUrl;
 using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
@@ -20,9 +18,9 @@ public interface IFileProvider
         string bucketName,
         CancellationToken cancellationToken);
     Task<Result<string, Error>> GetFileUrl(
-        DownloadFileRequest fileData, 
+        FileInfoDto fileInfo, 
         CancellationToken cancellationToken);
     Task<UnitResult<Error>> DeleteFile(
-        DeleteFileRequest fileData, 
+        FileInfoDto fileInfo, 
         CancellationToken cancellationToken);
 }

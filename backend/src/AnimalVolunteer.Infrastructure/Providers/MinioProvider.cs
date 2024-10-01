@@ -1,6 +1,4 @@
 ﻿using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
-using AnimalVolunteer.Application.Features.Files.Delete;
-using AnimalVolunteer.Application.Features.Files.GetUrl;
 using AnimalVolunteer.Application.Interfaces;
 using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
@@ -29,55 +27,53 @@ public class MinioProvider : IFileProvider
     }
 
     public async Task<UnitResult<Error>> DeleteFile(
-        DeleteFileRequest fileData, CancellationToken cancellationToken)
+        FileInfoDto fileInfo, CancellationToken cancellationToken)
     {
         try
         {
             var bucketExistsResult = await BucketExists(
-                fileData.BucketName, cancellationToken);
-
-            if (!await BucketExists(fileData.BucketName, cancellationToken))
-                return Errors.Minio.BucketNotFound(fileData.BucketName);
+                fileInfo.BucketName, cancellationToken);
+            if (!await BucketExists(fileInfo.BucketName, cancellationToken))
+                return Errors.Minio.BucketNotFound(fileInfo.BucketName);
 
             var objectExistsResult = await ObjectExists(
-                fileData.BucketName, fileData.ObjectName, cancellationToken);
-
+                fileInfo.BucketName, fileInfo.ObjectName, cancellationToken);
             if (objectExistsResult.IsFailure)
-                return objectExistsResult.Error;
+                return Result.Success<Error>();
 
             var deletingArgs = new RemoveObjectArgs()
-                .WithBucket(fileData.BucketName)
-                .WithObject(fileData.ObjectName);
+                .WithBucket(fileInfo.BucketName)
+                .WithObject(fileInfo.ObjectName);
 
             await _minioClient.RemoveObjectAsync(deletingArgs, cancellationToken);
             _logger.LogInformation(
                 "Deleted minio object {object} from bucket {bucket}",
-                fileData.ObjectName,
-                fileData.BucketName);
+                fileInfo.ObjectName,
+                fileInfo.BucketName);
 
             return Result.Success<Error>();
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to delete file from Minio");
-            return Errors.Minio.DeleteFailure(fileData.ObjectName);
+            return Errors.Minio.DeleteFailure(fileInfo.ObjectName);
         }
     }
 
     public async Task<Result<string, Error>> GetFileUrl(
-        DownloadFileRequest fileData, CancellationToken cancellationToken)
+        FileInfoDto fileInfo, CancellationToken cancellationToken)
     {
         try
         {
             var fileExistsResult = await ObjectExists(
-                fileData.BucketName, fileData.ObjectName, cancellationToken);
+                fileInfo.BucketName, fileInfo.ObjectName, cancellationToken);
 
             if (fileExistsResult.IsFailure)
                 return fileExistsResult.Error;
 
             var getObjArgs = new PresignedGetObjectArgs()
-                .WithBucket(fileData.BucketName)
-                .WithObject(fileData.ObjectName)
+                .WithBucket(fileInfo.BucketName)
+                .WithObject(fileInfo.ObjectName)
                 .WithExpiry(_options.UrlExpirySeconds);
 
             return await _minioClient.PresignedGetObjectAsync(getObjArgs);
@@ -85,7 +81,7 @@ public class MinioProvider : IFileProvider
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to fetch file's url from Minio");
-            return Errors.Minio.GetUrlFailure(fileData.ObjectName);
+            return Errors.Minio.GetUrlFailure(fileInfo.ObjectName);
         }
     }
 
