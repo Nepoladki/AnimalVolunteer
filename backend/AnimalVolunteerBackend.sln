@@ -18,6 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 		launchSettings.json = launchSettings.json
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Domain.UnitTests", "tests\AnimalVolunteer.Domain.UnitTests\AnimalVolunteer.Domain.UnitTests.csproj", "{88B80E7A-9A10-49A2-B895-2674CB3EBC44}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Application.UnitTests", "tests\AnimalVolunteer.Application.UnitTests\AnimalVolunteer.Application.UnitTests.csproj", "{D98B0C6F-DC7E-47D5-87E8-08D8770CC37A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +44,14 @@ Global
 		{AA0A19E2-2A15-4759-9571-55645757C162}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA0A19E2-2A15-4759-9571-55645757C162}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA0A19E2-2A15-4759-9571-55645757C162}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88B80E7A-9A10-49A2-B895-2674CB3EBC44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88B80E7A-9A10-49A2-B895-2674CB3EBC44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88B80E7A-9A10-49A2-B895-2674CB3EBC44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88B80E7A-9A10-49A2-B895-2674CB3EBC44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D98B0C6F-DC7E-47D5-87E8-08D8770CC37A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D98B0C6F-DC7E-47D5-87E8-08D8770CC37A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D98B0C6F-DC7E-47D5-87E8-08D8770CC37A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D98B0C6F-DC7E-47D5-87E8-08D8770CC37A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

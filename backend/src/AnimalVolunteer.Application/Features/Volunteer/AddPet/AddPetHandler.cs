@@ -31,18 +31,18 @@ public class AddPetHandler
         _validator = validator;
     }
 
-    public async Task<Result<Guid, ErrorList>> Add(
+    public async Task<Result<Guid, ErrorList>> Handle(
         AddPetCommand command, CancellationToken cancellationToken = default)
     {
-        var volunteerResult = await _volunteerRepository
-            .GetById(command.VolunteerId, cancellationToken);
-        if (volunteerResult.IsFailure)
-            return volunteerResult.Error.ToErrorList();
-
         var validationResult = await _validator
             .ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
             return validationResult.ToErrorList();
+
+        var volunteerResult = await _volunteerRepository
+            .GetById(command.VolunteerId, cancellationToken);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error.ToErrorList();
 
         var petId = PetId.Create();
 
@@ -86,6 +86,11 @@ public class AddPetHandler
         volunteerResult.Value.AddPet(pet);
 
         await _unitOfWork.SaveChanges(cancellationToken);
+
+        _logger.LogInformation(
+            "Added pet with id {petId} to Volunteer with id {volunteerId}",
+            petId, 
+            volunteerResult.Value.Id);
 
         return (Guid)volunteerResult.Value.Id;
         
