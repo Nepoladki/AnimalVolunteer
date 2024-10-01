@@ -8,7 +8,7 @@ public class UpdateVolunteerSocialNetworksValidator : AbstractValidator<UpdateVo
 {
     public UpdateVolunteerSocialNetworksValidator()
     {
-        RuleForEach(r => r.SocialNetworksList.Value).ChildRules(networks =>
+        RuleForEach(r => r.SocialNetworks).ChildRules(networks =>
         {
             networks.RuleFor(x => new { x.Name, x.URL })
                 .MustBeValueObject(z => SocialNetwork.Create(z.Name, z.URL));

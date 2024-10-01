@@ -4,14 +4,16 @@ using FluentValidation;
 
 namespace AnimalVolunteer.Application.Features.Volunteer.Update.PaymentDetails;
 
-public class UpdateVolunteerContactInfoValidator : AbstractValidator<UpdateVolunteerContactInfoCommand>
+public class UpdateVolunteerContactInfoValidator : 
+    AbstractValidator<UpdateVolunteerContactInfoCommand>
 {
     public UpdateVolunteerContactInfoValidator()
     {
-        RuleForEach(r => r.ContactInfoList.Value).ChildRules(contactInfo =>
+        RuleForEach(r => r.ContactInfos).ChildRules(contactInfo =>
         {
             contactInfo.RuleFor(x => new { x.PhoneNumber, x.Name, x.Note })
-                .MustBeValueObject(z => DomainContactInfo.Create(z.PhoneNumber, z.Name, z.Note));
+                .MustBeValueObject(z => DomainContactInfo.Create(
+                    z.PhoneNumber, z.Name, z.Note));
         });
     }
 }

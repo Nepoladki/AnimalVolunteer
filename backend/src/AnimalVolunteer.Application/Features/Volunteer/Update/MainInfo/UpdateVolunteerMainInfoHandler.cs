@@ -31,29 +31,28 @@ public class UpdateVolunteerMainInfoHandler
         UpdateVolunteerMainInfoCommand command, 
         CancellationToken cancellationToken)
     {
-        var validationResult = await _validator.ValidateAsync(command, cancellationToken);
-
+        var validationResult = await _validator
+            .ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
             return validationResult.ToErrorList();
         
 
         var volunteerResult = await _volunteerRepository
             .GetById(command.Id, cancellationToken);
-
         if (volunteerResult.IsFailure)
             return volunteerResult.Error.ToErrorList();
 
         var fullName = FullName.Create(
-            command.FirstName,
-            command.SurName,
-            command.LastName).Value;
+            command.FullName.FirstName,
+            command.FullName.SurName,
+            command.FullName.LastName).Value;
 
         var email = Email.Create(command.Email).Value;
 
         var description = Description.Create(command.Description).Value;
 
-        var alreadyExist = await _volunteerRepository.ExistByEmail(email, cancellationToken);
-
+        var alreadyExist = await _volunteerRepository
+            .ExistByEmail(email, cancellationToken);
         if (alreadyExist && volunteerResult.Value.Email != email)
             return Errors.Volunteer.AlreadyExist().ToErrorList();
 

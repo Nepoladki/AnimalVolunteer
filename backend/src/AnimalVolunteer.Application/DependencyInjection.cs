@@ -1,7 +1,4 @@
-﻿using AnimalVolunteer.Application.Features.Files.Delete;
-using AnimalVolunteer.Application.Features.Files.Download;
-using AnimalVolunteer.Application.Features.Files.Upload;
-using AnimalVolunteer.Application.Features.Volunteer.AddPet;
+﻿using AnimalVolunteer.Application.Features.Volunteer.AddPet;
 using AnimalVolunteer.Application.Features.Volunteer.AddPetPhotos;
 using AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
 using AnimalVolunteer.Application.Features.Volunteer.Delete;
@@ -24,9 +21,6 @@ public static class DependencyInjection
         services.AddScoped<UpdateVolunteerPaymentDetailsHandler>();
         services.AddScoped<UpdateVolunteerContactInfoHandler>();
         services.AddScoped<DeleteVolunteerHandler>();
-        services.AddScoped<UploadFileHandler>();
-        services.AddScoped<DownloadFileHandler>();
-        services.AddScoped<DeleteFileHandler>();
         services.AddScoped<AddPetHandler>();
         services.AddScoped<AddPetPhotosHandler>();
 

@@ -6,5 +6,5 @@ public record CreateVolunteerCommand(
     FullNameDto FullName,
     string Email,
     string Description,
-    List<SocialNetworkDto> SocialNetworkList,
-    List<PaymentDetailsDto> PaymentDetailsList);
+    IEnumerable<SocialNetworkDto> SocialNetworkList,
+    IEnumerable<PaymentDetailsDto> PaymentDetailsList);

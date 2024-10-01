@@ -5,12 +5,16 @@ using FluentValidation;
 
 namespace AnimalVolunteer.Application.Features.Volunteer.Update.MainInfo;
 
-public class UpdateVolunteerMainInfoValidator : AbstractValidator<UpdateVolunteerMainInfoCommand>
+public class UpdateVolunteerMainInfoValidator : 
+    AbstractValidator<UpdateVolunteerMainInfoCommand>
 {
     public UpdateVolunteerMainInfoValidator()
     {
         RuleFor(c => c)
-            .MustBeValueObject(c => FullName.Create(c.FirstName, c.SurName, c.LastName));
+            .MustBeValueObject(c => FullName.Create(
+                c.FullName.FirstName, 
+                c.FullName.SurName, 
+                c.FullName.LastName));
 
         RuleFor(c => c.Email).MustBeValueObject(Email.Create);
 

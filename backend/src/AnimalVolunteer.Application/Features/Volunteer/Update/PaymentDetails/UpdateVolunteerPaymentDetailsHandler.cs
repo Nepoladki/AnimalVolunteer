@@ -34,17 +34,15 @@ public class UpdateVolunteerPaymentDetailsHandler
     {
         var volunteerResult = await _volunteerRepository
             .GetById(command.Id, cancellationToken);
-
         if (volunteerResult.IsFailure)
             return volunteerResult.Error.ToErrorList();
 
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
-
         if (!validationResult.IsValid)
             return validationResult.ToErrorList();
 
         var paymentDetails = PaymentDetailsList.Create(
-            command.PaymentDetailsList.Value.Select(x => 
+            command.PaymentDetails.Select(x => 
                 DomainPaymentDetails.Create(x.Name, x.Description).Value));
 
         volunteerResult.Value.UpdatePaymentDetails(paymentDetails);

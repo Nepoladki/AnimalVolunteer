@@ -1,5 +1,4 @@
 ﻿using AnimalVolunteer.API.Extensions;
-using AnimalVolunteer.Application.DTOs.Volunteer;
 using AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
 using AnimalVolunteer.Application.Features.Volunteer.Update.MainInfo;
 using AnimalVolunteer.Application.Features.Volunteer.Update.SocialNetworks;
@@ -9,19 +8,21 @@ using AnimalVolunteer.Application.Features.Volunteer.Delete;
 using AnimalVolunteer.Application.Features.Volunteer.AddPet;
 using AnimalVolunteer.API.Processors;
 using AnimalVolunteer.Application.Features.Volunteer.AddPetPhotos;
-using AnimalVolunteer.API.Controllers.Volunteer.Requests;
 using AnimalVolunteer.API.Controllers.Volunteer.Requests.Pet;
+using AnimalVolunteer.API.Controllers.Volunteer.Requests.Volunteer;
 
 namespace AnimalVolunteer.API.Controllers.Volunteer;
 public class VolunteerController : ApplicationController
 {
     [HttpPost]
     public async Task<IActionResult> Create(
-        CreateVolunteerCommand request,
+        [FromBody] CreateVolunteerRequest request,
         [FromServices] CreateVolunteerHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var creationResult = await handler.Create(request, cancellationToken);
+        var command = request.ToCommand();
+
+        var creationResult = await handler.Create(command, cancellationToken);
 
         if (creationResult.IsFailure)
             return creationResult.Error.ToResponse();
@@ -36,13 +37,8 @@ public class VolunteerController : ApplicationController
         [FromServices] UpdateVolunteerMainInfoHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var command = new UpdateVolunteerMainInfoCommand(
-            id, 
-            request.FirstName, 
-            request.SurName, 
-            request.LastName, 
-            request.Email, 
-            request.Description);
+        
+        var command = request.ToCommand(id);
 
         var handleResult = await handler.Update(command, cancellationToken);
 
@@ -55,11 +51,11 @@ public class VolunteerController : ApplicationController
     [HttpPut("{id:guid}/social-networks")]
     public async Task<IActionResult> UpdateSocialNetworks(
         [FromRoute] Guid id,
-        [FromBody] SocialNetworksListDto socialNetworks,
+        [FromBody] UpdateVolunteerSocialNetworksRequest request,
         [FromServices] UpdateVolunteerSocialNetworksHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var command = new UpdateVolunteerSocialNetworksCommand(id, socialNetworks);
+        var command = request.ToCommand(id);
 
         var handleResult = await handler.Update(command, cancellationToken);
 
@@ -72,11 +68,11 @@ public class VolunteerController : ApplicationController
     [HttpPut("{id:guid}/payment-details")]
     public async Task<IActionResult> UpdatePaymentDetails(
         [FromRoute] Guid id,
-        [FromBody] PaymentDetailsListDto paymentDetails,
+        [FromBody] UpdateVolunteerPaymentDetailsRequest request,
         [FromServices] UpdateVolunteerPaymentDetailsHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var command = new UpdateVolunteerPaymentDetailsCommand(id, paymentDetails);
+        var command = request.ToCommand(id);
 
         var handleResult = await handler.Update(command, cancellationToken);
 
@@ -89,11 +85,11 @@ public class VolunteerController : ApplicationController
     [HttpPut("{id:guid}/contact-info")]
     public async Task<IActionResult> UpdateContactInfo(
         [FromRoute] Guid id,
-        [FromBody] ContactInfoListDto contactInfo,
+        [FromBody] UpdateVolunteerContactInfoRequest request,
         [FromServices] UpdateVolunteerContactInfoHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var command = new UpdateVolunteerContactInfoCommand(id, contactInfo);
+        var command = request.ToCommand(id);
 
         var handleResult = await handler.Handle(command, cancellationToken);
 
@@ -122,26 +118,9 @@ public class VolunteerController : ApplicationController
         [FromRoute] Guid id,
         [FromForm] AddPetRequest request,
         [FromServices] AddPetHandler handler,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
-        var command = new AddPetCommand(
-                id,
-                request.Name,
-                request.Description,
-                request.Color,
-                request.Weight,
-                request.Height,
-                request.SpeciesId,
-                request.BreedId,
-                request.HealthDescription,
-                request.IsVaccinated,
-                request.IsNeutered,
-                request.Country,
-                request.City,
-                request.Street,
-                request.House,
-                request.BirthDate,
-                request.CurrentStatus);
+        var command = request.ToCommand(id);
 
         var addResult = await handler.Handle(command, cancellationToken);
         if (addResult.IsFailure)
@@ -162,7 +141,7 @@ public class VolunteerController : ApplicationController
 
         var fileList = fileProcessor.Process(request.Files);
 
-        var command = new AddPetPhotosCommand(
+        var command = request.ToCommand(
             volunteerId, petId, fileList);
 
         var handleResult = await handler

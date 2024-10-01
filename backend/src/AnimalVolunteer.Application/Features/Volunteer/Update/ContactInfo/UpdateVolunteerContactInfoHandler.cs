@@ -34,18 +34,16 @@ public class UpdateVolunteerContactInfoHandler
     {
         var volunteerResult = await _volunteerRepository
             .GetById(command.Id, cancellationToken);
-
         if (volunteerResult.IsFailure)
             return volunteerResult.Error.ToErrorList();
 
         var validationResult = await _validator
             .ValidateAsync(command, cancellationToken);
-
         if (!validationResult.IsValid)
             return validationResult.ToErrorList();
 
         var contactInfo = ContactInfoList.Create(
-            command.ContactInfoList.Value.Select(x =>
+            command.ContactInfos.Select(x =>
                 DomainContactInfo.Create(x.PhoneNumber, x.Name, x.Note).Value));
 
         volunteerResult.Value.UpdateContactInfo(contactInfo);

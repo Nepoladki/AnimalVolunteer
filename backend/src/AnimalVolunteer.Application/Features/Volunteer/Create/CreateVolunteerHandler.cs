@@ -5,41 +5,52 @@ using CSharpFunctionalExtensions;
 using AnimalVolunteer.Application.Database;
 using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
+using FluentValidation;
+using AnimalVolunteer.Application.Extensions;
 
 namespace AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
 
 public class CreateVolunteerHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
+    private readonly IValidator<CreateVolunteerCommand> _validator;
 
-    public CreateVolunteerHandler(IVolunteerRepository volunteerRepository)
+    public CreateVolunteerHandler(
+        IVolunteerRepository volunteerRepository, 
+        IValidator<CreateVolunteerCommand> validator)
     {
         _volunteerRepository = volunteerRepository;
+        _validator = validator;
     }
-    public async Task<Result<VolunteerId, Error>> Create(
-        CreateVolunteerCommand request,
+    public async Task<Result<VolunteerId, ErrorList>> Create(
+        CreateVolunteerCommand command,
         CancellationToken cancellationToken)
     {
-        var email = Email.Create(request.Email).Value;
+        var validationResult = await _validator
+            .ValidateAsync(command, cancellationToken);
+        if (!validationResult.IsValid)
+            return validationResult.ToErrorList();
+
+        var email = Email.Create(command.Email).Value;
 
         if (await _volunteerRepository.ExistByEmail(email, cancellationToken))
-            return Errors.Volunteer.AlreadyExist();
+            return Errors.Volunteer.AlreadyExist().ToErrorList();
 
         var fullName = FullName.Create(
-           request.FullName.FirstName,
-           request.FullName.SurName,
-           request.FullName.LastName).Value;
+           command.FullName.FirstName,
+           command.FullName.SurName,
+           command.FullName.LastName).Value;
 
-        var description = Description.Create(request.Description).Value;
+        var description = Description.Create(command.Description).Value;
 
         var statistics = Statistics.CreateEmpty();
 
         var contactInfo = ContactInfoList.CreateEmpty();
 
-        var socialNetworks = SocialNetworkList.Create(request.SocialNetworkList
+        var socialNetworks = SocialNetworkList.Create(command.SocialNetworkList
             .Select(x => SocialNetwork.Create(x.Name, x.URL).Value));
 
-        var paymentDetails = PaymentDetailsList.Create(request.PaymentDetailsList
+        var paymentDetails = PaymentDetailsList.Create(command.PaymentDetailsList
             .Select(x => PaymentDetails.Create(x.Name, x.Description).Value));
 
         var volunteer = DomainEntity.Root.Volunteer.Create(
