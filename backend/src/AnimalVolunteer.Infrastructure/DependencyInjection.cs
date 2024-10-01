@@ -1,5 +1,8 @@
 ﻿using AnimalVolunteer.Application.Database;
+using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
 using AnimalVolunteer.Application.Interfaces;
+using AnimalVolunteer.Infrastructure.BackgroundServices;
+using AnimalVolunteer.Infrastructure.MessageQueues;
 using AnimalVolunteer.Infrastructure.Options;
 using AnimalVolunteer.Infrastructure.Providers;
 using AnimalVolunteer.Infrastructure.Repositories;
@@ -21,6 +24,11 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddMinio(configuration);
+
+        services.AddHostedService<FileCleanerBackgroundService>();
+
+        services.AddSingleton<IMessageQueue<IEnumerable<FileInfoDto>>, 
+            InMemoryMessageQueue<IEnumerable<FileInfoDto>>>();
 
         return services;
     }
