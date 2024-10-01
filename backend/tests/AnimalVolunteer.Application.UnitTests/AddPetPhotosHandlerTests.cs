@@ -15,6 +15,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 
 namespace AnimalVolunteer.Application.UnitTests;
 
@@ -134,9 +135,6 @@ public class AddPetPhotosHandlerTests
 
         var volunteerId = VolunteerId.CreateWithGuid(command.VolunteerId);
 
-        //var volunteer = GetVolunteer(volunteerId);
-        //AddPetWithId(volunteer, command.PetId);
-
         _volunteerRepository.GetById(volunteerId, _cancellationToken)
             .Returns(
             Result.Failure<Volunteer, Error>(Errors.General.NotFound(volunteerId)));
@@ -170,7 +168,7 @@ public class AddPetPhotosHandlerTests
     }
 
     [Fact]
-    public async Task Handle_PetNotFoundInRepository_ReturnsErrorList()
+    public async Task Handle_PetNotFound_ReturnsErrorList()
     {
         // Arrange
         var files = GetFilesToUpload(["TestName1.jpg", "TestName2.jpg"]);
@@ -186,11 +184,9 @@ public class AddPetPhotosHandlerTests
 
         _unitOfWork.SaveChanges(_cancellationToken).Returns(Task.CompletedTask);
 
-        IReadOnlyList<FilePath> pathsList =
-        [
+        IReadOnlyList<FilePath> pathsList = [
             FilePath.Create(Guid.NewGuid(), ".jpg").Value,
-            FilePath.Create(Guid.NewGuid(), ".jpg").Value
-        ];
+            FilePath.Create(Guid.NewGuid(), ".jpg").Value];
 
         _fileProvider.UploadFiles(
             Arg.Any<IEnumerable<UploadingFileDto>>(),
@@ -210,8 +206,90 @@ public class AddPetPhotosHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Should().BeOfType(typeof(ErrorList));
-        //result.Error.First().Message.Should()
-        //    .BeEquivalentTo($"Record {command.PetId} not found");
+    }
+
+    [Fact]
+    public async Task Handle_FileProviderError_ReturnsErrorList()
+    {
+        // Arrange
+        var files = GetFilesToUpload(["TestName1.jpg", "TestName2.jpg"]);
+
+        var command = GetCommand(files);
+
+        var volunteerId = VolunteerId.CreateWithGuid(command.VolunteerId);
+
+        var volunteer = GetVolunteer(volunteerId);
+        AddPetWithId(volunteer, command.PetId);
+
+        _volunteerRepository.GetById(volunteerId, _cancellationToken)
+            .Returns(Result.Success<Volunteer, Error>(volunteer));
+
+        _unitOfWork.SaveChanges(_cancellationToken).Returns(Task.CompletedTask);
+
+        _fileProvider.UploadFiles(
+            Arg.Any<IEnumerable<UploadingFileDto>>(),
+            Arg.Any<string>(),
+            _cancellationToken)
+            .Returns(Result.Failure<IReadOnlyList<FilePath>, Error>(
+                Error.Failure("file.upload", "Failed to upload file in Minio")));
+
+        _validator.ValidateAsync(Arg.Any<AddPetPhotosCommand>(), _cancellationToken)
+            .Returns(new ValidationResult());
+
+        var handler = new AddPetPhotosHandler(
+            _volunteerRepository, _unitOfWork, _fileProvider, _logger, _validator);
+
+        // Act
+        var result = await handler.Handle(command, _cancellationToken);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().BeOfType(typeof(ErrorList));
+        result.Error.First().Code.Should().BeSameAs("file.upload");
+    }
+
+    [Fact]
+    public async Task Handle_ExceptionInTryCatch_ReturnsErrorList()
+    {
+        // Arrange
+        var files = GetFilesToUpload(["TestName1.jpg", "TestName2.jpg"]);
+
+        var command = GetCommand(files);
+
+        var volunteerId = VolunteerId.CreateWithGuid(command.VolunteerId);
+
+        var volunteer = GetVolunteer(volunteerId);
+        AddPetWithId(volunteer, command.PetId);
+
+        _volunteerRepository.GetById(volunteerId, _cancellationToken)
+            .Returns(Result.Success<Volunteer, Error>(volunteer));
+
+        _unitOfWork.SaveChanges(_cancellationToken)
+            .Throws(new Exception("TestException"));
+
+        IReadOnlyList<FilePath> pathsList = [
+            FilePath.Create(Guid.NewGuid(), ".jpg").Value,
+            FilePath.Create(Guid.NewGuid(), ".jpg").Value];
+
+        _fileProvider.UploadFiles(
+            Arg.Any<IEnumerable<UploadingFileDto>>(),
+            Arg.Any<string>(),
+            _cancellationToken)
+            .Returns(Result.Success<IReadOnlyList<FilePath>, Error>(pathsList));
+
+        _validator.ValidateAsync(Arg.Any<AddPetPhotosCommand>(), _cancellationToken)
+            .Returns(new ValidationResult());
+
+        var handler = new AddPetPhotosHandler(
+            _volunteerRepository, _unitOfWork, _fileProvider, _logger, _validator);
+
+        // Act
+        var result = await handler.Handle(command, _cancellationToken);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().BeOfType(typeof(ErrorList));
+        result.Error.First().Code.Should().BeSameAs("volunteer.pet.photos.failure");
     }
 
     private Volunteer GetVolunteer(VolunteerId id)

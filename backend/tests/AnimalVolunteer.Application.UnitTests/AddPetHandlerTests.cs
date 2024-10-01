@@ -13,165 +13,150 @@ using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 
-namespace AnimalVolunteer.Application.UnitTests
+namespace AnimalVolunteer.Application.UnitTests;
+
+public class AddPetHandlerTests
 {
-    public class AddPetHandlerTests
+    private readonly IVolunteerRepository _volunteerRepository = Substitute
+        .For<IVolunteerRepository>();
+
+    private readonly IUnitOfWork _unitOfWork = Substitute.For<IUnitOfWork>();
+
+    private readonly ILogger<AddPetHandler> _logger = Substitute
+        .For<ILogger<AddPetHandler>>();
+
+    private readonly IValidator<AddPetCommand> _validator = Substitute
+        .For<IValidator<AddPetCommand>>();
+
+    private readonly CancellationToken _cancellationToken =
+        new CancellationTokenSource().Token;
+
+    [Fact]
+    public async Task Handle_VolunteerDoesntExist_ReturnsError()
     {
-        [Fact]
-        public async Task Handle_VolunteerDoesntExist_ReturnsError()
+        // Arrange
+        var volunteerId = VolunteerId.Create();
+
+        var command = GetAddPetCommand(volunteerId);
+
+        _volunteerRepository.GetById(volunteerId, _cancellationToken)
+            .ReturnsForAnyArgs(Errors.General.NotFound(volunteerId));
+
+        _validator.ValidateAsync(command, _cancellationToken)
+            .Returns(new ValidationResult());
+
+        var handler = new AddPetHandler(
+            _volunteerRepository,
+            _logger,
+            _unitOfWork,
+            _validator);
+
+        // Act
+        var result = await handler.Handle(command, _cancellationToken);
+
+        // Assert
+        result.Error.Should().Equal(Errors.General.NotFound(volunteerId));
+    }
+
+    [Fact]
+    public async Task Handle_UnsuccesfullValidation_ReturnsError()
+    {
+        // Arrange
+        var volunteerId = VolunteerId.Create();
+
+        var command = GetAddPetCommand(volunteerId);
+
+        var validationFailures = new List<ValidationFailure>
         {
-            // Arrange
-            var ct = new CancellationTokenSource().Token;
+            new ValidationFailure("TestPropName", "500 || Prop || Validation")
+        };
 
-            var volunteerId = VolunteerId.Create();
+        _validator.ValidateAsync(command, _cancellationToken)
+            .Returns(new ValidationResult(validationFailures));
 
-            var command = GetAddPetCommand(volunteerId);
+        var handler = new AddPetHandler(
+            _volunteerRepository,
+            _logger,
+            _unitOfWork,
+            _validator);
 
-            var volunteerRepository = Substitute.For<IVolunteerRepository>();
+        // Act
+        var result = await handler.Handle(command, _cancellationToken);
 
-            volunteerRepository.GetById(volunteerId, ct)
-                .ReturnsForAnyArgs(Errors.General.NotFound(volunteerId));
+        // Assert
+        result.IsSuccess.Should().BeFalse();
+        result.Error.Should().BeOfType(typeof(ErrorList));
+    }
 
-            var logger = Substitute.For<ILogger<AddPetHandler>>();
+    [Fact]
+    public async Task Handle_Succesfull_ReturnsGuid()
+    {
+        // Arrange
+        var volunteerId = VolunteerId.Create();
 
-            var unitOfWork = Substitute.For<IUnitOfWork>();
+        var command = GetAddPetCommand(volunteerId);
 
-            var validator = Substitute.For<IValidator<AddPetCommand>>();
+        _volunteerRepository.GetById(volunteerId, _cancellationToken)
+            .Returns(Result.Success<Volunteer, Error>(GetVolunteer(volunteerId)));
 
-            validator.ValidateAsync(command, ct).Returns(new ValidationResult());
+        _unitOfWork.SaveChanges().Returns(Task.CompletedTask);
 
-            var handler = new AddPetHandler(
-                volunteerRepository,
-                logger,
-                unitOfWork,
-                validator);
+        _validator.ValidateAsync(command, _cancellationToken).Returns(new ValidationResult());
 
-            // Act
-            var result = await handler.Handle(command, ct);
+        var handler = new AddPetHandler(
+            _volunteerRepository,
+            _logger,
+            _unitOfWork,
+            _validator);
 
-            // Assert
-            result.Error.Should().Equal(Errors.General.NotFound(volunteerId));
-        }
+        // Act
+        var result = await handler.Handle(command, _cancellationToken);
 
-        [Fact]
-        public async Task Handle_UnsuccesfullValidation_ReturnsError()
-        {
-            // Arrange
-            var ct = new CancellationTokenSource().Token;
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().Be(volunteerId);
+    }
 
-            var volunteerId = VolunteerId.Create();
+    private AddPetCommand GetAddPetCommand(VolunteerId id)
+    {
+        return new AddPetCommand(
+            id,
+            "TestName",
+            "TestDesc",
+            "TestColor",
+            1,
+            1,
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            "Test",
+            true,
+            true,
+            "Test",
+            "Test",
+            "Test",
+            "Test",
+            DateOnly.MaxValue,
+            CurrentStatus.LookingForHelp);
+    }
 
-            var command = GetAddPetCommand(volunteerId);
+    private Volunteer GetVolunteer(VolunteerId id)
+    {
+        var fullName = FullName.Create("Test", "Test", "Test").Value;
+        var email = Email.Create("Testmail@mail.ru").Value;
+        var description = Description.Create("Test").Value;
+        var statistics = Statistics.Create(1, 1, 1, 1).Value;
+        var contacts = ContactInfoList.CreateEmpty();
+        var payments = PaymentDetailsList.CreateEmpty();
+        var socials = SocialNetworkList.CreateEmpty();
 
-            var volunteerRepository = Substitute.For<IVolunteerRepository>();
-
-            var logger = Substitute.For<ILogger<AddPetHandler>>();
-
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-
-            var validator = Substitute.For<IValidator<AddPetCommand>>();
-
-            var validationFailures = new List<ValidationFailure>
-            {
-                new ValidationFailure("TestPropName", "500 || Prop || Validation")
-            };
-
-            validator.ValidateAsync(command, ct).Returns(new ValidationResult(validationFailures));
-
-            var handler = new AddPetHandler(
-                volunteerRepository,
-                logger,
-                unitOfWork,
-                validator);
-
-            // Act
-            var result = await handler.Handle(command, ct);
-
-            // Assert
-            result.IsSuccess.Should().BeFalse();
-            result.Error.Should().BeOfType(typeof(ErrorList));
-        }
-
-        [Fact]
-        public async Task Handle_Succesfull_ReturnsGuid()
-        {
-            // Arrange
-            var ct = new CancellationTokenSource().Token;
-
-            var volunteerId = VolunteerId.Create();
-
-            var command = GetAddPetCommand(volunteerId);
-
-            var volunteerRepository = Substitute.For<IVolunteerRepository>();
-
-            volunteerRepository.GetById(volunteerId, ct)
-                .Returns(Result.Success<Volunteer, Error>(GetVolunteer(volunteerId)));
-
-            var logger = Substitute.For<ILogger<AddPetHandler>>();
-
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-
-            unitOfWork.SaveChanges().Returns(Task.CompletedTask);
-
-            var validator = Substitute.For<IValidator<AddPetCommand>>();
-
-            validator.ValidateAsync(command, ct).Returns(new ValidationResult());
-
-            var handler = new AddPetHandler(
-                volunteerRepository,
-                logger,
-                unitOfWork,
-                validator);
-
-            // Act
-            var result = await handler.Handle(command, ct);
-
-            // Assert
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().Be(volunteerId);
-        }
-
-        private AddPetCommand GetAddPetCommand(VolunteerId id)
-        {
-            return new AddPetCommand(
-                id,
-                "TestName",
-                "TestDesc",
-                "TestColor",
-                1,
-                1,
-                Guid.NewGuid(),
-                Guid.NewGuid(),
-                "Test",
-                true,
-                true,
-                "Test",
-                "Test",
-                "Test",
-                "Test",
-                DateOnly.MaxValue,
-                CurrentStatus.LookingForHelp);
-        }
-
-        private Volunteer GetVolunteer(VolunteerId id)
-        {
-            var fullName = FullName.Create("Test", "Test", "Test").Value;
-            var email = Email.Create("Testmail@mail.ru").Value;
-            var description = Description.Create("Test").Value;
-            var statistics = Statistics.Create(1, 1, 1, 1).Value;
-            var contacts = ContactInfoList.CreateEmpty();
-            var payments = PaymentDetailsList.CreateEmpty();
-            var socials = SocialNetworkList.CreateEmpty();
-
-            return Volunteer.Create(
-                id,
-                fullName,
-                email,
-                description,
-                statistics,
-                contacts,
-                socials,
-                payments);
-        }
+        return Volunteer.Create(
+            id,
+            fullName,
+            email,
+            description,
+            statistics,
+            contacts,
+            socials,
+            payments);
     }
 }
