@@ -2,6 +2,7 @@
 using AnimalVolunteer.Domain.Aggregates.Volunteer.Root;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common;
+using AnimalVolunteer.Infrastructure.DbContexts;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,9 +10,9 @@ namespace AnimalVolunteer.Infrastructure.Repositories;
 
 public class VolunteerRepository : IVolunteerRepository
 {
-    private readonly ApplicationDbContext _dbContext;
+    private readonly WriteDbContext _dbContext;
 
-    public VolunteerRepository(ApplicationDbContext dbContext)
+    public VolunteerRepository(WriteDbContext dbContext)
     {
         _dbContext = dbContext;
     }

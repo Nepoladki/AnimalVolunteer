@@ -1,10 +1,12 @@
-﻿using AnimalVolunteer.Application.Features.Volunteer.AddPet;
-using AnimalVolunteer.Application.Features.Volunteer.AddPetPhotos;
-using AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
-using AnimalVolunteer.Application.Features.Volunteer.Delete;
-using AnimalVolunteer.Application.Features.Volunteer.Update.MainInfo;
-using AnimalVolunteer.Application.Features.Volunteer.Update.PaymentDetails;
-using AnimalVolunteer.Application.Features.Volunteer.Update.SocialNetworks;
+﻿using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.AddPet;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.AddPetPhotos;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Create;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Delete;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.ContactInfo;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.MainInfo;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.PaymentDetails;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.SocialNetworks;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.GetVolunteersWithPagination;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -23,6 +25,7 @@ public static class DependencyInjection
         services.AddScoped<DeleteVolunteerHandler>();
         services.AddScoped<AddPetHandler>();
         services.AddScoped<AddPetPhotosHandler>();
+        services.AddScoped<GetVolunteersWithPaginationHandler>();
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 

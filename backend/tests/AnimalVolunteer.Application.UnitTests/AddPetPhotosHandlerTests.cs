@@ -1,6 +1,6 @@
 ﻿using AnimalVolunteer.Application.Database;
 using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
-using AnimalVolunteer.Application.Features.Volunteer.AddPetPhotos;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.AddPetPhotos;
 using AnimalVolunteer.Application.Interfaces;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.Entities;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.Enums;
