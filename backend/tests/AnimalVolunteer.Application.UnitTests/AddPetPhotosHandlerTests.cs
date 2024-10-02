@@ -16,6 +16,7 @@ using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
+using System.Collections.Generic;
 
 namespace AnimalVolunteer.Application.UnitTests;
 
@@ -34,6 +35,9 @@ public class AddPetPhotosHandlerTests
 
     private readonly IValidator<AddPetPhotosCommand> _validator = Substitute
         .For<IValidator<AddPetPhotosCommand>>();
+
+    private readonly IMessageQueue<IEnumerable<FileInfoDto>> _messageQueue = 
+        Substitute.For<IMessageQueue<IEnumerable<FileInfoDto>>>();
 
     private readonly CancellationToken _cancellationToken = 
         new CancellationTokenSource().Token;
@@ -72,7 +76,12 @@ public class AddPetPhotosHandlerTests
             .Returns(new ValidationResult());
 
         var handler = new AddPetPhotosHandler(
-            _volunteerRepository, _unitOfWork, _fileProvider, _logger, _validator);
+            _volunteerRepository, 
+            _unitOfWork, 
+            _fileProvider, 
+            _logger, 
+            _validator, 
+            _messageQueue);
 
         // Act
         var result = await handler.Handle(command, _cancellationToken);
@@ -115,7 +124,12 @@ public class AddPetPhotosHandlerTests
                 [new ValidationFailure("TestPropName", "500 || Prop || Validation")]));
 
         var handler = new AddPetPhotosHandler(
-            _volunteerRepository, _unitOfWork, _fileProvider, _logger, _validator);
+            _volunteerRepository,
+            _unitOfWork, 
+            _fileProvider, 
+            _logger,
+            _validator, 
+            _messageQueue);
 
         // Act
         var result = await handler.Handle(command, _cancellationToken);
@@ -157,7 +171,12 @@ public class AddPetPhotosHandlerTests
             .Returns(new ValidationResult());
 
         var handler = new AddPetPhotosHandler(
-            _volunteerRepository, _unitOfWork, _fileProvider, _logger, _validator);
+            _volunteerRepository, 
+            _unitOfWork, 
+            _fileProvider, 
+            _logger, 
+            _validator, 
+            _messageQueue);
 
         // Act
         var result = await handler.Handle(command, _cancellationToken);
@@ -198,7 +217,12 @@ public class AddPetPhotosHandlerTests
             .Returns(new ValidationResult());
 
         var handler = new AddPetPhotosHandler(
-            _volunteerRepository, _unitOfWork, _fileProvider, _logger, _validator);
+            _volunteerRepository,
+            _unitOfWork,
+            _fileProvider,
+            _logger,
+            _validator,
+            _messageQueue);
 
         // Act
         var result = await handler.Handle(command, _cancellationToken);
@@ -236,8 +260,16 @@ public class AddPetPhotosHandlerTests
         _validator.ValidateAsync(Arg.Any<AddPetPhotosCommand>(), _cancellationToken)
             .Returns(new ValidationResult());
 
+        _messageQueue.WriteAsync(Arg.Any<IEnumerable<FileInfoDto>>(), _cancellationToken)
+            .Returns(Task.CompletedTask);
+
         var handler = new AddPetPhotosHandler(
-            _volunteerRepository, _unitOfWork, _fileProvider, _logger, _validator);
+            _volunteerRepository,
+            _unitOfWork,
+            _fileProvider,
+            _logger,
+            _validator,
+            _messageQueue);
 
         // Act
         var result = await handler.Handle(command, _cancellationToken);
@@ -281,7 +313,12 @@ public class AddPetPhotosHandlerTests
             .Returns(new ValidationResult());
 
         var handler = new AddPetPhotosHandler(
-            _volunteerRepository, _unitOfWork, _fileProvider, _logger, _validator);
+            _volunteerRepository,
+            _unitOfWork,
+            _fileProvider,
+            _logger,
+            _validator,
+            _messageQueue);
 
         // Act
         var result = await handler.Handle(command, _cancellationToken);
@@ -350,7 +387,7 @@ public class AddPetPhotosHandlerTests
         return files;
     }
 
-    private AddPetPhotosCommand GetCommand(List<UploadFileDto> files)
+    private static AddPetPhotosCommand GetCommand(List<UploadFileDto> files)
     {
         return new AddPetPhotosCommand(
             Guid.NewGuid(),
