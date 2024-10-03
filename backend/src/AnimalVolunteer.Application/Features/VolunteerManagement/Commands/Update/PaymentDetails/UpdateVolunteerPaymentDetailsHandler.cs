@@ -11,6 +11,7 @@ using AnimalVolunteer.Domain.Common.ValueObjects;
 namespace AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.PaymentDetails;
 
 public class UpdateVolunteerPaymentDetailsHandler
+    : ICommandHandler<Guid, UpdateVolunteerPaymentDetailsCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IValidator<UpdateVolunteerPaymentDetailsCommand> _validator;
@@ -28,7 +29,7 @@ public class UpdateVolunteerPaymentDetailsHandler
         _validator = validator;
     }
 
-    public async Task<Result<Guid, ErrorList>> Update(
+    public async Task<Result<Guid, ErrorList>> Handle(
         UpdateVolunteerPaymentDetailsCommand command,
         CancellationToken cancellationToken)
     {

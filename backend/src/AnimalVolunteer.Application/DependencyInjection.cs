@@ -7,6 +7,7 @@ using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.M
 using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.PaymentDetails;
 using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.SocialNetworks;
 using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.GetVolunteersWithPagination;
+using AnimalVolunteer.Application.Interfaces;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -17,18 +18,26 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddScoped<CreateVolunteerHandler>();
-        services.AddScoped<UpdateVolunteerMainInfoHandler>();
-        services.AddScoped<UpdateVolunteerSocialNetworksHandler>();
-        services.AddScoped<UpdateVolunteerPaymentDetailsHandler>();
-        services.AddScoped<UpdateVolunteerContactInfoHandler>();
-        services.AddScoped<DeleteVolunteerHandler>();
-        services.AddScoped<AddPetHandler>();
-        services.AddScoped<AddPetPhotosHandler>();
-        services.AddScoped<GetVolunteersWithPaginationHandler>();
-
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddCommands()
+            .AddQueries()
+            .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         return services;
+    }
+    private static IServiceCollection AddCommands(this IServiceCollection services)
+    {
+        return services.Scan(scan => scan.FromAssemblies(typeof(DependencyInjection).Assembly)
+            .AddClasses(c => c
+            .AssignableTo(typeof(ICommandHandler<,>)))
+            .AsSelfWithInterfaces()
+            .WithScopedLifetime());
+    }
+    private static IServiceCollection AddQueries(this IServiceCollection services)
+    {
+        return services.Scan(scan => scan.FromAssemblies(typeof(DependencyInjection).Assembly)
+            .AddClasses(c => c
+            .AssignableTo(typeof(ICommandHandler<>)))
+            .AsSelfWithInterfaces()
+            .WithScopedLifetime());
     }
 }

@@ -18,11 +18,11 @@ public sealed class Pet : Common.Entity<PetId>
         SpeciesAndBreed speciesAndBreed,
         HealthInfo healthInfo,
         Address address,
-        ContactInfoList contactInfos,
         DateOnly birthDate,
         CurrentStatus currentStatus,
-        PaymentDetailsList paymentDetailsList,
-        PetPhotoList photos) : base(id)
+        ValueObjectList<ContactInfo> contactInfos,
+        ValueObjectList<PaymentDetails> paymentDetails,
+        ValueObjectList<PetPhoto> photos) : base(id)
     {
         Name = name;
         Description = description;
@@ -30,12 +30,12 @@ public sealed class Pet : Common.Entity<PetId>
         SpeciesAndBreed = speciesAndBreed;
         HealthInfo = healthInfo;
         Address = address;
-        ContactInfos = contactInfos;
+        ContactInfoList = contactInfos;
         BirthDate = birthDate;
         CurrentStatus = currentStatus;
         CreatedAt = DateTime.UtcNow;
-        PaymentDetails = paymentDetailsList;
-        PetPhotos = photos;
+        PaymentDetailsList = paymentDetails;
+        PetPhotosList = photos;
     }
 
     private bool _isDeleted;
@@ -45,13 +45,14 @@ public sealed class Pet : Common.Entity<PetId>
     public SpeciesAndBreed SpeciesAndBreed { get; private set; } = null!;
     public HealthInfo HealthInfo { get; private set; } = null!;
     public Address Address { get; private set; } = null!;
-    public ContactInfoList ContactInfos { get; private set; } = null!;
+    public Position Position { get; private set; } = null!;
     public DateOnly BirthDate { get; private set; } = default!;
     public CurrentStatus CurrentStatus { get; private set; }
     public DateTime CreatedAt { get; private set; } = default!;
-    public PaymentDetailsList PaymentDetails { get; private set; } = null!;
-    public PetPhotoList PetPhotos { get; private set; } = null!;
-    public Position Position { get; private set; } = null!;
+    public IReadOnlyList<ContactInfo> ContactInfoList { get; private set; } = null!;
+    public IReadOnlyList<PaymentDetails> PaymentDetailsList { get; private set; } = null!;
+    public IReadOnlyList<PetPhoto> PetPhotosList { get; private set; } = null!;
+    
     public static Pet InitialCreate(
         PetId id,
         Name name,
@@ -63,9 +64,9 @@ public sealed class Pet : Common.Entity<PetId>
         DateOnly birthDate,
         CurrentStatus currentStatus)
     {
-        var contactInfo = ContactInfoList.CreateEmpty();
-        var paymentDetails = PaymentDetailsList.CreateEmpty();
-        var photos = PetPhotoList.CreateEmpty();
+        var contactInfos = new ValueObjectList<ContactInfo>([]);
+        var paymentDetails = new ValueObjectList<PaymentDetails>([]);
+        var photos = new ValueObjectList<PetPhoto>([]);
 
         return new Pet(
             id,
@@ -73,17 +74,18 @@ public sealed class Pet : Common.Entity<PetId>
             description,
             physicalParameters,
             speciesAndBreed,
-            healthInfo, address,
-            contactInfo,
+            healthInfo, 
+            address,
             birthDate,
             currentStatus,
+            contactInfos,
             paymentDetails,
             photos);
     }
     public void Delete() => _isDeleted = true;
     public void Restore() => _isDeleted = false;
-    public void UpdatePhotos(PetPhotoList photos) =>
-        PetPhotos = photos;
+    public void UpdatePhotos(ValueObjectList<PetPhoto> photos) =>
+        PetPhotosList = photos;
     public void UpdatePosition(Position number)
         => Position = number;
     public UnitResult<Error> MoveForward()

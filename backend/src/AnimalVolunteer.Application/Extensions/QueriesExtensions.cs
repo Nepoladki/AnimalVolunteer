@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.GetVolunteersWithPagination;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace AnimalVolunteer.Application.Extensions;
 
@@ -26,5 +27,13 @@ public static class QueriesExtensions
             Page = page,
             TotalCount = totalCount
         };
+    }
+
+    public static IQueryable<T> WhereIf<T>(
+        this IQueryable<T> source,
+        bool condition,
+        Expression<Func<T, bool>> predicate)
+    {
+        return condition ? source.Where(predicate) : source;
     }
 }

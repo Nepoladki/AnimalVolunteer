@@ -20,7 +20,7 @@ public class VolunteerController : ApplicationController
     [HttpGet]
     public async Task<IActionResult> GetAll(
         [FromQuery] GetVolunteersWithPaginationRequest request,
-        [FromServices] GetVolunteersWithPaginationHandler handler,
+        [FromServices] GetFilteredVolunteersWithPaginationHandler handler,
         CancellationToken cancellationToken = default)
     {
         var query = request.ToQuery();
@@ -37,7 +37,7 @@ public class VolunteerController : ApplicationController
     {
         var command = request.ToCommand();
 
-        var creationResult = await handler.Create(command, cancellationToken);
+        var creationResult = await handler.Handle(command, cancellationToken);
 
         if (creationResult.IsFailure)
             return creationResult.Error.ToResponse();
@@ -55,7 +55,7 @@ public class VolunteerController : ApplicationController
         
         var command = request.ToCommand(id);
 
-        var handleResult = await handler.Update(command, cancellationToken);
+        var handleResult = await handler.Handle(command, cancellationToken);
 
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
@@ -72,7 +72,7 @@ public class VolunteerController : ApplicationController
     {
         var command = request.ToCommand(id);
 
-        var handleResult = await handler.Update(command, cancellationToken);
+        var handleResult = await handler.Handle(command, cancellationToken);
 
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
@@ -89,7 +89,7 @@ public class VolunteerController : ApplicationController
     {
         var command = request.ToCommand(id);
 
-        var handleResult = await handler.Update(command, cancellationToken);
+        var handleResult = await handler.Handle(command, cancellationToken);
 
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
@@ -121,7 +121,7 @@ public class VolunteerController : ApplicationController
         CancellationToken cancellationToken = default)
     {
         var deleteResult = await handler
-            .Delete(new DeleteVolunteerCommand(id), cancellationToken);
+            .Handle(new DeleteVolunteerCommand(id), cancellationToken);
         if (deleteResult.IsFailure)
             return deleteResult.Error.ToResponse();
 

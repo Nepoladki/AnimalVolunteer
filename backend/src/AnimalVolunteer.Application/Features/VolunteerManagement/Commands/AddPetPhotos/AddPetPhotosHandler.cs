@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AnimalVolunteer.Application.Features.VolunteerManagement.Commands.AddPetPhotos;
 
-public class AddPetPhotosHandler
+public class AddPetPhotosHandler : ICommandHandler<AddPetPhotosCommand>
 {
     private const string BUCKET_NAME = "photos";
     private readonly IVolunteerRepository _volunteerRepository;

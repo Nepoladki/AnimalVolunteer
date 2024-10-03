@@ -1,4 +1,5 @@
-﻿using AnimalVolunteer.Domain.Aggregates.Volunteer.Enums;
+﻿using AnimalVolunteer.Application.Interfaces;
+using AnimalVolunteer.Domain.Aggregates.Volunteer.Enums;
 
 namespace AnimalVolunteer.Application.Features.VolunteerManagement.Commands.AddPet;
 
@@ -19,4 +20,4 @@ public record AddPetCommand(
     string Street,
     string? House,
     DateOnly BirthDate,
-    CurrentStatus CurrentStatus);
+    CurrentStatus CurrentStatus) : ICommand;

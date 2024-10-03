@@ -5,7 +5,7 @@ using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Delete;
 
-public class DeleteVolunteerHandler
+public class DeleteVolunteerHandler : ICommandHandler<Guid, DeleteVolunteerCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -15,7 +15,7 @@ public class DeleteVolunteerHandler
         _volunteerRepository = volunteerRepository;
         _unitOfWork = unitOfWork;
     }
-    public async Task<Result<Guid, Error>> Delete(
+    public async Task<Result<Guid, ErrorList>> Handle(
         DeleteVolunteerCommand request,
         CancellationToken cancellationToken)
     {
@@ -24,7 +24,7 @@ public class DeleteVolunteerHandler
             cancellationToken);
 
         if (volunteerResult.IsFailure)
-            return volunteerResult.Error;
+            return volunteerResult.Error.ToErrorList();
 
         volunteerResult.Value.Delete();
 

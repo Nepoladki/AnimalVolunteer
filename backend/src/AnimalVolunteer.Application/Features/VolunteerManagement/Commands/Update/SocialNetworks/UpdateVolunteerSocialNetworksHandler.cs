@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 namespace AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.SocialNetworks;
 
 public class UpdateVolunteerSocialNetworksHandler
+    : ICommandHandler<Guid, UpdateVolunteerSocialNetworksCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly ILogger<UpdateVolunteerSocialNetworksHandler> _logger;
@@ -27,7 +28,7 @@ public class UpdateVolunteerSocialNetworksHandler
         _validator = validator;
     }
 
-    public async Task<Result<Guid, ErrorList>> Update(
+    public async Task<Result<Guid, ErrorList>> Handle(
         UpdateVolunteerSocialNetworksCommand command,
         CancellationToken cancellationToken)
     {

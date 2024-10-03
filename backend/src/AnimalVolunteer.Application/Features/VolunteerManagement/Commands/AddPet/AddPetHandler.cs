@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AnimalVolunteer.Application.Features.VolunteerManagement.Commands.AddPet;
 
-public class AddPetHandler
+public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IUnitOfWork _unitOfWork;

@@ -1,3 +1,5 @@
-﻿namespace AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Delete;
+﻿using AnimalVolunteer.Application.Interfaces;
 
-public record DeleteVolunteerCommand(Guid Id);
+namespace AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Delete;
+
+public record DeleteVolunteerCommand(Guid Id) : ICommand;

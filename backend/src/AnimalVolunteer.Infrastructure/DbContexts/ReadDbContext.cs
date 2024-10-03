@@ -22,8 +22,8 @@ public class ReadDbContext : DbContext, IReadDbContext
         _dbOptions = dbOptions.Value;
     }
 
-    public DbSet<VolunteerDto> Volunteers { get; set; }
-    public DbSet<PetDto> Pets { get; set; }
+    public IQueryable<VolunteerDto> Volunteers => Set<VolunteerDto>();
+    public IQueryable<PetDto> Pets => Set<PetDto>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

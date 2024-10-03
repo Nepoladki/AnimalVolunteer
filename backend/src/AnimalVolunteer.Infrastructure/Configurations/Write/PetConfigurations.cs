@@ -114,28 +114,31 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
             .HasColumnName("house");
         });
 
-        builder.OwnsOne(x => x.ContactInfos, ci =>
-        {
-            ci.ToJson();
+        builder.Property(x => x.ContactInfos)
+            .HasValueObjectsJsonConversion();
 
-            ci.OwnsMany(i => i.Contacts, j =>
-            {
-                j.Property(k => k.PhoneNumber)
-                .IsRequired()
-                .HasMaxLength(ContactInfo.MAX_PHONE_LENGTH)
-                .HasJsonPropertyName("phone_number");
+        //builder.OwnsOne(x => x.ContactInfos, ci =>
+        //{
+        //    ci.ToJson();
 
-                j.Property(k => k.Name)
-                .IsRequired()
-                .HasMaxLength(ContactInfo.MAX_NAME_LENGTH)
-                .HasJsonPropertyName("name");
+        //    ci.OwnsMany(i => i.Contacts, j =>
+        //    {
+        //        j.Property(k => k.PhoneNumber)
+        //        .IsRequired()
+        //        .HasMaxLength(ContactInfo.MAX_PHONE_LENGTH)
+        //        .HasJsonPropertyName("phone_number");
 
-                j.Property(k => k.Note)
-                .IsRequired(false)
-                .HasMaxLength(ContactInfo.MAX_NOTE_LENGTH)
-                .HasJsonPropertyName("note");
-            });
-        });
+        //        j.Property(k => k.Name)
+        //        .IsRequired()
+        //        .HasMaxLength(ContactInfo.MAX_NAME_LENGTH)
+        //        .HasJsonPropertyName("name");
+
+        //        j.Property(k => k.Note)
+        //        .IsRequired(false)
+        //        .HasMaxLength(ContactInfo.MAX_NOTE_LENGTH)
+        //        .HasJsonPropertyName("note");
+        //    });
+        //});
 
         builder.Property(x => x.BirthDate)
             .IsRequired();

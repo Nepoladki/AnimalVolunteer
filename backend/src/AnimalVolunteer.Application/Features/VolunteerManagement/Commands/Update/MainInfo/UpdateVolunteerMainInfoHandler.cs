@@ -10,7 +10,8 @@ using AnimalVolunteer.Domain.Common.ValueObjects;
 
 namespace AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.MainInfo;
 
-public class UpdateVolunteerMainInfoHandler
+public class UpdateVolunteerMainInfoHandler 
+    : ICommandHandler<Guid, UpdateVolunteerMainInfoCommand>
 {
     private readonly ILogger<UpdateVolunteerMainInfoHandler> _logger;
     private readonly IVolunteerRepository _volunteerRepository;
@@ -27,7 +28,7 @@ public class UpdateVolunteerMainInfoHandler
         _unitOfWork = unitOfWork;
         _validator = validator;
     }
-    public async Task<Result<Guid, ErrorList>> Update(
+    public async Task<Result<Guid, ErrorList>> Handle(
         UpdateVolunteerMainInfoCommand command,
         CancellationToken cancellationToken)
     {

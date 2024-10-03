@@ -10,7 +10,8 @@ using AnimalVolunteer.Domain.Common.ValueObjects;
 
 namespace AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.ContactInfo;
 
-public class UpdateVolunteerContactInfoHandler
+public class UpdateVolunteerContactInfoHandler 
+    : ICommandHandler<Guid, UpdateVolunteerContactInfoCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly ILogger<UpdateVolunteerContactInfoHandler> _logger;

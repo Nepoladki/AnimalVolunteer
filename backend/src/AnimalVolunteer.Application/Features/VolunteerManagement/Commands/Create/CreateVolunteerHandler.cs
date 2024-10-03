@@ -10,7 +10,7 @@ using AnimalVolunteer.Application.Extensions;
 
 namespace AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Create;
 
-public class CreateVolunteerHandler
+public class CreateVolunteerHandler : ICommandHandler<Guid, CreateVolunteerCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IValidator<CreateVolunteerCommand> _validator;
@@ -22,7 +22,7 @@ public class CreateVolunteerHandler
         _volunteerRepository = volunteerRepository;
         _validator = validator;
     }
-    public async Task<Result<VolunteerId, ErrorList>> Create(
+    public async Task<Result<Guid, ErrorList>> Handle(
         CreateVolunteerCommand command,
         CancellationToken cancellationToken)
     {
@@ -65,6 +65,6 @@ public class CreateVolunteerHandler
 
         await _volunteerRepository.Create(volunteer, cancellationToken);
 
-        return volunteer.Id;
+        return (Guid)volunteer.Id;
     }
 }
