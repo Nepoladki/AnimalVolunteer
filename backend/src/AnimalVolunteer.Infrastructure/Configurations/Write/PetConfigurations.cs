@@ -5,6 +5,9 @@ using AnimalVolunteer.Domain.Aggregates.Volunteer.Entities;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.Enums;
 using AnimalVolunteer.Domain.Common.ValueObjects;
+using AnimalVolunteer.Infrastructure.Extensions;
+using AnimalVolunteer.Application.DTOs.Volunteer;
+using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
 
 namespace AnimalVolunteer.Infrastructure.Configurations.Write;
 
@@ -114,31 +117,12 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
             .HasColumnName("house");
         });
 
-        builder.Property(x => x.ContactInfos)
-            .HasValueObjectsJsonConversion();
-
-        //builder.OwnsOne(x => x.ContactInfos, ci =>
-        //{
-        //    ci.ToJson();
-
-        //    ci.OwnsMany(i => i.Contacts, j =>
-        //    {
-        //        j.Property(k => k.PhoneNumber)
-        //        .IsRequired()
-        //        .HasMaxLength(ContactInfo.MAX_PHONE_LENGTH)
-        //        .HasJsonPropertyName("phone_number");
-
-        //        j.Property(k => k.Name)
-        //        .IsRequired()
-        //        .HasMaxLength(ContactInfo.MAX_NAME_LENGTH)
-        //        .HasJsonPropertyName("name");
-
-        //        j.Property(k => k.Note)
-        //        .IsRequired(false)
-        //        .HasMaxLength(ContactInfo.MAX_NOTE_LENGTH)
-        //        .HasJsonPropertyName("note");
-        //    });
-        //});
+        builder.Property(x => x.ContactInfoList)
+            .HasValueObjectsJsonConversion(
+            dm => new ContactInfoDto(dm.PhoneNumber, dm.Name, dm.Note),
+            dto => ContactInfo
+                    .Create(dto.PhoneNumber, dto.Name, dto.Note).Value)
+            .HasColumnName(ContactInfo.DB_COLUMN_NAME);
 
         builder.Property(x => x.BirthDate)
             .IsRequired();
@@ -152,42 +136,18 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
         builder.Property(x => x.CreatedAt)
             .IsRequired();
 
-        builder.OwnsOne(x => x.PaymentDetails, pd =>
-        {
-            pd.ToJson();
+        builder.Property(x => x.PaymentDetailsList)
+            .HasValueObjectsJsonConversion(
+            dm => new PaymentDetailsDto(dm.Name, dm.Description),
+            dto => PaymentDetails.Create(dto.Name, dto.Description).Value)
+            .HasColumnName(PaymentDetails.DB_COLUMN_NAME);
 
-            pd.OwnsMany(i => i.Payments, j =>
-            {
-                j.Property(k => k.Name)
-                .IsRequired()
-                .HasMaxLength(PaymentDetails.MAX_NAME_LENGTH)
-                .HasJsonPropertyName("name");
-
-                j.Property(k => k.Description)
-                .IsRequired()
-                .HasMaxLength(PaymentDetails.MAX_DESC_LENGTH)
-                .HasJsonPropertyName("description");
-            });
-        });
-
-        builder.OwnsOne(x => x.PetPhotos, pp =>
-        {
-            pp.ToJson();
-
-            pp.OwnsMany(i => i.PetPhotos, j =>
-            {
-                j.Property(k => k.FilePath)
-                .HasConversion(
-                    p => p.Value,
-                    value => FilePath.Create(value).Value)
-                .IsRequired()
-                .HasMaxLength(FilePath.MAX_FILEPATH_LENGTH)
-                .HasJsonPropertyName("path");
-
-                j.Property(k => k.IsMain)
-                .IsRequired()
-                .HasJsonPropertyName("is_main");
-            });
-        });
+        builder.Property(x => x.PetPhotosList)
+            .HasValueObjectsJsonConversion(
+            dm => new PetPhotoDto(dm.FilePath.Value, dm.IsMain),
+            dto => PetPhoto
+                    .Create(FilePath
+                        .Create(dto.FilePath).Value, dto.IsMain).Value)
+            .HasColumnName(PetPhoto.DB_COLUMN_NAME);
     }
 }

@@ -6,6 +6,7 @@ namespace AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
 
 public record PetPhoto
 {
+    public const string DB_COLUMN_NAME = "pet_photos";
     private PetPhoto(FilePath filePath, bool isMain)
     {
         FilePath = filePath;

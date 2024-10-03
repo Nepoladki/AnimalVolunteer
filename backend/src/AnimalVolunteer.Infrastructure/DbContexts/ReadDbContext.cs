@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Application.DTOs.Volunteer;
+using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
 using AnimalVolunteer.Application.Interfaces;
 using AnimalVolunteer.Domain.Aggregates.PetType;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.Root;

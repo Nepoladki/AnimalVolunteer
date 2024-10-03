@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Application.DTOs.Volunteer;
+using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
 using Microsoft.EntityFrameworkCore;
 
 namespace AnimalVolunteer.Application.Interfaces;

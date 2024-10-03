@@ -9,7 +9,8 @@ namespace AnimalVolunteer.Infrastructure.Extensions;
 
 public static class EfCoreFluentApiExtensions
 {
-    public static PropertyBuilder<IReadOnlyList<TValueObject>> HasValueObjectsJsonConversion<TValueObject, TDto>(
+    public static PropertyBuilder<IReadOnlyList<TValueObject>> 
+        HasValueObjectsJsonConversion<TValueObject, TDto>(
         this PropertyBuilder<IReadOnlyList<TValueObject>> property,
         Func<TValueObject, TDto> toDtoSelector,
         Func<TDto, TValueObject> toValueObjectsSelector)
@@ -32,7 +33,8 @@ public static class EfCoreFluentApiExtensions
     private static IReadOnlyList<TValueObject> DeserializeDtoCollection<TValueObject, TDto>(
         string json, Func<TDto, TValueObject> selector)
     {
-        var dtos = JsonSerializer.Deserialize<IEnumerable<TDto>>(json, JsonSerializerOptions.Default) ?? [];
+        var dtos = JsonSerializer
+            .Deserialize<IEnumerable<TDto>>(json, JsonSerializerOptions.Default) ?? [];
 
         return dtos.Select(selector).ToList();
     }

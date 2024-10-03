@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.Root;
+using AnimalVolunteer.Infrastructure.Extensions;
+using AnimalVolunteer.Application.DTOs.Volunteer;
 
 namespace AnimalVolunteer.Infrastructure.Configurations.Write;
 
@@ -76,64 +78,24 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
             .HasColumnName("pets_in_vet_clinic");
         });
 
-        builder.OwnsOne(x => x.ContactInfos, ci =>
-        {
-            ci.ToJson();
+        builder.Property(x => x.ContactInfoList)
+          .HasValueObjectsJsonConversion(
+          dm => new ContactInfoDto(dm.PhoneNumber, dm.Name, dm.Note),
+          dto => ContactInfo
+                  .Create(dto.PhoneNumber, dto.Name, dto.Note).Value)
+          .HasColumnName(ContactInfo.DB_COLUMN_NAME);
 
-            ci.OwnsMany(i => i.Contacts, j =>
-            {
-                j.Property(k => k.PhoneNumber)
-                .IsRequired(false)
-                .HasMaxLength(ContactInfo.MAX_PHONE_LENGTH)
-                .HasJsonPropertyName("phone_number");
+        builder.Property(x => x.SocialNetworksList)
+             .HasValueObjectsJsonConversion(
+            dm => new SocialNetworkDto(dm.Name, dm.URL),
+            dto => SocialNetwork.Create(dto.Name, dto.URL).Value)
+             .HasColumnName(SocialNetwork.DB_COLUMN_NAME);
 
-                j.Property(k => k.Name)
-                .IsRequired(false)
-                .HasMaxLength(ContactInfo.MAX_NAME_LENGTH)
-                .HasJsonPropertyName("name");
-
-                j.Property(k => k.Note)
-                .IsRequired(false)
-                .HasMaxLength(ContactInfo.MAX_NOTE_LENGTH)
-                .HasJsonPropertyName("note");
-            });
-        });
-
-        builder.OwnsOne(x => x.SocialNetworks, ci =>
-        {
-            ci.ToJson();
-
-            ci.OwnsMany(i => i.SocialNetworks, j =>
-            {
-                j.Property(k => k.Name)
-                .IsRequired(false)
-                .HasMaxLength(SocialNetwork.MAX_NAME_LENGTH)
-                .HasJsonPropertyName("name");
-
-                j.Property(k => k.URL)
-                .IsRequired(false)
-                .HasMaxLength(SocialNetwork.MAX_URL_LENGTH)
-                .HasJsonPropertyName("url");
-            });
-        });
-
-        builder.OwnsOne(x => x.PaymentDetails, pd =>
-        {
-            pd.ToJson();
-
-            pd.OwnsMany(i => i.Payments, j =>
-            {
-                j.Property(k => k.Name)
-                .IsRequired(false)
-                .HasMaxLength(PaymentDetails.MAX_NAME_LENGTH)
-                .HasJsonPropertyName("name");
-
-                j.Property(k => k.Description)
-                .IsRequired(false)
-                .HasMaxLength(PaymentDetails.MAX_DESC_LENGTH)
-                .HasJsonPropertyName("description");
-            });
-        });
+        builder.Property(x => x.PaymentDetailsList)
+            .HasValueObjectsJsonConversion(
+            dm => new PaymentDetailsDto(dm.Name, dm.Description),
+            dto => PaymentDetails.Create(dto.Name, dto.Description).Value)
+            .HasColumnName(PaymentDetails.DB_COLUMN_NAME);
 
         builder.HasMany(x => x.Pets)
             .WithOne()

@@ -17,18 +17,18 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
         Email email,
         Description description,
         Statistics statistics,
-        ContactInfoList contactInfoList,
-        SocialNetworkList socialNetworkList,
-        PaymentDetailsList paymentDetailsList) : base(id)
+        ValueObjectList<ContactInfo> contactInfoList,
+        ValueObjectList<SocialNetwork> socialNetworkList,
+        ValueObjectList<PaymentDetails> paymentDetailsList) : base(id)
     {
         _pets = [];
         FullName = fullName;
         Email = email;
         Description = description;
         Statistics = statistics;
-        ContactInfos = contactInfoList;
-        SocialNetworks = socialNetworkList;
-        PaymentDetails = paymentDetailsList;
+        ContactInfoList = contactInfoList;
+        SocialNetworksList = socialNetworkList;
+        PaymentDetailsList = paymentDetailsList;
     }
 
     private readonly List<Pet> _pets = default!;
@@ -38,9 +38,9 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
     public Email Email { get; private set; } = null!;
     public Description Description { get; private set; } = null!;
     public Statistics Statistics { get; private set; } = null!;
-    public ContactInfoList ContactInfos { get; private set; } = null!;
-    public SocialNetworkList SocialNetworks { get; private set; } = null!;
-    public PaymentDetailsList PaymentDetails { get; private set; } = null!;
+    public IReadOnlyList<ContactInfo> ContactInfoList { get; private set; } = null!;
+    public IReadOnlyList<SocialNetwork> SocialNetworksList { get; private set; } = null!;
+    public IReadOnlyList<PaymentDetails> PaymentDetailsList { get; private set; } = null!;
     public IReadOnlyList<Pet> Pets => _pets;
     public int CountPetsFoundedHome() => Statistics.PetsFoundedHome;
     public int CountPetsLookingForHome() => Statistics.PetsLookingForHome;
@@ -53,11 +53,14 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
         Description = description;
     }
 
-    public void UpdateContactInfo(ContactInfoList contacts) => ContactInfos = contacts;
+    public void UpdateContactInfo(ValueObjectList<ContactInfo> contacts) => 
+        ContactInfoList = contacts;
 
-    public void UpdateSocialNetworks(SocialNetworkList socialNetworks) => SocialNetworks = socialNetworks;
+    public void UpdateSocialNetworks(ValueObjectList<SocialNetwork> socialNetworks) => 
+        SocialNetworksList = socialNetworks;
 
-    public void UpdatePaymentDetails(PaymentDetailsList paymentDetails) => PaymentDetails = paymentDetails;
+    public void UpdatePaymentDetails(ValueObjectList<PaymentDetails> paymentDetails) => 
+        PaymentDetailsList = paymentDetails;
 
     public void Delete()
     {
@@ -171,9 +174,9 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
         Email email,
         Description description,
         Statistics statistics,
-        ContactInfoList contactInfoList,
-        SocialNetworkList socialNetworkList,
-        PaymentDetailsList paymentDetailsList) =>
+        ValueObjectList<ContactInfo> contactInfoList,
+        ValueObjectList<SocialNetwork> socialNetworkList,
+        ValueObjectList<PaymentDetails> paymentDetailsList) =>
             new(
                 id,
                 fullName,
