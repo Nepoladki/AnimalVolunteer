@@ -335,9 +335,8 @@ public class AddPetPhotosHandlerTests
         var email = Email.Create("Testmail@mail.ru").Value;
         var description = Description.Create("Test").Value;
         var statistics = Statistics.Create(1, 1, 1, 1).Value;
-        var contacts = ContactInfoList.CreateEmpty();
-        var payments = PaymentDetailsList.CreateEmpty();
-        var socials = SocialNetworkList.CreateEmpty();
+        var payments = new List<PaymentDetails>();
+        var socials = new List<SocialNetwork>();
 
         return Volunteer.Create(
             id,
@@ -345,7 +344,6 @@ public class AddPetPhotosHandlerTests
             email,
             description,
             statistics,
-            contacts,
             socials,
             payments);
     }

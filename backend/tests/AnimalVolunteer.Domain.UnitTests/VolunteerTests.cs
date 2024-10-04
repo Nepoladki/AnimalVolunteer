@@ -174,9 +174,8 @@ public class VolunteerTests
         var email = Email.Create("testtest@mail.ru").Value;
         var description = Description.Create("TestDesc").Value;
         var statistics = Statistics.Create(1, 1, 1, 1).Value;
-        var contacts = ContactInfoList.CreateEmpty();
-        var socials = SocialNetworkList.CreateEmpty();
-        var payment = PaymentDetailsList.CreateEmpty();
+        var payments = new List<PaymentDetails>();
+        var socials = new List<SocialNetwork>();
 
         return Volunteer.Create(
             id,
@@ -184,9 +183,8 @@ public class VolunteerTests
             email,
             description,
             statistics,
-            contacts,
             socials,
-            payment);
+            payments);
     }
 
     private Pet CreatePet()
