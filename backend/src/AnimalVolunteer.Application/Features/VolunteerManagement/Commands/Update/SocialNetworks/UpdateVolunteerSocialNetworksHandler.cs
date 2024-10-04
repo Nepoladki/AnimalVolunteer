@@ -42,8 +42,8 @@ public class UpdateVolunteerSocialNetworksHandler
         if (volunteerResult.IsFailure)
             return volunteerResult.Error.ToErrorList();
 
-        var socialNetworks = SocialNetworkList.Create(command.SocialNetworks
-            .Select(x => SocialNetwork.Create(x.Name, x.URL).Value));
+        var socialNetworks = command.SocialNetworks
+            .Select(x => SocialNetwork.Create(x.Name, x.URL).Value).ToList();
 
         volunteerResult.Value.UpdateSocialNetworks(socialNetworks);
 

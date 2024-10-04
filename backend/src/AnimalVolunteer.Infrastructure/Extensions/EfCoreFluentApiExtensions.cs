@@ -40,8 +40,7 @@ public static class EfCoreFluentApiExtensions
     }
 
     private static ValueComparer<IReadOnlyList<T>> CreateCollectionValueComparer<T>() =>
-        new(
-            (c1, c2) => c1!.SequenceEqual(c2!),
+        new((c1, c2) => c1!.SequenceEqual(c2!),
             c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v!.GetHashCode())),
             c => c.ToList());
 }

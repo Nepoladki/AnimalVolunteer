@@ -42,9 +42,8 @@ public class UpdateVolunteerPaymentDetailsHandler
         if (!validationResult.IsValid)
             return validationResult.ToErrorList();
 
-        var paymentDetails = PaymentDetailsList.Create(
-            command.PaymentDetails.Select(x =>
-                DomainPaymentDetails.Create(x.Name, x.Description).Value));
+        var paymentDetails = command.PaymentDetails.Select(x =>
+                DomainPaymentDetails.Create(x.Name, x.Description).Value).ToList();
 
         volunteerResult.Value.UpdatePaymentDetails(paymentDetails);
 

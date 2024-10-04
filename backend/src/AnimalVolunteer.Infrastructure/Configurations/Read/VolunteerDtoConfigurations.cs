@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using AnimalVolunteer.Application.DTOs.Volunteer;
 using System.Text.Json;
+using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
+using AnimalVolunteer.Domain.Common.ValueObjects;
 
 namespace AnimalVolunteer.Infrastructure.Configurations.Read;
 
@@ -23,7 +25,8 @@ public class VolunteerDtoConfigurations : IEntityTypeConfiguration<VolunteerDto>
                 .Serialize(string.Empty, JsonSerializerOptions.Default),
             json => JsonSerializer
                 .Deserialize<IEnumerable<PaymentDetailsDto>>(
-                    json, JsonSerializerOptions.Default)!);
+                    json, JsonSerializerOptions.Default)!)
+            .HasColumnName(PaymentDetails.DB_COLUMN_NAME); ;
 
         builder.Property(x => x.SocialNetworks)
             .HasConversion(
@@ -31,7 +34,8 @@ public class VolunteerDtoConfigurations : IEntityTypeConfiguration<VolunteerDto>
                 .Serialize(string.Empty, JsonSerializerOptions.Default),
             json => JsonSerializer
                 .Deserialize<IEnumerable<SocialNetworkDto>>(
-                    json, JsonSerializerOptions.Default)!);
+                    json, JsonSerializerOptions.Default)!)
+            .HasColumnName(SocialNetwork.DB_COLUMN_NAME);
 
         builder.Property(x => x.ContactInfos)
             .HasConversion(
@@ -39,6 +43,7 @@ public class VolunteerDtoConfigurations : IEntityTypeConfiguration<VolunteerDto>
                 .Serialize(string.Empty, JsonSerializerOptions.Default),
             json => JsonSerializer
                 .Deserialize<IEnumerable<ContactInfoDto>>(
-                    json, JsonSerializerOptions.Default)!);
+                    json, JsonSerializerOptions.Default)!)
+            .HasColumnName(ContactInfo.DB_COLUMN_NAME); ;
     }
 }

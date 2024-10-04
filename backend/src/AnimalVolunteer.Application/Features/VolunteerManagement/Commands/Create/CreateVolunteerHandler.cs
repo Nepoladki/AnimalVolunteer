@@ -45,13 +45,11 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, CreateVolunteerComma
 
         var statistics = Statistics.CreateEmpty();
 
-        var contactInfo = ContactInfoList.CreateEmpty();
+        var socialNetworks = command.SocialNetworkList
+            .Select(x => SocialNetwork.Create(x.Name, x.URL).Value).ToList();
 
-        var socialNetworks = SocialNetworkList.Create(command.SocialNetworkList
-            .Select(x => SocialNetwork.Create(x.Name, x.URL).Value));
-
-        var paymentDetails = PaymentDetailsList.Create(command.PaymentDetailsList
-            .Select(x => PaymentDetails.Create(x.Name, x.Description).Value));
+        var paymentDetails = command.PaymentDetailsList
+            .Select(x => PaymentDetails.Create(x.Name, x.Description).Value).ToList();
 
         var volunteer = DomainEntity.Root.Volunteer.Create(
             VolunteerId.Create(),
@@ -59,7 +57,6 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, CreateVolunteerComma
             email,
             description,
             statistics,
-            contactInfo,
             socialNetworks,
             paymentDetails);
 

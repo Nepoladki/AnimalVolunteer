@@ -28,16 +28,16 @@ public static class DependencyInjection
     {
         return services.Scan(scan => scan.FromAssemblies(typeof(DependencyInjection).Assembly)
             .AddClasses(c => c
-            .AssignableTo(typeof(ICommandHandler<,>)))
-            .AsSelfWithInterfaces()
-            .WithScopedLifetime());
+                .AssignableToAny(typeof(ICommandHandler<,>), typeof(ICommandHandler<>)))
+                .AsSelfWithInterfaces()
+                .WithScopedLifetime());
     }
     private static IServiceCollection AddQueries(this IServiceCollection services)
     {
         return services.Scan(scan => scan.FromAssemblies(typeof(DependencyInjection).Assembly)
             .AddClasses(c => c
-            .AssignableTo(typeof(ICommandHandler<>)))
-            .AsSelfWithInterfaces()
-            .WithScopedLifetime());
+                .AssignableTo(typeof(IQueryHandler<,>)))
+                .AsSelfWithInterfaces()
+                .WithScopedLifetime());
     }
 }

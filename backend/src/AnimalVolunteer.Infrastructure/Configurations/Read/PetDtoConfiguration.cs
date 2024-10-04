@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using AnimalVolunteer.Application.DTOs.Volunteer;
 using System.Text.Json;
 using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
+using AnimalVolunteer.Domain.Common.ValueObjects;
+using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
 
 namespace AnimalVolunteer.Infrastructure.Configurations.Read;
 
@@ -20,7 +22,8 @@ public class PetDtoConfigurations : IEntityTypeConfiguration<PetDto>
             values => JsonSerializer.Serialize(string.Empty, JsonSerializerOptions.Default),
             json => JsonSerializer
                .Deserialize<IEnumerable<PaymentDetailsDto>>(
-                   json, JsonSerializerOptions.Default)!);
+                   json, JsonSerializerOptions.Default)!)
+            .HasColumnName(PaymentDetails.DB_COLUMN_NAME);
 
         builder.Property(x => x.Photos)
            .HasConversion(
@@ -28,6 +31,7 @@ public class PetDtoConfigurations : IEntityTypeConfiguration<PetDto>
                .Serialize(string.Empty, JsonSerializerOptions.Default),
            json => JsonSerializer
                .Deserialize<IEnumerable<PetPhotoDto>>(
-                   json, JsonSerializerOptions.Default)!);
+                   json, JsonSerializerOptions.Default)!)
+           .HasColumnName(PetPhoto.DB_COLUMN_NAME);
     }
 }

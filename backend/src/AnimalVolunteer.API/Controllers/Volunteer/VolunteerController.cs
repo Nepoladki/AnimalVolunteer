@@ -19,7 +19,7 @@ public class VolunteerController : ApplicationController
 {
     [HttpGet]
     public async Task<IActionResult> GetAll(
-        [FromQuery] GetVolunteersWithPaginationRequest request,
+        [FromQuery] GetFilteredVolunteersWithPaginationRequest request,
         [FromServices] GetFilteredVolunteersWithPaginationHandler handler,
         CancellationToken cancellationToken = default)
     {

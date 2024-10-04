@@ -89,8 +89,8 @@ public class AddPetPhotosHandler : ICommandHandler<AddPetPhotosCommand>
                 return uploadResult.Error.ToErrorList();
             }
 
-            var petPhotos = PetPhotoList.Create(
-                files.Select(f => PetPhoto.Create(f.FilePath, false).Value).ToList());
+            var petPhotos = files.Select(f => PetPhoto
+                .Create(f.FilePath, false).Value).ToList();
 
             petResult.Value.UpdatePhotos(petPhotos);
 

@@ -43,9 +43,8 @@ public class UpdateVolunteerContactInfoHandler
         if (!validationResult.IsValid)
             return validationResult.ToErrorList();
 
-        var contactInfo = ContactInfoList.Create(
-            command.ContactInfos.Select(x =>
-                DomainContactInfo.Create(x.PhoneNumber, x.Name, x.Note).Value));
+        var contactInfo = command.ContactInfos.Select(x =>
+                DomainContactInfo.Create(x.PhoneNumber, x.Name, x.Note).Value).ToList();
 
         volunteerResult.Value.UpdateContactInfo(contactInfo);
 

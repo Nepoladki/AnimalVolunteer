@@ -46,6 +46,27 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
     public int CountPetsLookingForHome() => Statistics.PetsLookingForHome;
     public int CountPetsInVetClinic() => Statistics.PetsInVetClinic;
 
+    public static Volunteer Create(
+        VolunteerId id,
+        FullName fullName,
+        Email email,
+        Description description,
+        Statistics statistics,
+        ValueObjectList<SocialNetwork> socialNetworkList,
+        ValueObjectList<PaymentDetails> paymentDetailsList)
+    {
+        var contactInfoList = new List<ContactInfo>();
+
+        return new(
+        id,
+        fullName,
+        email,
+        description,
+        statistics,
+        contactInfoList,
+        socialNetworkList,
+        paymentDetailsList);
+    }
     public void UpdateMainInfo(FullName fullName, Email email, Description description)
     {
         FullName = fullName;
@@ -167,23 +188,4 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
 
         return Result.Success<Error>();
     }
-
-    public static Volunteer Create(
-        VolunteerId id,
-        FullName fullName,
-        Email email,
-        Description description,
-        Statistics statistics,
-        ValueObjectList<ContactInfo> contactInfoList,
-        ValueObjectList<SocialNetwork> socialNetworkList,
-        ValueObjectList<PaymentDetails> paymentDetailsList) =>
-            new(
-                id,
-                fullName,
-                email,
-                description,
-                statistics,
-                contactInfoList,
-                socialNetworkList,
-                paymentDetailsList);
 }
