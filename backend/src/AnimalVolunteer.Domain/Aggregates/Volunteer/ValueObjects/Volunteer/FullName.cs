@@ -6,6 +6,10 @@ namespace AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
 public record FullName
 {
     public const int MAX_NAME_LENGTH = 25;
+    public const string DB_COLUMN_FIRSTNAME = "first_name";
+    public const string DB_COLUMN_SURNAME = "surname";
+    public const string DB_COLUMN_LASTNAME = "last_name";
+
     private FullName(string firstName, string? surName, string lastName)
     {
         FirstName = firstName;

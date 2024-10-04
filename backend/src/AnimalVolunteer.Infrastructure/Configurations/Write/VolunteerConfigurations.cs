@@ -30,17 +30,17 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
             fn.Property(i => i.FirstName)
             .IsRequired()
             .HasMaxLength(FullName.MAX_NAME_LENGTH)
-            .HasColumnName("first_name");
+            .HasColumnName(FullName.DB_COLUMN_FIRSTNAME);
 
             fn.Property(i => i.SurName)
             .IsRequired(false)
             .HasMaxLength(FullName.MAX_NAME_LENGTH)
-            .HasColumnName("surname");
+            .HasColumnName(FullName.DB_COLUMN_SURNAME);
 
             fn.Property(i => i.LastName)
             .IsRequired()
             .HasMaxLength(FullName.MAX_NAME_LENGTH)
-            .HasColumnName("last_name");
+            .HasColumnName(FullName.DB_COLUMN_LASTNAME);
         });
 
         builder.ComplexProperty(x => x.Email, eb =>
@@ -48,7 +48,7 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
             eb.Property(i => i.Value)
             .IsRequired()
             .HasMaxLength(Email.MAX_LENGTH)
-            .HasColumnName("email");
+            .HasColumnName(Email.DB_COLUMN_NAME);
         });
 
         builder.ComplexProperty(x => x.Description, db =>
@@ -56,7 +56,7 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
             db.Property(i => i.Value)
             .IsRequired()
             .HasMaxLength(Description.MAX_DESC_LENGTH)
-            .HasColumnName("description");
+            .HasColumnName(Description.DB_COLUMN_NAME);
         });
 
         builder.ComplexProperty(x => x.Statistics, sb =>

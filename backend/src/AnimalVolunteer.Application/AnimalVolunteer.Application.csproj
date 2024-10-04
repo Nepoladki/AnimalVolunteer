@@ -16,4 +16,8 @@
     <ProjectReference Include="..\AnimalVolunteer.Domain\AnimalVolunteer.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\SpeciesManagement\Commands\" />
+  </ItemGroup>
+
 </Project>

@@ -20,12 +20,12 @@ public class SpeciesConfigurations : IEntityTypeConfiguration<Species>
                 guid => SpeciesId.CreateWithGuid(guid))
             .HasColumnName("id");
 
-        builder.ComplexProperty(s => s.Title, t =>
+        builder.ComplexProperty(s => s.Name, t =>
         {
             t.Property(i => i.Value)
             .IsRequired()
-            .HasMaxLength(Title.MAX_LENGTH)
-            .HasColumnName("title");
+            .HasMaxLength(Name.MAX_NAME_LENGTH)
+            .HasColumnName(Name.DB_COLUMN_NAME);
         });
 
         builder.HasMany(s => s.Breeds)

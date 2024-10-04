@@ -5,6 +5,9 @@ namespace AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
 
 public record PhysicalParameters
 {
+    public const string DB_COLUMN_COLOR = "color";
+    public const string DB_COLUMN_WEIGHT = "weight";
+    public const string DB_COLUMN_HEIGHT = "height";
     public const int MAX_COLOR_LENGTH = 100;
     private const float MIN_WEIGHT_HEIGHT = 0;
     private const float MAX_WEIGHT_HEIGHT = 150;

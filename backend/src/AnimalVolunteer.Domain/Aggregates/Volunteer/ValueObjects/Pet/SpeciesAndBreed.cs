@@ -1,21 +1,22 @@
-﻿using AnimalVolunteer.Domain.Common;
+﻿using AnimalVolunteer.Domain.Aggregates.PetType.ValueObjects;
+using AnimalVolunteer.Domain.Common;
 using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
 
 public record SpeciesAndBreed
 {
-    public Guid SpeciesId { get; }
+    public SpeciesId SpeciesId { get; }
     public Guid BreedId { get; }
-    private SpeciesAndBreed(Guid speciesId, Guid breedId)
+    private SpeciesAndBreed(SpeciesId speciesId, Guid breedId)
     {
         SpeciesId = speciesId;
         BreedId = breedId;
     }
 
-    public static Result<SpeciesAndBreed, Error> Create(Guid speciesId, Guid breedId)
+    public static Result<SpeciesAndBreed, Error> Create(SpeciesId speciesId, Guid breedId)
     {
-        if (speciesId == Guid.Empty)
+        if (speciesId.Value == Guid.Empty)
             return Errors.General.InvalidValue(nameof(speciesId));
 
         if (breedId == Guid.Empty)
