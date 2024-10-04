@@ -8,6 +8,7 @@ public partial record ContactInfo
     public const int MAX_PHONE_LENGTH = 16;
     public const int MAX_NAME_LENGTH = 50;
     public const int MAX_NOTE_LENGTH = 500;
+    public const string DB_COLUMN_NAME = "contact_info";
     private const string REGEX_PATTERN_PHONE_NUMBER = @"^[+]?[0-9]([-\s\.]?[0-9]{3}){2}([-\s\.]?[0-9]{2}){2}$";
 
     [GeneratedRegex(REGEX_PATTERN_PHONE_NUMBER)]

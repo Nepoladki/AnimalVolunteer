@@ -1,5 +1,5 @@
 ﻿using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
-using AnimalVolunteer.Application.Features.Volunteer.AddPetPhotos;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.AddPetPhotos;
 
 namespace AnimalVolunteer.API.Controllers.Volunteer.Requests.Pet;
 

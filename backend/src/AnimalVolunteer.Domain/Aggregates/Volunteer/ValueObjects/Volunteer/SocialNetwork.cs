@@ -7,6 +7,7 @@ public record SocialNetwork
 {
     public const int MAX_NAME_LENGTH = 25;
     public const int MAX_URL_LENGTH = 150;
+    public const string DB_COLUMN_NAME = "social_networks";
     private SocialNetwork() { }
     private SocialNetwork(string name, string url)
     {

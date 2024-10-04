@@ -1,19 +1,34 @@
 ﻿using AnimalVolunteer.API.Extensions;
-using AnimalVolunteer.Application.Features.Volunteer.CreateVolunteer;
-using AnimalVolunteer.Application.Features.Volunteer.Update.MainInfo;
-using AnimalVolunteer.Application.Features.Volunteer.Update.SocialNetworks;
-using AnimalVolunteer.Application.Features.Volunteer.Update.PaymentDetails;
 using Microsoft.AspNetCore.Mvc;
-using AnimalVolunteer.Application.Features.Volunteer.Delete;
-using AnimalVolunteer.Application.Features.Volunteer.AddPet;
 using AnimalVolunteer.API.Processors;
-using AnimalVolunteer.Application.Features.Volunteer.AddPetPhotos;
 using AnimalVolunteer.API.Controllers.Volunteer.Requests.Pet;
 using AnimalVolunteer.API.Controllers.Volunteer.Requests.Volunteer;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.AddPet;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.AddPetPhotos;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Create;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Delete;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.ContactInfo;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.MainInfo;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.PaymentDetails;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.SocialNetworks;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.GetVolunteersWithPagination;
+using AnimalVolunteer.API.Response;
 
 namespace AnimalVolunteer.API.Controllers.Volunteer;
 public class VolunteerController : ApplicationController
 {
+    [HttpGet]
+    public async Task<IActionResult> GetAll(
+        [FromQuery] GetFilteredVolunteersWithPaginationRequest request,
+        [FromServices] GetFilteredVolunteersWithPaginationHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var query = request.ToQuery();
+
+        var response = await handler.Handle(query, cancellationToken);
+
+        return Ok(response);
+    }
     [HttpPost]
     public async Task<IActionResult> Create(
         [FromBody] CreateVolunteerRequest request,
@@ -22,7 +37,7 @@ public class VolunteerController : ApplicationController
     {
         var command = request.ToCommand();
 
-        var creationResult = await handler.Create(command, cancellationToken);
+        var creationResult = await handler.Handle(command, cancellationToken);
 
         if (creationResult.IsFailure)
             return creationResult.Error.ToResponse();
@@ -40,7 +55,7 @@ public class VolunteerController : ApplicationController
         
         var command = request.ToCommand(id);
 
-        var handleResult = await handler.Update(command, cancellationToken);
+        var handleResult = await handler.Handle(command, cancellationToken);
 
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
@@ -57,7 +72,7 @@ public class VolunteerController : ApplicationController
     {
         var command = request.ToCommand(id);
 
-        var handleResult = await handler.Update(command, cancellationToken);
+        var handleResult = await handler.Handle(command, cancellationToken);
 
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
@@ -74,7 +89,7 @@ public class VolunteerController : ApplicationController
     {
         var command = request.ToCommand(id);
 
-        var handleResult = await handler.Update(command, cancellationToken);
+        var handleResult = await handler.Handle(command, cancellationToken);
 
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
@@ -106,7 +121,7 @@ public class VolunteerController : ApplicationController
         CancellationToken cancellationToken = default)
     {
         var deleteResult = await handler
-            .Delete(new DeleteVolunteerCommand(id), cancellationToken);
+            .Handle(new DeleteVolunteerCommand(id), cancellationToken);
         if (deleteResult.IsFailure)
             return deleteResult.Error.ToResponse();
 
