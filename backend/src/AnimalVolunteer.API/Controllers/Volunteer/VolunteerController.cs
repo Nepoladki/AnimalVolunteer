@@ -13,6 +13,7 @@ using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.P
 using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.SocialNetworks;
 using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.GetVolunteersWithPagination;
 using AnimalVolunteer.API.Response;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.GetVolunteerById;
 
 namespace AnimalVolunteer.API.Controllers.Volunteer;
 public class VolunteerController : ApplicationController
@@ -29,6 +30,18 @@ public class VolunteerController : ApplicationController
 
         return Ok(response);
     }
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetById(
+        [FromRoute] Guid id,
+        [FromServices] GetVolunteerByIdQueryHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetVolunteerByIdQuery(id);
+
+        var response = await handler.Handle(query, cancellationToken);
+
+        return Ok(response.Value);
+    }
     [HttpPost]
     public async Task<IActionResult> Create(
         [FromBody] CreateVolunteerRequest request,
@@ -42,7 +55,7 @@ public class VolunteerController : ApplicationController
         if (creationResult.IsFailure)
             return creationResult.Error.ToResponse();
 
-        return Ok((Guid)creationResult.Value);
+        return Ok(creationResult.Value);
     }
 
     [HttpPut("{id:guid}/main-info")]
