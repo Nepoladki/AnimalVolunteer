@@ -1,7 +1,7 @@
 ﻿using AnimalVolunteer.Application.DTOs.Volunteer;
 using AnimalVolunteer.Application.Extensions;
 using AnimalVolunteer.Application.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using AnimalVolunteer.Application.Models;
 
 namespace AnimalVolunteer.Application.Features.VolunteerManagement.Queries.GetVolunteersWithPagination;
 public class GetFilteredVolunteersWithPaginationHandler 

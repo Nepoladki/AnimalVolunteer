@@ -44,8 +44,12 @@ public class ReadDbContext : DbContext, IReadDbContext
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(ReadDbContext).Assembly,
             type => type.FullName?.Contains("Configurations.Read") ?? false);
+
+        modelBuilder.Entity<VolunteerDto>().HasQueryFilter(v => !v.IsDeleted);
+
+        modelBuilder.Entity<PetDto>().HasQueryFilter(p => !p.IsDeleted);
     }
 
-    private ILoggerFactory CreateLoggerFactory() =>
+    private static ILoggerFactory CreateLoggerFactory() =>
         LoggerFactory.Create(builder => builder.AddConsole());
 }

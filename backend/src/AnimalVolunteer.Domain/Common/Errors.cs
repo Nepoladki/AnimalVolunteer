@@ -20,9 +20,16 @@ public static class Errors
 
         public static Error WrongValueLength(string? name = null)
         {
-            var label = name == null ? " " : $"{name}";
+            var label = name == null ? "" : $"{name}";
 
-            return Error.Validation("Invalid.Value.Length", $"Invalid{label}length");
+            return Error.Validation("Invalid.Value.Length", $"Invalid {label} length");
+        }
+
+        public static Error DeleteingConflict(Guid? id = null)
+        {
+            var forId = id == null ? " " : $" {id} ";
+
+            return Error.Conflict("Conflict.Constraint", $"Can't delete{forId}entity");
         }
 
     }

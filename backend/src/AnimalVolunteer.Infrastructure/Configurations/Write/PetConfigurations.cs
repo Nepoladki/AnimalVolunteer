@@ -8,6 +8,7 @@ using AnimalVolunteer.Domain.Common.ValueObjects;
 using AnimalVolunteer.Infrastructure.Extensions;
 using AnimalVolunteer.Application.DTOs.Volunteer;
 using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
+using AnimalVolunteer.Domain.Aggregates.PetType.ValueObjects;
 
 namespace AnimalVolunteer.Infrastructure.Configurations.Write;
 
@@ -53,7 +54,10 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
 
         builder.ComplexProperty(x => x.SpeciesAndBreed, sb =>
         {
-            sb.Property(j => j.SpeciesId.Value)
+            sb.Property(j => j.SpeciesId)
+            .HasConversion(
+                id => id.Value,
+                value => SpeciesId.CreateWithGuid(value))
             .IsRequired()
             .HasColumnName("species_id");
 
