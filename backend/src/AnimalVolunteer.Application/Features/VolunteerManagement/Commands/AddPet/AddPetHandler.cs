@@ -8,6 +8,7 @@ using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace AnimalVolunteer.Application.Features.VolunteerManagement.Commands.AddPet;
@@ -16,6 +17,7 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IReadDbContext _readDbContext;
     private readonly IValidator<AddPetCommand> _validator;
     private readonly ILogger<AddPetHandler> _logger;
 
@@ -23,12 +25,14 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
         IVolunteerRepository volunteerRepository,
         ILogger<AddPetHandler> logger,
         IUnitOfWork unitOfWork,
-        IValidator<AddPetCommand> validator)
+        IValidator<AddPetCommand> validator,
+        IReadDbContext readDbContext)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;
         _unitOfWork = unitOfWork;
         _validator = validator;
+        _readDbContext = readDbContext;
     }
 
     public async Task<Result<Guid, ErrorList>> Handle(
@@ -43,6 +47,22 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
             .GetById(command.VolunteerId, cancellationToken);
         if (volunteerResult.IsFailure)
             return volunteerResult.Error.ToErrorList();
+
+        var speciesExists = await _readDbContext.Species
+            .AnyAsync(s => s.Id == command.SpeciesId, cancellationToken);
+        if (speciesExists == false)
+        {
+            _logger.LogInformation("Tried to create pet with unexisting species id");
+            return Errors.Pet.NonExistantSpecies(command.SpeciesId).ToErrorList();
+        }
+
+        var breedExists = await _readDbContext.Breeds
+            .AnyAsync(b => b.Id == command.BreedId, cancellationToken);
+        if (breedExists == false)
+        {
+            _logger.LogInformation("Tried to create pet with unexisting breed id");
+            return Errors.Pet.NonExistantBreed(command.BreedId).ToErrorList();
+        }
 
         var petId = PetId.Create();
 

@@ -10,12 +10,9 @@ public class GetAllSpeciesFilteredPaginatedQueryHandler :
     IQueryHandler<PagedList<SpeciesDto>, GetAllSpeciesFIilteredPaginatedQuery>
 {
     private readonly IReadDbContext _readDbContext;
-    private readonly ILogger<GetAllSpeciesFilteredPaginatedQueryHandler> _logger;
     public GetAllSpeciesFilteredPaginatedQueryHandler(
-        ILogger<GetAllSpeciesFilteredPaginatedQueryHandler> logger,
         IReadDbContext readDbContext)
     {
-        _logger = logger;
         _readDbContext = readDbContext;
     }
     public async Task<PagedList<SpeciesDto>> Handle(

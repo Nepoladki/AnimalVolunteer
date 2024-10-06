@@ -1,6 +1,9 @@
 ﻿using AnimalVolunteer.Application.Interfaces;
+using AnimalVolunteer.Domain.Aggregates.PetType;
+using AnimalVolunteer.Domain.Aggregates.PetType.Entities;
 using AnimalVolunteer.Domain.Aggregates.PetType.ValueObjects;
 using AnimalVolunteer.Infrastructure.DbContexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnimalVolunteer.Infrastructure.Repositories;
 
@@ -8,14 +11,20 @@ public class SpeciesRepository : ISpeciesRepository
 {
     private readonly WriteDbContext _writeDbContext;
 
-    public Task DeleteBreed(SpeciesId speciesId, Guid breedId)
+    public SpeciesRepository(WriteDbContext writeDbContext)
     {
-        _writeDbContext.Species.Remove();
-        _writeDbContext.SaveChanges();
+        _writeDbContext = writeDbContext;
     }
 
-    public Task DeleteSpecies(SpeciesId speciesId)
+    public async Task<Species?> GetSpeciesById(
+        SpeciesId Id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return await _writeDbContext.Species.Include(s => s.Breeds)
+            .FirstOrDefaultAsync(s => s.Id == Id, cancellationToken);
+    }
+
+    public void DeleteSpecies(Species species)
+    {
+        _writeDbContext.Species.Remove(species);
     }
 }
