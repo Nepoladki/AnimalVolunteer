@@ -1,4 +1,4 @@
-﻿namespace AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
+﻿namespace AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
 
 public record PetId
 {

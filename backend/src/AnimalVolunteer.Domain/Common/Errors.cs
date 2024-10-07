@@ -45,6 +45,10 @@ public static class Errors
             Error.NotFound("Pet.WrongSpecies", $"Unable to create new pet with species id {id}");
         public static Error NonExistantBreed(Guid id) =>
             Error.NotFound("Pet.WrongBreed", $"Unable to create new pet with breed id {id}");
+        public static Error NonExistantSpeciesAndBreed(Guid speciesId, Guid breedId) =>
+            Error.NotFound(
+                "Pet.WrongSpecies&Breed", 
+                $"Non-existant pair of species id {speciesId} and breed id {breedId}");
     }
     
     public static class Species

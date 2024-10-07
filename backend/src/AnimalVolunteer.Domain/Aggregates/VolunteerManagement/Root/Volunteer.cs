@@ -1,11 +1,11 @@
-﻿using AnimalVolunteer.Domain.Aggregates.Volunteer.Entities;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
+﻿using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Entities;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
 
-namespace AnimalVolunteer.Domain.Aggregates.Volunteer.Root;
+namespace AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Root;
 
 public sealed class Volunteer : Common.Entity<VolunteerId>
 {

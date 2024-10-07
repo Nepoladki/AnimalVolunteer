@@ -1,5 +1,5 @@
 ﻿using AnimalVolunteer.Application.DTOs.Volunteer;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.AddPet;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.AddPet;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.Enums;
 
 namespace AnimalVolunteer.API.Controllers.Volunteer.Requests.Pet;

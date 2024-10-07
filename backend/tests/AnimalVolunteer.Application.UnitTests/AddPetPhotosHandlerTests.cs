@@ -1,6 +1,6 @@
 ﻿using AnimalVolunteer.Application.Database;
 using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.AddPetPhotos;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.AddPetPhotos;
 using AnimalVolunteer.Application.Interfaces;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.Entities;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.Enums;
@@ -33,8 +33,8 @@ public class AddPetPhotosHandlerTests
     private readonly ILogger<AddPetPhotosHandler> _logger = Substitute
         .For<ILogger<AddPetPhotosHandler>>();
 
-    private readonly IValidator<AddPetPhotosCommand> _validator = Substitute
-        .For<IValidator<AddPetPhotosCommand>>();
+    private readonly IValidator<UpdatePetPhotosCommand> _validator = Substitute
+        .For<IValidator<UpdatePetPhotosCommand>>();
 
     private readonly IMessageQueue<IEnumerable<FileInfoDto>> _messageQueue = 
         Substitute.For<IMessageQueue<IEnumerable<FileInfoDto>>>();
@@ -72,7 +72,7 @@ public class AddPetPhotosHandlerTests
             _cancellationToken)
             .Returns(Result.Success<IReadOnlyList<FilePath>, Error>(pathsList));
 
-        _validator.ValidateAsync(Arg.Any<AddPetPhotosCommand>(), _cancellationToken)
+        _validator.ValidateAsync(Arg.Any<UpdatePetPhotosCommand>(), _cancellationToken)
             .Returns(new ValidationResult());
 
         var handler = new AddPetPhotosHandler(
@@ -119,7 +119,7 @@ public class AddPetPhotosHandlerTests
             _cancellationToken)
             .Returns(Result.Success<IReadOnlyList<FilePath>, Error>(pathsList));
 
-        _validator.ValidateAsync(Arg.Any<AddPetPhotosCommand>(), _cancellationToken)
+        _validator.ValidateAsync(Arg.Any<UpdatePetPhotosCommand>(), _cancellationToken)
             .Returns(new ValidationResult(
                 [new ValidationFailure("TestPropName", "500 || Prop || Validation")]));
 
@@ -167,7 +167,7 @@ public class AddPetPhotosHandlerTests
             _cancellationToken)
             .Returns(Result.Success<IReadOnlyList<FilePath>, Error>(pathsList));
 
-        _validator.ValidateAsync(Arg.Any<AddPetPhotosCommand>(), _cancellationToken)
+        _validator.ValidateAsync(Arg.Any<UpdatePetPhotosCommand>(), _cancellationToken)
             .Returns(new ValidationResult());
 
         var handler = new AddPetPhotosHandler(
@@ -213,7 +213,7 @@ public class AddPetPhotosHandlerTests
             _cancellationToken)
             .Returns(Result.Success<IReadOnlyList<FilePath>, Error>(pathsList));
 
-        _validator.ValidateAsync(Arg.Any<AddPetPhotosCommand>(), _cancellationToken)
+        _validator.ValidateAsync(Arg.Any<UpdatePetPhotosCommand>(), _cancellationToken)
             .Returns(new ValidationResult());
 
         var handler = new AddPetPhotosHandler(
@@ -257,7 +257,7 @@ public class AddPetPhotosHandlerTests
             .Returns(Result.Failure<IReadOnlyList<FilePath>, Error>(
                 Error.Failure("file.upload", "Failed to upload file in Minio")));
 
-        _validator.ValidateAsync(Arg.Any<AddPetPhotosCommand>(), _cancellationToken)
+        _validator.ValidateAsync(Arg.Any<UpdatePetPhotosCommand>(), _cancellationToken)
             .Returns(new ValidationResult());
 
         _messageQueue.WriteAsync(Arg.Any<IEnumerable<FileInfoDto>>(), _cancellationToken)
@@ -309,7 +309,7 @@ public class AddPetPhotosHandlerTests
             _cancellationToken)
             .Returns(Result.Success<IReadOnlyList<FilePath>, Error>(pathsList));
 
-        _validator.ValidateAsync(Arg.Any<AddPetPhotosCommand>(), _cancellationToken)
+        _validator.ValidateAsync(Arg.Any<UpdatePetPhotosCommand>(), _cancellationToken)
             .Returns(new ValidationResult());
 
         var handler = new AddPetPhotosHandler(
@@ -385,9 +385,9 @@ public class AddPetPhotosHandlerTests
         return files;
     }
 
-    private static AddPetPhotosCommand GetCommand(List<UploadFileDto> files)
+    private static UpdatePetPhotosCommand GetCommand(List<UploadFileDto> files)
     {
-        return new AddPetPhotosCommand(
+        return new UpdatePetPhotosCommand(
             Guid.NewGuid(),
             Guid.NewGuid(),
             files);

@@ -1,10 +1,12 @@
-﻿using AnimalVolunteer.Domain.Aggregates.Volunteer.Enums;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
+﻿using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Enums;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
 using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
+using System.Net;
+using System.Xml.Linq;
 
-namespace AnimalVolunteer.Domain.Aggregates.Volunteer.Entities;
+namespace AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Entities;
 
 public sealed class Pet : Common.Entity<PetId>
 {
@@ -82,12 +84,19 @@ public sealed class Pet : Common.Entity<PetId>
             paymentDetails,
             photos);
     }
+
     public void Delete() => _isDeleted = true;
+
     public void Restore() => _isDeleted = false;
+
     public void UpdatePhotos(ValueObjectList<PetPhoto> photos) =>
         PetPhotosList = photos;
+
+    public void DeleteAllPhotos() => PetPhotosList = [];
+
     public void UpdatePosition(Position number)
         => Position = number;
+
     public UnitResult<Error> MoveForward()
     {
         var newPosition = Position.Forward();
@@ -115,4 +124,27 @@ public sealed class Pet : Common.Entity<PetId>
         Position = position;
     }
     
+    public void UpdatePet(
+        Name name,
+        Description description,
+        PhysicalParameters physicalParameters,
+        SpeciesAndBreed speciesAndBreed,
+        HealthInfo healthInfo,
+        Address address,
+        DateOnly birthDate,
+        CurrentStatus currentStatus,
+        ValueObjectList<ContactInfo> contactInfos,
+        ValueObjectList<PaymentDetails> paymentDetails)
+    {
+        Name = name;
+        Description = description;
+        PhysicalParameters = physicalParameters;
+        SpeciesAndBreed = speciesAndBreed;
+        HealthInfo = healthInfo;
+        Address = address;
+        BirthDate = birthDate;
+        CurrentStatus = currentStatus;
+        ContactInfoList = contactInfos;
+        PaymentDetailsList = paymentDetails;
+    }
 }

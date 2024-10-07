@@ -1,4 +1,4 @@
-﻿namespace AnimalVolunteer.Domain.Aggregates.Volunteer.Enums;
+﻿namespace AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Enums;
 
 public enum CurrentStatus
 {

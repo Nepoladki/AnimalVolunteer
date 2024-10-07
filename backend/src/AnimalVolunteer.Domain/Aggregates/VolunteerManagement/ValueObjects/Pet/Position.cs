@@ -1,7 +1,7 @@
 ﻿using AnimalVolunteer.Domain.Common;
 using CSharpFunctionalExtensions;
 
-namespace AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
+namespace AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
 
 public class Position : ValueObject
 {

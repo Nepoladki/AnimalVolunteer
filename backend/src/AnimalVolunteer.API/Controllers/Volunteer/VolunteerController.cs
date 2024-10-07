@@ -3,17 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using AnimalVolunteer.API.Processors;
 using AnimalVolunteer.API.Controllers.Volunteer.Requests.Pet;
 using AnimalVolunteer.API.Controllers.Volunteer.Requests.Volunteer;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.AddPet;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.AddPetPhotos;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Create;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Delete;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.ContactInfo;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.MainInfo;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.PaymentDetails;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.SocialNetworks;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.GetVolunteersWithPagination;
-using AnimalVolunteer.API.Response;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.GetVolunteerById;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.AddPet;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Volunteer.Delete;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Volunteer.Create;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Volunteer.Update.ContactInfo;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Volunteer.Update.MainInfo;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Volunteer.Update.PaymentDetails;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Volunteer.Update.SocialNetworks;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.Volunteer.GetVolunteerById;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.Volunteer.GetVolunteersWithPagination;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.UpdatePetPhotos;
 
 namespace AnimalVolunteer.API.Controllers.Volunteer;
 public class VolunteerController : ApplicationController
@@ -162,7 +161,7 @@ public class VolunteerController : ApplicationController
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
         [FromForm] AddPetPhotosRequest request,
-        [FromServices] AddPetPhotosHandler handler,
+        [FromServices] UpdatePetPhotosHandler handler,
         CancellationToken cancellationToken = default)
     {
         await using var fileProcessor = new FormFileProcessor();

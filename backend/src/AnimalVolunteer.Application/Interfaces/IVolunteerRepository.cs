@@ -1,5 +1,5 @@
-﻿using AnimalVolunteer.Domain.Aggregates.Volunteer.Root;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
+﻿using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Root;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common;
 using CSharpFunctionalExtensions;
 

@@ -1,0 +1,119 @@
+﻿using AnimalVolunteer.Application.Database;
+using AnimalVolunteer.Application.Extensions;
+using AnimalVolunteer.Application.Interfaces;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
+using AnimalVolunteer.Domain.Common;
+using AnimalVolunteer.Domain.Common.ValueObjects;
+using CSharpFunctionalExtensions;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using DomainEntities = AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Entities;
+
+namespace AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.UpdatePet;
+
+public class UpdatePetHandler : ICommandHandler<UpdatePetCommand>
+{
+    private readonly IVolunteerRepository _volunteerRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IReadDbContext _readDbContext;
+    private readonly IValidator<UpdatePetCommand> _validator;
+    private readonly ILogger<UpdatePetHandler> _logger;
+
+    public UpdatePetHandler(
+        IVolunteerRepository volunteerRepository,
+        IUnitOfWork unitOfWork, 
+        IReadDbContext readDbContext, 
+        IValidator<UpdatePetCommand> validator, 
+        ILogger<UpdatePetHandler> logger)
+    {
+        _volunteerRepository = volunteerRepository;
+        _unitOfWork = unitOfWork;
+        _readDbContext = readDbContext;
+        _validator = validator;
+        _logger = logger;
+    }
+
+    
+    public async Task<UnitResult<ErrorList>> Handle(
+        UpdatePetCommand command, CancellationToken cancellationToken)
+    {
+        var validationResult = await _validator
+            .ValidateAsync(command, cancellationToken);
+        if (validationResult.IsValid == false)
+            return validationResult.ToErrorList();
+
+        var breedAndSpeciesExist = await _readDbContext.Breeds
+            .AnyAsync(b => b.Id == command.BreedId && 
+                    b.SpeciesId == command.SpeciesId, cancellationToken);
+        if (breedAndSpeciesExist == false)
+            return Errors.Pet
+                .NonExistantSpeciesAndBreed(command.SpeciesId, command.BreedId)
+                .ToErrorList();
+
+        var volunteerId = VolunteerId.CreateWithGuid(command.VolunteerId);
+
+        var volunteerResult = await _volunteerRepository
+            .GetById(volunteerId, cancellationToken);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error.ToErrorList();
+
+        var volunteer = volunteerResult.Value;
+
+        var petId = PetId.CreateWithGuid(command.PetId);
+
+        var pet = volunteer.Pets.FirstOrDefault(p => p.Id == petId);
+        if (pet is null)
+            return Errors.General.NotFound(petId).ToErrorList();
+
+
+        var name = Name.Create(command.Name).Value;
+
+        var description = Description.Create(
+            command.Description).Value;
+
+        var physicalParamaters = PhysicalParameters.Create(
+            command.Color,
+            command.Weight,
+            command.Height).Value;
+
+        var speciesAndBreed = SpeciesAndBreed
+            .Create(command.SpeciesId, command.BreedId).Value;
+
+        var healthInfo = HealthInfo.Create(
+            command.HealthDescription,
+            command.IsVaccinated,
+            command.IsNeutered).Value;
+
+        var address = Address.Create(
+            command.Country,
+            command.City,
+            command.Street,
+            command.House).Value;
+
+        var contactInfos = new ValueObjectList<ContactInfo>(
+            command.ContactInfo.Select(x => ContactInfo
+                .Create(x.PhoneNumber, x.Name, x.Note).Value));
+
+        var paymentDetails = new ValueObjectList<PaymentDetails>(
+            command.PaymentDetails.Select(x => PaymentDetails
+                .Create(x.Name, x.Description).Value));
+
+        pet.UpdatePet(
+            name,
+            description,
+            physicalParamaters,
+            speciesAndBreed,
+            healthInfo,
+            address,
+            command.BirthDate,
+            command.CurrentStatus,
+            contactInfos,
+            paymentDetails);
+
+        await _unitOfWork.SaveChanges(cancellationToken);
+
+        return Result.Success<ErrorList>();
+    }
+}
