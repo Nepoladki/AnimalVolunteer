@@ -34,7 +34,7 @@ public class VolunteerController : ApplicationController
     public async Task<IActionResult> GetById(
         [FromRoute] Guid id,
         [FromServices] GetVolunteerByIdQueryHandler handler,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         var query = new GetVolunteerByIdQuery(id);
 

@@ -1,5 +1,5 @@
-﻿using AnimalVolunteer.Domain.Aggregates.PetType;
-using AnimalVolunteer.Domain.Aggregates.PetType.ValueObjects;
+﻿using AnimalVolunteer.Domain.Aggregates.PetType.ValueObjects;
+using AnimalVolunteer.Domain.Aggregates.SpeciesManagement.Root;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -20,16 +20,17 @@ public class SpeciesConfigurations : IEntityTypeConfiguration<Species>
                 guid => SpeciesId.CreateWithGuid(guid))
             .HasColumnName("id");
 
-        builder.ComplexProperty(s => s.Title, t =>
+        builder.ComplexProperty(s => s.Name, t =>
         {
             t.Property(i => i.Value)
             .IsRequired()
-            .HasMaxLength(Title.MAX_LENGTH)
-            .HasColumnName("title");
+            .HasMaxLength(Name.MAX_NAME_LENGTH)
+            .HasColumnName(Name.DB_COLUMN_NAME);
         });
 
         builder.HasMany(s => s.Breeds)
             .WithOne()
-            .HasForeignKey("species_id");
+            .HasForeignKey(b => b.SpeciesId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

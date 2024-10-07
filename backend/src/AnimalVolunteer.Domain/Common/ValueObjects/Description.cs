@@ -6,6 +6,7 @@ namespace AnimalVolunteer.Domain.Common.ValueObjects;
 public record Description
 {
     public const int MAX_DESC_LENGTH = 1000;
+    public const string DB_COLUMN_NAME = "description";
     private Description(string value)
     {
         Value = value;

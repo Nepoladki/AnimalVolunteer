@@ -7,6 +7,7 @@ namespace AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
 public partial record Email
 {
     public const int MAX_LENGTH = 50;
+    public const string DB_COLUMN_NAME = "email";
     private const string EMAIL_REGEX_PATTERN = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
     
     [GeneratedRegex(EMAIL_REGEX_PATTERN)]

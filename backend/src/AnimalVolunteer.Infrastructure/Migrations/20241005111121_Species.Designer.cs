@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using AnimalVolunteer.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnimalVolunteer.Infrastructure.Migrations
 {
     [DbContext(typeof(WriteDbContext))]
-    partial class WriteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241005111121_Species")]
+    partial class Species
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,7 +32,7 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<Guid>("SpeciesId")
+                    b.Property<Guid?>("species_id")
                         .HasColumnType("uuid")
                         .HasColumnName("species_id");
 
@@ -47,19 +50,19 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_breeds");
 
-                    b.HasIndex("SpeciesId")
+                    b.HasIndex("species_id")
                         .HasDatabaseName("ix_breeds_species_id");
 
                     b.ToTable("breeds", (string)null);
                 });
 
-            modelBuilder.Entity("AnimalVolunteer.Domain.Aggregates.SpeciesManagement.Root.Species", b =>
+            modelBuilder.Entity("AnimalVolunteer.Domain.Aggregates.PetType.Species", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Name", "AnimalVolunteer.Domain.Aggregates.SpeciesManagement.Root.Species.Name#Name", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("Name", "AnimalVolunteer.Domain.Aggregates.PetType.Species.Name#Name", b1 =>
                         {
                             b1.IsRequired();
 
@@ -335,11 +338,9 @@ namespace AnimalVolunteer.Infrastructure.Migrations
 
             modelBuilder.Entity("AnimalVolunteer.Domain.Aggregates.PetType.Entities.Breed", b =>
                 {
-                    b.HasOne("AnimalVolunteer.Domain.Aggregates.SpeciesManagement.Root.Species", null)
+                    b.HasOne("AnimalVolunteer.Domain.Aggregates.PetType.Species", null)
                         .WithMany("Breeds")
-                        .HasForeignKey("SpeciesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
+                        .HasForeignKey("species_id")
                         .HasConstraintName("fk_breeds_species_species_id");
                 });
 
@@ -351,7 +352,7 @@ namespace AnimalVolunteer.Infrastructure.Migrations
                         .HasConstraintName("fk_pets_volunteers_volunteer_id");
                 });
 
-            modelBuilder.Entity("AnimalVolunteer.Domain.Aggregates.SpeciesManagement.Root.Species", b =>
+            modelBuilder.Entity("AnimalVolunteer.Domain.Aggregates.PetType.Species", b =>
                 {
                     b.Navigation("Breeds");
                 });

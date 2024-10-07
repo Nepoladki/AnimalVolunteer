@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.GetVolunteersWithPagination;
+using AnimalVolunteer.Application.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 

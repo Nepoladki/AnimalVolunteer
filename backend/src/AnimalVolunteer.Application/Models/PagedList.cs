@@ -1,4 +1,4 @@
-﻿namespace AnimalVolunteer.Application.Features.VolunteerManagement.Queries.GetVolunteersWithPagination;
+﻿namespace AnimalVolunteer.Application.Models;
 
 public class PagedList<T>
 {

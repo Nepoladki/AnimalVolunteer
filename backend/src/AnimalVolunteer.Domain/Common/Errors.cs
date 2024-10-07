@@ -20,16 +20,37 @@ public static class Errors
 
         public static Error WrongValueLength(string? name = null)
         {
-            var label = name == null ? " " : $"{name}";
+            var label = name == null ? "" : $"{name}";
 
-            return Error.Validation("Invalid.Value.Length", $"Invalid{label}length");
+            return Error.Validation("Invalid.Value.Length", $"Invalid {label} length");
         }
 
+        public static Error DeleteingConflict(Guid? id = null, string? entityTypeName = null)
+        {
+            var forId = id is null ? " " : $"with id {id} ";
+            var type = entityTypeName is null ? "" : $"of type {entityTypeName}";
+
+            return Error.Conflict("Conflict.Constraint", $"Can't delete entity {forId}{type}");
+        }
     }
     public static class Volunteer
     {
         public static Error AlreadyExist() =>
-            Error.Validation("Volunteer.AlreadyExist", $"Volunteer Already Exist");
+            Error.Validation("Volunteer.AlreadyExist", "Volunteer Already Exist");
+    }
+
+    public static class Pet
+    {
+        public static Error NonExistantSpecies(Guid id) =>
+            Error.NotFound("Pet.WrongSpecies", $"Unable to create new pet with species id {id}");
+        public static Error NonExistantBreed(Guid id) =>
+            Error.NotFound("Pet.WrongBreed", $"Unable to create new pet with breed id {id}");
+    }
+    
+    public static class Species
+    {
+        public static Error BreedDeletingError(Guid id) =>
+            Error.Unexpected("Breed.DeletingFail", $"Failed to delete breed with id {id}");
     }
 
     public static class Minio

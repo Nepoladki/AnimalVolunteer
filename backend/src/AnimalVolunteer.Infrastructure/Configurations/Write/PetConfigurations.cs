@@ -8,6 +8,7 @@ using AnimalVolunteer.Domain.Common.ValueObjects;
 using AnimalVolunteer.Infrastructure.Extensions;
 using AnimalVolunteer.Application.DTOs.Volunteer;
 using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
+using AnimalVolunteer.Domain.Aggregates.PetType.ValueObjects;
 
 namespace AnimalVolunteer.Infrastructure.Configurations.Write;
 
@@ -33,7 +34,7 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
             nd.Property(x => x.Value)
             .IsRequired()
             .HasMaxLength(Name.MAX_NAME_LENGTH)
-            .HasColumnName("name");
+            .HasColumnName(Name.DB_COLUMN_NAME);
         });
 
         builder.ComplexProperty(x => x.Description, db =>
@@ -41,7 +42,7 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
             db.Property(x => x.Value)
             .IsRequired()
             .HasMaxLength(Description.MAX_DESC_LENGTH)
-            .HasColumnName("description");
+            .HasColumnName(Description.DB_COLUMN_NAME);
         });
 
         builder.ComplexProperty(x => x.Position, db =>
@@ -54,6 +55,9 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
         builder.ComplexProperty(x => x.SpeciesAndBreed, sb =>
         {
             sb.Property(j => j.SpeciesId)
+            .HasConversion(
+                id => id.Value,
+                value => SpeciesId.CreateWithGuid(value))
             .IsRequired()
             .HasColumnName("species_id");
 
@@ -67,15 +71,15 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
             sb.Property(pp => pp.Color)
             .IsRequired()
             .HasMaxLength(PhysicalParameters.MAX_COLOR_LENGTH)
-            .HasColumnName("color");
+            .HasColumnName(PhysicalParameters.DB_COLUMN_COLOR);
 
             sb.Property(pp => pp.Weight)
             .IsRequired()
-            .HasColumnName("weight");
+            .HasColumnName(PhysicalParameters.DB_COLUMN_WEIGHT);
 
             sb.Property(pp => pp.Height)
             .IsRequired()
-            .HasColumnName("height");
+            .HasColumnName(PhysicalParameters.DB_COLUMN_HEIGHT);
         });
 
         builder.ComplexProperty(x => x.HealthInfo, hi =>
@@ -83,7 +87,7 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
             hi.Property(j => j.Description)
             .IsRequired()
             .HasMaxLength(HealthInfo.MAX_DESC_LENGTH)
-            .HasColumnName("health_description");
+            .HasColumnName(HealthInfo.DB_COLUMN_NAME);
 
             hi.Property(j => j.IsVaccinated)
             .IsRequired()
@@ -99,22 +103,22 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
             a.Property(j => j.Country)
             .IsRequired()
             .HasMaxLength(Address.MAX_LENGTH)
-            .HasColumnName("country");
+            .HasColumnName(Address.DB_COLUMN_COUNTRY);
 
             a.Property(j => j.City)
             .IsRequired()
             .HasMaxLength(Address.MAX_LENGTH)
-            .HasColumnName("city");
+            .HasColumnName(Address.DB_COLUMN_CITY);
 
             a.Property(j => j.Street)
             .IsRequired()
             .HasMaxLength(Address.MAX_LENGTH)
-            .HasColumnName("street");
+            .HasColumnName(Address.DB_COLUMN_STREET);
 
             a.Property(j => j.House)
             .IsRequired(false)
             .HasMaxLength(Address.MAX_LENGTH)
-            .HasColumnName("house");
+            .HasColumnName(Address.DB_COLUMN_HOUSE);
         });
 
         builder.Property(x => x.ContactInfoList)

@@ -1,4 +1,5 @@
-﻿using AnimalVolunteer.Application.DTOs.Volunteer;
+﻿using AnimalVolunteer.Application.DTOs.SpeciesManagement;
+using AnimalVolunteer.Application.DTOs.Volunteer;
 using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
 using AnimalVolunteer.Application.Interfaces;
 using AnimalVolunteer.Domain.Aggregates.PetType;
@@ -25,6 +26,8 @@ public class ReadDbContext : DbContext, IReadDbContext
 
     public IQueryable<VolunteerDto> Volunteers => Set<VolunteerDto>();
     public IQueryable<PetDto> Pets => Set<PetDto>();
+    public IQueryable<SpeciesDto> Species => Set<SpeciesDto>();
+    public IQueryable<BreedDto> Breeds => Set<BreedDto>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -41,8 +44,12 @@ public class ReadDbContext : DbContext, IReadDbContext
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(ReadDbContext).Assembly,
             type => type.FullName?.Contains("Configurations.Read") ?? false);
+
+        modelBuilder.Entity<VolunteerDto>().HasQueryFilter(v => !v.IsDeleted);
+
+        modelBuilder.Entity<PetDto>().HasQueryFilter(p => !p.IsDeleted);
     }
 
-    private ILoggerFactory CreateLoggerFactory() =>
+    private static ILoggerFactory CreateLoggerFactory() =>
         LoggerFactory.Create(builder => builder.AddConsole());
 }

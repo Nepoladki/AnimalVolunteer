@@ -6,6 +6,10 @@ namespace AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
 public record Address
 {
     public const int MAX_LENGTH = 50;
+    public const string DB_COLUMN_COUNTRY = "country";
+    public const string DB_COLUMN_CITY = "city";
+    public const string DB_COLUMN_STREET = "street";
+    public const string DB_COLUMN_HOUSE = "house";
     private Address(string country, string city, string street, string? house)
     {
         Country = country;
