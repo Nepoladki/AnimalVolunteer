@@ -1,4 +1,4 @@
-﻿using AnimalVolunteer.Domain.Aggregates.PetType;
+﻿using AnimalVolunteer.Domain.Aggregates.SpeciesManagement.Root;
 using AnimalVolunteer.Domain.Aggregates.Volunteer.Root;
 using AnimalVolunteer.Infrastructure.Options;
 using Microsoft.EntityFrameworkCore;

@@ -1,5 +1,5 @@
-﻿using AnimalVolunteer.Domain.Aggregates.PetType;
-using AnimalVolunteer.Domain.Aggregates.PetType.ValueObjects;
+﻿using AnimalVolunteer.Domain.Aggregates.PetType.ValueObjects;
+using AnimalVolunteer.Domain.Aggregates.SpeciesManagement.Root;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -30,6 +30,7 @@ public class SpeciesConfigurations : IEntityTypeConfiguration<Species>
 
         builder.HasMany(s => s.Breeds)
             .WithOne()
-            .HasForeignKey("species_id");
+            .HasForeignKey("species_id")
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -4,5 +4,5 @@ public class BreedDto
 {
     public Guid Id { get; init; } 
     public Guid SpeciesId { get; init; }
-    public string Breed { get; init; } = string.Empty;
+    public string Name { get; init; } = string.Empty;
 }

@@ -4,7 +4,7 @@ using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
 
-namespace AnimalVolunteer.Domain.Aggregates.PetType;
+namespace AnimalVolunteer.Domain.Aggregates.SpeciesManagement.Root;
 
 public sealed class Species : Common.Entity<SpeciesId>
 {

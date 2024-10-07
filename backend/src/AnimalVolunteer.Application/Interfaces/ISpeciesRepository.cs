@@ -1,5 +1,6 @@
-﻿using AnimalVolunteer.Domain.Aggregates.PetType;
+﻿using AnimalVolunteer.Domain.Aggregates.PetType.Entities;
 using AnimalVolunteer.Domain.Aggregates.PetType.ValueObjects;
+using AnimalVolunteer.Domain.Aggregates.SpeciesManagement.Root;
 
 namespace AnimalVolunteer.Application.Interfaces;
 
