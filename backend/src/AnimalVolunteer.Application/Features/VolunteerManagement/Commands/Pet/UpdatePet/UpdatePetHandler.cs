@@ -63,11 +63,6 @@ public class UpdatePetHandler : ICommandHandler<UpdatePetCommand>
 
         var petId = PetId.CreateWithGuid(command.PetId);
 
-        var pet = volunteer.Pets.FirstOrDefault(p => p.Id == petId);
-        if (pet is null)
-            return Errors.General.NotFound(petId).ToErrorList();
-
-
         var name = Name.Create(command.Name).Value;
 
         var description = Description.Create(
@@ -100,7 +95,8 @@ public class UpdatePetHandler : ICommandHandler<UpdatePetCommand>
             command.PaymentDetails.Select(x => PaymentDetails
                 .Create(x.Name, x.Description).Value));
 
-        pet.UpdatePet(
+        var updateResult = volunteer.UpdatePet(
+            petId,
             name,
             description,
             physicalParamaters,
@@ -111,8 +107,13 @@ public class UpdatePetHandler : ICommandHandler<UpdatePetCommand>
             command.CurrentStatus,
             contactInfos,
             paymentDetails);
+        if (updateResult.IsFailure)
+            return updateResult.Error.ToErrorList();
 
         await _unitOfWork.SaveChanges(cancellationToken);
+
+        _logger.LogInformation(
+            "Succsessfully updated pet with id {petId}", petId);
 
         return Result.Success<ErrorList>();
     }

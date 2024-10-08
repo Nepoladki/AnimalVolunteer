@@ -33,10 +33,14 @@ public static class Errors
             return Error.Conflict("Conflict.Constraint", $"Can't delete entity {forId}{type}");
         }
     }
+
     public static class Volunteer
     {
         public static Error AlreadyExist() =>
             Error.Validation("Volunteer.AlreadyExist", "Volunteer Already Exist");
+
+        public static Error PetNotFound(Guid volunteerId, Guid petId) =>
+            Error.NotFound("Pet.NotFound", $"Volunteer with id {volunteerId} does not have pet with id {petId}");
     }
 
     public static class Pet

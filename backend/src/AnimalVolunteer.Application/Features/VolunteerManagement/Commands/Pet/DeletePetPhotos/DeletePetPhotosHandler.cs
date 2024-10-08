@@ -58,9 +58,9 @@ public class DeletePetPhotosHandler : ICommandHandler<DeletePetPhotosCommand>
 
         var volunteer = volunteerResult.Value;
 
-        var pet = volunteer.Pets.FirstOrDefault(p => p.Id == petId);
-
-        pet!.DeleteAllPhotos();
+        var deleteResult = volunteer.DeletePetPhotos(petId);
+        if (deleteResult.IsFailure)
+            return deleteResult.Error.ToErrorList();
 
         await _unitOfWork.SaveChanges(cancellationToken);
 

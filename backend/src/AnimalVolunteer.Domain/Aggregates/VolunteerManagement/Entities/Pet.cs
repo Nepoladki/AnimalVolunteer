@@ -88,19 +88,16 @@ public sealed class Pet : Common.Entity<PetId>
             photos);
     }
 
-    public void Delete() => _isDeleted = true;
+    internal void Delete() => _isDeleted = true;
 
-    public void Restore() => _isDeleted = false;
+    internal void Restore() => _isDeleted = false;
 
-    public void UpdatePhotos(ValueObjectList<PetPhoto> photos) =>
+    internal void UpdatePhotos(ValueObjectList<PetPhoto> photos) =>
         PetPhotosList = photos;
 
-    public void DeleteAllPhotos() => PetPhotosList = [];
+    internal void DeleteAllPhotos() => PetPhotosList = [];
 
-    public void UpdatePosition(Position number)
-        => Position = number;
-
-    public UnitResult<Error> MoveForward()
+    internal UnitResult<Error> MoveForward()
     {
         var newPosition = Position.Forward();
         if (newPosition.IsFailure)
@@ -111,7 +108,7 @@ public sealed class Pet : Common.Entity<PetId>
         return Result.Success<Error>();
     }
 
-    public UnitResult<Error> MoveBackward()
+    internal UnitResult<Error> MoveBackward()
     {
         var newPosition = Position.Backward();
         if (newPosition.IsFailure)
@@ -122,12 +119,12 @@ public sealed class Pet : Common.Entity<PetId>
         return Result.Success<Error>();
     }
 
-    public void MoveToPosition(Position position)
+    internal void MoveToPosition(Position position)
     {
         Position = position;
     }
     
-    public void UpdatePet(
+    internal void UpdatePet(
         Name name,
         Description description,
         PhysicalParameters physicalParameters,

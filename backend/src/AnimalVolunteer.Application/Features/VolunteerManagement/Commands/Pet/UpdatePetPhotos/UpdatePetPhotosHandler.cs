@@ -54,10 +54,9 @@ public class UpdatePetPhotosHandler : ICommandHandler<UpdatePetPhotosCommand>
         if (volunteerResult.IsFailure)
             return volunteerResult.Error.ToErrorList();
 
-        var petResult = volunteerResult.Value
-            .GetPetById(PetId.CreateWithGuid(command.PetId));
-        if (petResult.IsFailure)
-            return petResult.Error.ToErrorList();
+        var volunteer = volunteerResult.Value;
+
+        var petId = PetId.CreateWithGuid(command.PetId);
 
         List<UploadingFileDto> files = [];
 
@@ -93,11 +92,17 @@ public class UpdatePetPhotosHandler : ICommandHandler<UpdatePetPhotosCommand>
             var petPhotos = files.Select(f => PetPhoto
                 .Create(f.FilePath, false).Value).ToList();
 
-            petResult.Value.UpdatePhotos(petPhotos);
+            var updateResult = volunteer.UpdatePetPhotos(petId, petPhotos);
+            if (updateResult.IsFailure)
+                return updateResult.Error.ToErrorList();
 
             await _unitOfWork.SaveChanges(cancellationToken);
 
             transaction.Commit();
+
+            _logger.LogInformation(
+                "Succsessfully updated pet photos, pet ID = {petId}",
+                petId);
 
             return Result.Success<ErrorList>();
         }
@@ -105,7 +110,8 @@ public class UpdatePetPhotosHandler : ICommandHandler<UpdatePetPhotosCommand>
         {
             _logger.LogError(
                 ex,
-                "Error occured while uploading pet photos to volunteer with id {id}",
+                "Error occured while uploading pet (id = {petId}) photos to volunteer with id {id}",
+                petId,
                 command.VolunteerId);
 
             transaction.Rollback();
