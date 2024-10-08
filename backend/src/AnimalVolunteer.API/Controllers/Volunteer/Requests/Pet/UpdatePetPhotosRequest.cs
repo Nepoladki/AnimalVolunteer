@@ -3,7 +3,7 @@ using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.AddP
 
 namespace AnimalVolunteer.API.Controllers.Volunteer.Requests.Pet;
 
-public record AddPetPhotosRequest(
+public record UpdatePetPhotosRequest(
     IFormFileCollection Files)
 {
     public UpdatePetPhotosCommand ToCommand(

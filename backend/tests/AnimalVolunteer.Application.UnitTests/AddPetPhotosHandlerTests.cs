@@ -1,12 +1,13 @@
 ﻿using AnimalVolunteer.Application.Database;
 using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
 using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.AddPetPhotos;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.UpdatePetPhotos;
 using AnimalVolunteer.Application.Interfaces;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.Entities;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.Enums;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.Root;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Entities;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Enums;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Root;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
@@ -16,7 +17,6 @@ using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
-using System.Collections.Generic;
 
 namespace AnimalVolunteer.Application.UnitTests;
 
@@ -30,8 +30,8 @@ public class AddPetPhotosHandlerTests
     private readonly IFileProvider _fileProvider = Substitute
         .For<IFileProvider>();
 
-    private readonly ILogger<AddPetPhotosHandler> _logger = Substitute
-        .For<ILogger<AddPetPhotosHandler>>();
+    private readonly ILogger<UpdatePetPhotosHandler> _logger = Substitute
+        .For<ILogger<UpdatePetPhotosHandler>>();
 
     private readonly IValidator<UpdatePetPhotosCommand> _validator = Substitute
         .For<IValidator<UpdatePetPhotosCommand>>();
@@ -75,7 +75,7 @@ public class AddPetPhotosHandlerTests
         _validator.ValidateAsync(Arg.Any<UpdatePetPhotosCommand>(), _cancellationToken)
             .Returns(new ValidationResult());
 
-        var handler = new AddPetPhotosHandler(
+        var handler = new UpdatePetPhotosHandler(
             _volunteerRepository, 
             _unitOfWork, 
             _fileProvider, 
@@ -123,7 +123,7 @@ public class AddPetPhotosHandlerTests
             .Returns(new ValidationResult(
                 [new ValidationFailure("TestPropName", "500 || Prop || Validation")]));
 
-        var handler = new AddPetPhotosHandler(
+        var handler = new UpdatePetPhotosHandler(
             _volunteerRepository,
             _unitOfWork, 
             _fileProvider, 
@@ -170,7 +170,7 @@ public class AddPetPhotosHandlerTests
         _validator.ValidateAsync(Arg.Any<UpdatePetPhotosCommand>(), _cancellationToken)
             .Returns(new ValidationResult());
 
-        var handler = new AddPetPhotosHandler(
+        var handler = new UpdatePetPhotosHandler(
             _volunteerRepository, 
             _unitOfWork, 
             _fileProvider, 
@@ -216,7 +216,7 @@ public class AddPetPhotosHandlerTests
         _validator.ValidateAsync(Arg.Any<UpdatePetPhotosCommand>(), _cancellationToken)
             .Returns(new ValidationResult());
 
-        var handler = new AddPetPhotosHandler(
+        var handler = new UpdatePetPhotosHandler(
             _volunteerRepository,
             _unitOfWork,
             _fileProvider,
@@ -263,7 +263,7 @@ public class AddPetPhotosHandlerTests
         _messageQueue.WriteAsync(Arg.Any<IEnumerable<FileInfoDto>>(), _cancellationToken)
             .Returns(Task.CompletedTask);
 
-        var handler = new AddPetPhotosHandler(
+        var handler = new UpdatePetPhotosHandler(
             _volunteerRepository,
             _unitOfWork,
             _fileProvider,
@@ -312,7 +312,7 @@ public class AddPetPhotosHandlerTests
         _validator.ValidateAsync(Arg.Any<UpdatePetPhotosCommand>(), _cancellationToken)
             .Returns(new ValidationResult());
 
-        var handler = new AddPetPhotosHandler(
+        var handler = new UpdatePetPhotosHandler(
             _volunteerRepository,
             _unitOfWork,
             _fileProvider,

@@ -7,7 +7,7 @@ using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Root;
 
-public sealed class Volunteer : Common.Entity<VolunteerId>
+public class Volunteer : Common.Entity<VolunteerId>
 {
     // EF Core ctor
     private Volunteer(VolunteerId id) : base(id) { }

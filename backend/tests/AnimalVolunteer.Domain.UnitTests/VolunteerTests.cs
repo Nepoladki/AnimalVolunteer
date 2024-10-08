@@ -1,8 +1,8 @@
-using AnimalVolunteer.Domain.Aggregates.Volunteer.Entities;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.Enums;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.Root;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Entities;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Enums;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Root;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using FluentAssertions;
 

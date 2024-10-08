@@ -44,6 +44,7 @@ public class VolunteerRepository : IVolunteerRepository
         return await _dbContext.Volunteers
             .AnyAsync(v => v.Email == email, cancellationToken);
     }
+
     public async Task Create(
         Volunteer volunteer, CancellationToken cancellationToken = default)
     {

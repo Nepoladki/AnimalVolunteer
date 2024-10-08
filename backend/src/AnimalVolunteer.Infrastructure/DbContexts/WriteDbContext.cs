@@ -1,5 +1,5 @@
 ﻿using AnimalVolunteer.Domain.Aggregates.SpeciesManagement.Root;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.Root;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Root;
 using AnimalVolunteer.Infrastructure.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

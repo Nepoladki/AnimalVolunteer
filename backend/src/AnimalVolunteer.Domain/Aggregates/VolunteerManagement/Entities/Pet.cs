@@ -1,5 +1,7 @@
 ﻿using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Enums;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Root;
 using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
@@ -54,6 +56,7 @@ public sealed class Pet : Common.Entity<PetId>
     public IReadOnlyList<ContactInfo> ContactInfoList { get; private set; } = null!;
     public IReadOnlyList<PaymentDetails> PaymentDetailsList { get; private set; } = null!;
     public IReadOnlyList<PetPhoto> PetPhotosList { get; private set; } = null!;
+    public VolunteerId VolunteerId { get; private set; } = null!;
     
     public static Pet InitialCreate(
         PetId id,

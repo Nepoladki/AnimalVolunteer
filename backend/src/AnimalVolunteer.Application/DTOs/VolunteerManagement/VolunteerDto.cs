@@ -1,4 +1,4 @@
-﻿using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
+﻿using AnimalVolunteer.Application.DTOs.VolunteerManagement.Pet;
 
 namespace AnimalVolunteer.Application.DTOs.Volunteer;
 
