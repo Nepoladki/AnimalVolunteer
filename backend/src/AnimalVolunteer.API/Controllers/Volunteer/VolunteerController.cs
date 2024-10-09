@@ -3,17 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using AnimalVolunteer.API.Processors;
 using AnimalVolunteer.API.Controllers.Volunteer.Requests.Pet;
 using AnimalVolunteer.API.Controllers.Volunteer.Requests.Volunteer;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.AddPet;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.AddPetPhotos;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Create;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Delete;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.ContactInfo;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.MainInfo;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.PaymentDetails;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.SocialNetworks;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.GetVolunteersWithPagination;
-using AnimalVolunteer.API.Response;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.GetVolunteerById;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.AddPet;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Volunteer.Delete;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Volunteer.Create;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Volunteer.Update.ContactInfo;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Volunteer.Update.MainInfo;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Volunteer.Update.PaymentDetails;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Volunteer.Update.SocialNetworks;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.Volunteer.GetVolunteerById;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.Volunteer.GetVolunteersWithPagination;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.UpdatePetPhotos;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.DeletePetPhotos;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.UpdatePet;
 
 namespace AnimalVolunteer.API.Controllers.Volunteer;
 public class VolunteerController : ApplicationController
@@ -30,6 +31,7 @@ public class VolunteerController : ApplicationController
 
         return Ok(response);
     }
+
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(
         [FromRoute] Guid id,
@@ -42,6 +44,7 @@ public class VolunteerController : ApplicationController
 
         return Ok(response.Value);
     }
+
     [HttpPost]
     public async Task<IActionResult> Create(
         [FromBody] CreateVolunteerRequest request,
@@ -51,7 +54,6 @@ public class VolunteerController : ApplicationController
         var command = request.ToCommand();
 
         var creationResult = await handler.Handle(command, cancellationToken);
-
         if (creationResult.IsFailure)
             return creationResult.Error.ToResponse();
 
@@ -69,7 +71,6 @@ public class VolunteerController : ApplicationController
         var command = request.ToCommand(id);
 
         var handleResult = await handler.Handle(command, cancellationToken);
-
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
 
@@ -86,7 +87,6 @@ public class VolunteerController : ApplicationController
         var command = request.ToCommand(id);
 
         var handleResult = await handler.Handle(command, cancellationToken);
-
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
 
@@ -103,7 +103,6 @@ public class VolunteerController : ApplicationController
         var command = request.ToCommand(id);
 
         var handleResult = await handler.Handle(command, cancellationToken);
-
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
 
@@ -120,7 +119,6 @@ public class VolunteerController : ApplicationController
         var command = request.ToCommand(id);
 
         var handleResult = await handler.Handle(command, cancellationToken);
-
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
 
@@ -144,7 +142,7 @@ public class VolunteerController : ApplicationController
     [HttpPost("{id:guid}/pets")]
     public async Task<IActionResult> AddPet(
         [FromRoute] Guid id,
-        [FromForm] AddPetRequest request,
+        [FromForm] CreatePetRequest request,
         [FromServices] AddPetHandler handler,
         CancellationToken cancellationToken = default)
     {
@@ -161,8 +159,8 @@ public class VolunteerController : ApplicationController
     public async Task<IActionResult> AddPetPhotos(
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
-        [FromForm] AddPetPhotosRequest request,
-        [FromServices] AddPetPhotosHandler handler,
+        [FromForm] UpdatePetPhotosRequest request,
+        [FromServices] UpdatePetPhotosHandler handler,
         CancellationToken cancellationToken = default)
     {
         await using var fileProcessor = new FormFileProcessor();
@@ -174,7 +172,39 @@ public class VolunteerController : ApplicationController
 
         var handleResult = await handler
             .Handle(command, cancellationToken);
+        if (handleResult.IsFailure)
+            return handleResult.Error.ToResponse();
 
+        return Ok();
+    }
+
+    [HttpDelete("{volunteerId:guid}/pets/{petId:guid}/photos")]
+    public async Task<IActionResult> DeletePetPhotos(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] DeletePetPhotosHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new DeletePetPhotosCommand(volunteerId, petId);
+
+        var handleResult = await handler.Handle(command, cancellationToken);
+        if (handleResult.IsFailure)
+            return handleResult.Error.ToResponse();
+
+        return Ok();
+    }
+
+    [HttpPut("{volunteerId:guid}/pets/{petId:guid}")]
+    public async Task<IActionResult> UpdatePet(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] UpdatePetHandler handler,
+        [FromBody] UpdatePetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var command = request.ToCommand(volunteerId, petId);
+
+        var handleResult = await handler.Handle(command, cancellationToken);
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
 

@@ -1,4 +1,4 @@
-﻿using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.GetVolunteersWithPagination;
+﻿using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.Volunteer.GetVolunteersWithPagination;
 
 namespace AnimalVolunteer.API.Controllers.Volunteer.Requests.Volunteer;
 

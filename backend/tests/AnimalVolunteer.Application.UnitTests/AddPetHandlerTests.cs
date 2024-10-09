@@ -1,17 +1,21 @@
 using AnimalVolunteer.Application.Database;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.AddPet;
+using AnimalVolunteer.Application.DTOs.SpeciesManagement;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.AddPet;
 using AnimalVolunteer.Application.Interfaces;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.Enums;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.Root;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Enums;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Root;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using System.Linq.Expressions;
+using System.Threading;
 
 namespace AnimalVolunteer.Application.UnitTests;
 
@@ -31,6 +35,8 @@ public class AddPetHandlerTests
     private readonly CancellationToken _cancellationToken =
         new CancellationTokenSource().Token;
 
+    private readonly IReadDbContext _readDbContext = Substitute.For<IReadDbContext>();
+
     [Fact]
     public async Task Handle_VolunteerDoesntExist_ReturnsError()
     {
@@ -49,7 +55,8 @@ public class AddPetHandlerTests
             _volunteerRepository,
             _logger,
             _unitOfWork,
-            _validator);
+            _validator,
+            _readDbContext);
 
         // Act
         var result = await handler.Handle(command, _cancellationToken);
@@ -68,7 +75,7 @@ public class AddPetHandlerTests
 
         var validationFailures = new List<ValidationFailure>
         {
-            new ValidationFailure("TestPropName", "500 || Prop || Validation")
+            new("TestPropName", "500 || Prop || Validation")
         };
 
         _validator.ValidateAsync(command, _cancellationToken)
@@ -78,7 +85,8 @@ public class AddPetHandlerTests
             _volunteerRepository,
             _logger,
             _unitOfWork,
-            _validator);
+            _validator,
+            _readDbContext);
 
         // Act
         var result = await handler.Handle(command, _cancellationToken);
@@ -102,12 +110,18 @@ public class AddPetHandlerTests
         _unitOfWork.SaveChanges().Returns(Task.CompletedTask);
 
         _validator.ValidateAsync(command, _cancellationToken).Returns(new ValidationResult());
+        
+        _readDbContext.Species
+            .AnyAsync(
+                Arg.Any<Expression<Func<SpeciesDto, bool>>>(), 
+                Arg.Any<CancellationToken>()).Returns(true);
 
         var handler = new AddPetHandler(
             _volunteerRepository,
             _logger,
             _unitOfWork,
-            _validator);
+            _validator, 
+            _readDbContext);
 
         // Act
         var result = await handler.Handle(command, _cancellationToken);

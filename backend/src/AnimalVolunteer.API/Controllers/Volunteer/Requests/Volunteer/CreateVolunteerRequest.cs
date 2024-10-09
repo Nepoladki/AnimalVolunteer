@@ -1,5 +1,5 @@
 ﻿using AnimalVolunteer.Application.DTOs.Volunteer;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Create;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Volunteer.Create;
 
 namespace AnimalVolunteer.API.Controllers.Volunteer.Requests.Volunteer
 {

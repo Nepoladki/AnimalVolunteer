@@ -1,13 +1,15 @@
-﻿using AnimalVolunteer.Domain.Aggregates.Volunteer.Entities;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
-using AnimalVolunteer.Domain.Common;
+﻿using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Entities;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Enums;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
+using Common = AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
+using AnimalVolunteer.Domain.Common;
 
-namespace AnimalVolunteer.Domain.Aggregates.Volunteer.Root;
+namespace AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Root;
 
-public sealed class Volunteer : Common.Entity<VolunteerId>
+public class Volunteer : Common.Entity<VolunteerId>
 {
     // EF Core ctor
     private Volunteer(VolunteerId id) : base(id) { }
@@ -103,35 +105,35 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
         }
     }
 
-    public Result<Pet, Error> GetPetById(PetId petId)
+    public Result<Pet, Common.Error> GetPetById(PetId petId)
     {
         var pet = _pets.FirstOrDefault(p => p.Id == petId);
 
         if (pet is null)
-            return Errors.General.NotFound(petId);
+            return Common.Errors.General.NotFound(petId);
 
         return pet;
     }
 
-    public UnitResult<Error> AddPet(Pet pet)
+    public UnitResult<Common.Error> AddPet(Pet pet)
     {
         var position = Position.Create(_pets.Count + 1);
         if (position.IsFailure)
             return position.Error;
 
-        pet.UpdatePosition(position.Value);
+        pet.MoveToPosition(position.Value);
 
         _pets.Add(pet);
 
-        return Result.Success<Error>();
+        return Result.Success<Common.Error>();
     }
 
-    public UnitResult<Error> MovePet(Pet pet, Position newPosition)
+    public UnitResult<Common.Error> MovePet(Pet pet, Position newPosition)
     {
         var currentPosition = pet.Position;
 
         if (currentPosition == newPosition || _pets.Count == 1)
-            return Result.Success<Error>();
+            return Result.Success<Common.Error>();
 
         var ajustedPosition = AjustPositionIfOutOfRange(newPosition);
         if (ajustedPosition.IsFailure)
@@ -145,10 +147,64 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
 
         pet.MoveToPosition(newPosition);
 
-        return Result.Success<Error>();
+        return Result.Success<Common.Error>();
     }
 
-    private Result<Position, Error> AjustPositionIfOutOfRange(Position newPosition)
+    public UnitResult<Common.Error> UpdatePet(
+        PetId petId,
+        Name name,
+        Description description,
+        PhysicalParameters physicalParameters,
+        SpeciesAndBreed speciesAndBreed,
+        HealthInfo healthInfo,
+        Address address,
+        DateOnly birthDate,
+        CurrentStatus currentStatus,
+        ValueObjectList<ContactInfo> contactInfos,
+        ValueObjectList<PaymentDetails> paymentDetails)
+    {
+        var pet = Pets.FirstOrDefault(p => p.Id == petId);
+        if (pet is null)
+            return Common.Errors.Volunteer.PetNotFound(Id, petId);
+
+        pet.UpdatePet(
+            name, 
+            description, 
+            physicalParameters, 
+            speciesAndBreed, 
+            healthInfo, 
+            address, 
+            birthDate, 
+            currentStatus, 
+            contactInfos, 
+            paymentDetails);
+
+        return Result.Success<Common.Error>();
+    }
+
+    public UnitResult<Error> UpdatePetPhotos(PetId petId, List<PetPhoto> petPhotos)
+    {
+        var pet = Pets.FirstOrDefault(p => p.Id == petId);
+        if (pet is null)
+            return Errors.Volunteer.PetNotFound(Id, petId);
+
+        pet.UpdatePhotos(petPhotos);
+
+        return Result.Success<Common.Error>();
+    }
+
+    public UnitResult<Error> DeletePetPhotos(PetId petId)
+    {
+        var pet = Pets.FirstOrDefault(p => p.Id == petId);
+        if (pet is null)
+            return Errors.Volunteer.PetNotFound(Id, petId);
+
+        pet.DeleteAllPhotos();
+
+        return Result.Success<Common.Error>();
+    }
+
+    private Result<Position, Common.Error> AjustPositionIfOutOfRange(Position newPosition)
     {
         if (newPosition.Value <= _pets.Count)
             return newPosition;
@@ -159,7 +215,7 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
 
         return lastPosition.Value;
     }
-    private UnitResult<Error> ArrangePets(Position newPosition, Position currentPosition)
+    private UnitResult<Common.Error> ArrangePets(Position newPosition, Position currentPosition)
     {
         if (newPosition < currentPosition)
         {
@@ -186,6 +242,6 @@ public sealed class Volunteer : Common.Entity<VolunteerId>
             }
         }
 
-        return Result.Success<Error>();
+        return Result.Success<Common.Error>();
     }
 }

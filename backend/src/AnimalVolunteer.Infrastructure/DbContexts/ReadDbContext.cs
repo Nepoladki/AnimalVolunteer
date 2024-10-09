@@ -1,9 +1,7 @@
 ﻿using AnimalVolunteer.Application.DTOs.SpeciesManagement;
 using AnimalVolunteer.Application.DTOs.Volunteer;
-using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
+using AnimalVolunteer.Application.DTOs.VolunteerManagement.Pet;
 using AnimalVolunteer.Application.Interfaces;
-using AnimalVolunteer.Domain.Aggregates.PetType;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.Root;
 using AnimalVolunteer.Infrastructure.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

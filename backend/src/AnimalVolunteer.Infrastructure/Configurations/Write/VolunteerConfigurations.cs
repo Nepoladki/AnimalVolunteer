@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common.ValueObjects;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.Root;
 using AnimalVolunteer.Infrastructure.Extensions;
 using AnimalVolunteer.Application.DTOs.Volunteer;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Root;
 
 namespace AnimalVolunteer.Infrastructure.Configurations.Write;
 
@@ -97,8 +97,9 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
             dto => PaymentDetails.Create(dto.Name, dto.Description).Value)
             .HasColumnName(PaymentDetails.DB_COLUMN_NAME);
 
-        builder.HasMany(x => x.Pets)
+        builder.HasMany(v => v.Pets)
             .WithOne()
-            .HasForeignKey("volunteer_id");
+            .HasForeignKey(p => p.VolunteerId)
+            .IsRequired();
     }
 }

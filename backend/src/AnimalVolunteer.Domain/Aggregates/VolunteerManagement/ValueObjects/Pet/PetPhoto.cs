@@ -2,7 +2,7 @@
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
 
-namespace AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Pet;
+namespace AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
 
 public record PetPhoto
 {

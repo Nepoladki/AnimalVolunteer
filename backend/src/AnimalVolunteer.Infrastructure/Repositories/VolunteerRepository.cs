@@ -1,6 +1,6 @@
 ﻿using AnimalVolunteer.Application.Interfaces;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.Root;
-using AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Root;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
 using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Infrastructure.DbContexts;
 using CSharpFunctionalExtensions;
@@ -27,7 +27,7 @@ public class VolunteerRepository : IVolunteerRepository
         if (volunteer is null)
             return Errors.General.NotFound(id);
 
-        return volunteer;
+        return volunteer!;
     }
 
     public async Task<Volunteer?> GetByEmail(
@@ -44,10 +44,11 @@ public class VolunteerRepository : IVolunteerRepository
         return await _dbContext.Volunteers
             .AnyAsync(v => v.Email == email, cancellationToken);
     }
+
     public async Task Create(
         Volunteer volunteer, CancellationToken cancellationToken = default)
     {
-        _dbContext.Volunteers.Add(volunteer);
+        await _dbContext.Volunteers.AddAsync(volunteer, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 

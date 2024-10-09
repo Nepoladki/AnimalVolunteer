@@ -2,7 +2,7 @@
 using CSharpFunctionalExtensions;
 using System.Reflection.Metadata.Ecma335;
 
-namespace AnimalVolunteer.Domain.Aggregates.Volunteer.ValueObjects.Volunteer;
+namespace AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
 public record Statistics
 {
     private const int MIN_VALUE = 0;

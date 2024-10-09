@@ -1,5 +1,5 @@
 ﻿using AnimalVolunteer.Application.DTOs.Volunteer;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Update.ContactInfo;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Volunteer.Update.ContactInfo;
 
 namespace AnimalVolunteer.API.Controllers.Volunteer.Requests.Volunteer;
 
