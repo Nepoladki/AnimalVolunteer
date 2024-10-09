@@ -88,7 +88,7 @@ public sealed class Pet : Common.Entity<PetId>
             photos);
     }
 
-    internal void Delete() => _isDeleted = true;
+    internal void SoftDelete() => _isDeleted = true;
 
     internal void Restore() => _isDeleted = false;
 

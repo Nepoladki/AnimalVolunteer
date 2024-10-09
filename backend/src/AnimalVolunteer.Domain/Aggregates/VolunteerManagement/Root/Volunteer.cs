@@ -86,13 +86,13 @@ public class Volunteer : Common.Entity<VolunteerId>
     public void UpdatePaymentDetails(ValueObjectList<PaymentDetails> paymentDetails) => 
         PaymentDetailsList = paymentDetails;
 
-    public void Delete()
+    public void SoftDelete()
     {
         _isDeleted = true;
 
         foreach (var pet in _pets)
         {
-            pet.Delete();
+            pet.SoftDelete();
         }
     }
 
@@ -104,6 +104,17 @@ public class Volunteer : Common.Entity<VolunteerId>
         {
             pet.Restore();
         }
+    }
+
+    public UnitResult<Error> SoftDeletePet(PetId petId)
+    {
+        var pet = Pets.FirstOrDefault(p => p.Id == petId);
+        if (pet == null)
+            return Errors.Volunteer.PetNotFound(Id, petId);
+
+        pet.SoftDelete();
+
+        return UnitResult.Success<Error>();
     }
 
     public Result<Pet, Common.Error> GetPetById(PetId petId)
@@ -124,7 +135,7 @@ public class Volunteer : Common.Entity<VolunteerId>
 
         if (status == CurrentStatus.HomeFounded)
             return Errors.Volunteer.PetStatusRestriction(Id);
-
+    
         petResult.Value.ChangeStatus(status);
 
         return UnitResult.Success<Error>();
