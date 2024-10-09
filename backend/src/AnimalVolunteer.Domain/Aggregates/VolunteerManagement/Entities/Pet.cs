@@ -123,6 +123,11 @@ public sealed class Pet : Common.Entity<PetId>
     {
         Position = position;
     }
+
+    internal void ChangeStatus(CurrentStatus newStatus)
+    {
+        CurrentStatus = newStatus;
+    }
     
     internal void UpdatePet(
         Name name,

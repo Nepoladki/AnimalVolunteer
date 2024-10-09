@@ -6,6 +6,7 @@ using Common = AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
 using AnimalVolunteer.Domain.Common;
+using System.Reflection.Metadata.Ecma335;
 
 namespace AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Root;
 
@@ -113,6 +114,20 @@ public class Volunteer : Common.Entity<VolunteerId>
             return Common.Errors.General.NotFound(petId);
 
         return pet;
+    }
+
+    public UnitResult<Error> ChangePetStatus(PetId petId, CurrentStatus status)
+    {
+        var petResult = GetPetById(petId);
+        if (petResult.IsFailure)
+            return petResult.Error;
+
+        if (status == CurrentStatus.HomeFounded)
+            return Errors.Volunteer.PetStatusRestriction(Id);
+
+        petResult.Value.ChangeStatus(status);
+
+        return UnitResult.Success<Error>();
     }
 
     public UnitResult<Common.Error> AddPet(Pet pet)
