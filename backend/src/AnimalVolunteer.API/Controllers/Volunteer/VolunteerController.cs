@@ -15,6 +15,7 @@ using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.Volunteer
 using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.UpdatePetPhotos;
 using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.DeletePetPhotos;
 using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.UpdatePet;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.ChangePetStatus;
 
 namespace AnimalVolunteer.API.Controllers.Volunteer;
 public class VolunteerController : ApplicationController
@@ -200,6 +201,23 @@ public class VolunteerController : ApplicationController
         [FromRoute] Guid petId,
         [FromServices] UpdatePetHandler handler,
         [FromBody] UpdatePetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var command = request.ToCommand(volunteerId, petId);
+
+        var handleResult = await handler.Handle(command, cancellationToken);
+        if (handleResult.IsFailure)
+            return handleResult.Error.ToResponse();
+
+        return Ok();
+    }
+
+    [HttpPut("{volunteerId:guid}/pets/{petId:guid}/status")]
+    public async Task<IActionResult> ChangePetStatus(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromBody] ChangePetStatusRequest request,
+        [FromServices] ChangePetStatusHandler handler,
         CancellationToken cancellationToken = default)
     {
         var command = request.ToCommand(volunteerId, petId);
