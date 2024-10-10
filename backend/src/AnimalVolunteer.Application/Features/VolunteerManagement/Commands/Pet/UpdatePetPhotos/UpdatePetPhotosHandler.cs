@@ -14,7 +14,6 @@ namespace AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.
 
 public class UpdatePetPhotosHandler : ICommandHandler<UpdatePetPhotosCommand>
 {
-    private const string BUCKET_NAME = "photos";
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IFileProvider _fileProvider;
@@ -79,11 +78,13 @@ public class UpdatePetPhotosHandler : ICommandHandler<UpdatePetPhotosCommand>
             }
 
             var uploadResult = await _fileProvider
-                .UploadFiles(files, BUCKET_NAME, cancellationToken);
+                .UploadFiles(files, Constants.MINIO_BUCKET_NAME, cancellationToken);
             if (uploadResult.IsFailure)
             {
                 await _messageQueue.WriteAsync(
-                    files.Select(x => new FileInfoDto(BUCKET_NAME, x.FilePath.Value)),
+                    files.Select(x => new FileInfoDto(
+                        Constants.MINIO_BUCKET_NAME, 
+                        x.FilePath.Value)),
                     cancellationToken);
 
                 return uploadResult.Error.ToErrorList();

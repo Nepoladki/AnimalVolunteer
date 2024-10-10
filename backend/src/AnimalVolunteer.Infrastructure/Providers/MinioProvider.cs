@@ -31,16 +31,6 @@ public class MinioProvider : IFileProvider
     {
         try
         {
-            var bucketExistsResult = await BucketExists(
-                fileInfo.BucketName, cancellationToken);
-            if (!await BucketExists(fileInfo.BucketName, cancellationToken))
-                return Errors.Minio.BucketNotFound(fileInfo.BucketName);
-
-            var objectExistsResult = await ObjectExists(
-                fileInfo.BucketName, fileInfo.ObjectName, cancellationToken);
-            if (objectExistsResult.IsFailure)
-                return Result.Success<Error>();
-
             var deletingArgs = new RemoveObjectArgs()
                 .WithBucket(fileInfo.BucketName)
                 .WithObject(fileInfo.ObjectName);
