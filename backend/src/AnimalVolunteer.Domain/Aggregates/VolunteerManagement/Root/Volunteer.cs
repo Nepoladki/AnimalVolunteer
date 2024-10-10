@@ -108,21 +108,35 @@ public class Volunteer : Common.Entity<VolunteerId>
 
     public UnitResult<Error> SoftDeletePet(PetId petId)
     {
-        var pet = Pets.FirstOrDefault(p => p.Id == petId);
-        if (pet == null)
-            return Errors.Volunteer.PetNotFound(Id, petId);
+        var petResult = GetPetById(petId);
+        if (petResult.IsFailure)
+            return petResult.Error;
 
-        pet.SoftDelete();
+        petResult.Value.SoftDelete();
 
         return UnitResult.Success<Error>();
     }
 
-    public Result<Pet, Common.Error> GetPetById(PetId petId)
+    public Result<string[], Error> HardDeletePet(PetId petId)
+    {
+        var petResult = GetPetById(petId);
+        if (petResult.IsFailure)
+            return petResult.Error;
+
+        var filesToDelete = petResult.Value.PetPhotosList
+            .Select(p => p.FilePath.Value).ToArray();
+
+        _pets.Remove(petResult.Value);
+        
+        return filesToDelete;
+    }
+
+    public Result<Pet, Error> GetPetById(PetId petId)
     {
         var pet = _pets.FirstOrDefault(p => p.Id == petId);
 
         if (pet is null)
-            return Common.Errors.General.NotFound(petId);
+            return Errors.Volunteer.PetNotFound(Id, petId);
 
         return pet;
     }
@@ -141,7 +155,7 @@ public class Volunteer : Common.Entity<VolunteerId>
         return UnitResult.Success<Error>();
     }
 
-    public UnitResult<Common.Error> AddPet(Pet pet)
+    public UnitResult<Error> AddPet(Pet pet)
     {
         var position = Position.Create(_pets.Count + 1);
         if (position.IsFailure)
@@ -151,15 +165,15 @@ public class Volunteer : Common.Entity<VolunteerId>
 
         _pets.Add(pet);
 
-        return Result.Success<Common.Error>();
+        return Result.Success<Error>();
     }
 
-    public UnitResult<Common.Error> MovePet(Pet pet, Position newPosition)
+    public UnitResult<Error> MovePet(Pet pet, Position newPosition)
     {
         var currentPosition = pet.Position;
 
         if (currentPosition == newPosition || _pets.Count == 1)
-            return Result.Success<Common.Error>();
+            return Result.Success<Error>();
 
         var ajustedPosition = AjustPositionIfOutOfRange(newPosition);
         if (ajustedPosition.IsFailure)
@@ -173,10 +187,10 @@ public class Volunteer : Common.Entity<VolunteerId>
 
         pet.MoveToPosition(newPosition);
 
-        return Result.Success<Common.Error>();
+        return Result.Success<Error>();
     }
 
-    public UnitResult<Common.Error> UpdatePet(
+    public UnitResult<Error> UpdatePet(
         PetId petId,
         Name name,
         Description description,
@@ -191,7 +205,7 @@ public class Volunteer : Common.Entity<VolunteerId>
     {
         var pet = Pets.FirstOrDefault(p => p.Id == petId);
         if (pet is null)
-            return Common.Errors.Volunteer.PetNotFound(Id, petId);
+            return Errors.Volunteer.PetNotFound(Id, petId);
 
         pet.UpdatePet(
             name, 
@@ -205,7 +219,7 @@ public class Volunteer : Common.Entity<VolunteerId>
             contactInfos, 
             paymentDetails);
 
-        return Result.Success<Common.Error>();
+        return Result.Success<Error>();
     }
 
     public UnitResult<Error> UpdatePetPhotos(PetId petId, List<PetPhoto> petPhotos)
@@ -216,7 +230,7 @@ public class Volunteer : Common.Entity<VolunteerId>
 
         pet.UpdatePhotos(petPhotos);
 
-        return Result.Success<Common.Error>();
+        return Result.Success<Error>();
     }
 
     public UnitResult<Error> DeletePetPhotos(PetId petId)
@@ -227,10 +241,10 @@ public class Volunteer : Common.Entity<VolunteerId>
 
         pet.DeleteAllPhotos();
 
-        return Result.Success<Common.Error>();
+        return Result.Success<Error>();
     }
 
-    private Result<Position, Common.Error> AjustPositionIfOutOfRange(Position newPosition)
+    private Result<Position, Error> AjustPositionIfOutOfRange(Position newPosition)
     {
         if (newPosition.Value <= _pets.Count)
             return newPosition;
@@ -241,7 +255,7 @@ public class Volunteer : Common.Entity<VolunteerId>
 
         return lastPosition.Value;
     }
-    private UnitResult<Common.Error> ArrangePets(Position newPosition, Position currentPosition)
+    private UnitResult<Error> ArrangePets(Position newPosition, Position currentPosition)
     {
         if (newPosition < currentPosition)
         {
@@ -268,6 +282,6 @@ public class Volunteer : Common.Entity<VolunteerId>
             }
         }
 
-        return Result.Success<Common.Error>();
+        return Result.Success<Error>();
     }
 }
