@@ -6,6 +6,7 @@ using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
 using AnimalVolunteer.Application.DTOs.VolunteerManagement.Pet;
+using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Enums;
 
 namespace AnimalVolunteer.Infrastructure.Configurations.Read;
 
@@ -33,5 +34,12 @@ public class PetDtoConfigurations : IEntityTypeConfiguration<PetDto>
                .Deserialize<IEnumerable<PetPhotoDto>>(
                    json, JsonSerializerOptions.Default)!)
            .HasColumnName(PetPhoto.DB_COLUMN_NAME);
+
+        builder.Property(p => p.CurrentStatus)
+            .HasConversion(
+            into => into.ToString(),
+            dbValue => (CurrentStatus)Enum.Parse(typeof(CurrentStatus), dbValue))
+            .IsRequired()
+            .HasColumnName("current_status");
     }
 }

@@ -18,6 +18,7 @@ using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.Upda
 using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.ChangePetStatus;
 using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.SoftDeletePet;
 using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.HardDeletePet;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.Pet.GetPetsFilteredPaginated;
 
 namespace AnimalVolunteer.API.Controllers.Volunteer;
 public class VolunteerController : ApplicationController
@@ -261,5 +262,18 @@ public class VolunteerController : ApplicationController
             return handleResult.Error.ToResponse();
 
         return Ok();
+    }
+
+    [HttpGet("pets")]
+    public async Task<IActionResult> GetPets(
+        [FromQuery] GetPetsFilteredPaginatedRequest request,
+        [FromServices] GetPetsFilteredPaginatedHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var query = request.ToQuery();
+
+        var pets = await handler.Handle(query, cancellationToken);
+
+        return Ok(pets);
     }
 }

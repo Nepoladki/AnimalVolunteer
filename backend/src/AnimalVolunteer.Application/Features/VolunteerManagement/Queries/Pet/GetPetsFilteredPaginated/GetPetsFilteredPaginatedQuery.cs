@@ -3,12 +3,18 @@
 namespace AnimalVolunteer.Application.Features.VolunteerManagement.Queries.Pet.GetPetsFilteredPaginated;
 
 public record GetPetsFilteredPaginatedQuery(
-    Guid VolunteerId,
+    Guid? VolunteerId,
     Guid? SpeciesId,
     Guid? BreedId,
-    string? Name, 
-    double? Age, 
-    double? Weight, 
-    double? Height,
+    string? Name,
+    int? AgeFrom,
+    int? AgeTo,
+    string? Color,
+    int? WeightFrom,
+    int? WeightTo,
+    int? HeightFrom,
+    int? HeightTo,
     string? Country,
-    string? City) : IQuery;
+    string? City,
+    int Page,
+    int PageSize) : IQuery;

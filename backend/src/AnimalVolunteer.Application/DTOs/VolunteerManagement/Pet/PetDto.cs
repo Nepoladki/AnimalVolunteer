@@ -27,4 +27,6 @@ public class PetDto
     public bool IsDeleted { get; init; }
     public IEnumerable<PaymentDetailsDto> PaymentDetails { get; init; } = default!;
     public IEnumerable<PetPhotoDto> Photos { get; init; } = default!;
+    public int AgeInYears =>
+        (DateTime.Today - BirthDate.ToDateTime(TimeOnly.MinValue)).Days / 365;
 }
