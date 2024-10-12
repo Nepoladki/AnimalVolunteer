@@ -75,21 +75,4 @@ public class GetPetsFilteredPaginatedHandler :
 
         return await petsQuery.ToPagedList(query.Page, query.PageSize, cancellationToken);
     }
-
-    private static bool AgeFilterPredicate(DateOnly birthDate, int? ageFrom, int? ageTo)
-    {
-        var today = DateTime.Today;
-        var ageInYears = (today - birthDate.ToDateTime(TimeOnly.MinValue)).TotalDays / 365;
-
-        if (ageFrom.HasValue && ageTo.HasValue)
-            return ageInYears >= ageFrom.Value && ageInYears <= ageTo.Value;
-
-        if (ageFrom.HasValue)
-            return ageInYears >= ageFrom.Value;
-
-        if (ageTo.HasValue)
-            return ageInYears <= ageTo.Value;
-
-        return true;
-    }
 }
