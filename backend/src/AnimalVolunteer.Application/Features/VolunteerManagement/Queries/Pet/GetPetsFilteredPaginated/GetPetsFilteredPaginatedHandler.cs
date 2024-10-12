@@ -52,24 +52,28 @@ public class GetPetsFilteredPaginatedHandler :
             p => p.BreedId == query.BreedId);
 
         petsQuery.WhereIf(
-            query.AgeFrom.HasValue || query.AgeTo.HasValue,
-            p => (DateTime.Today - p.BirthDate.ToDateTime(TimeOnly.MinValue) >= TimeSpan.FromDays(query.AgeFrom!.Value / 365))&&
-            (DateTime.Today - p.BirthDate.ToDateTime(TimeOnly.MinValue) <= TimeSpan.FromDays(query.AgeTo!.Value / 365)));
+            query.AgeFrom.HasValue,
+            p => ((DateTime.Today - p.BirthDate.ToDateTime(TimeOnly.MinValue)).TotalDays / 365)
+            >= query.AgeFrom!.Value);
 
         petsQuery.WhereIf(
-            query.WeightFrom.HasValue || query.WeightTo.HasValue,
-            p =>
-                (p.Weight >= query.WeightFrom.GetValueOrDefault(0)) &&
-                (p.Weight <= query.WeightTo.GetValueOrDefault(int.MaxValue)));
+            query.AgeTo.HasValue,
+            p => ((DateTime.Today - p.BirthDate.ToDateTime(TimeOnly.MinValue)).TotalDays / 365)
+            <= query.AgeTo!.Value);
 
         petsQuery.WhereIf(
-            query.HeightFrom.HasValue || query.HeightTo.HasValue,
-            p =>
-                (p.Height >= query.HeightFrom.GetValueOrDefault(0)) &&
-                (p.Height <= query.HeightTo.GetValueOrDefault(int.MaxValue)));
+            query.WeightFrom.HasValue, p => p.Weight >= query.WeightFrom!);
+
+        petsQuery.WhereIf(
+            query.WeightTo.HasValue, p => p.Weight <= query.WeightTo!);
+
+        petsQuery.WhereIf(
+            query.HeightFrom.HasValue, p => p.Height >= query.HeightFrom!);
+
+        petsQuery.WhereIf(
+            query.HeightTo.HasValue, p => p.Height <= query.HeightTo!);
 
         return await petsQuery.ToPagedList(query.Page, query.PageSize, cancellationToken);
-
     }
 
     private static bool AgeFilterPredicate(DateOnly birthDate, int? ageFrom, int? ageTo)
@@ -78,20 +82,14 @@ public class GetPetsFilteredPaginatedHandler :
         var ageInYears = (today - birthDate.ToDateTime(TimeOnly.MinValue)).TotalDays / 365;
 
         if (ageFrom.HasValue && ageTo.HasValue)
-        {
             return ageInYears >= ageFrom.Value && ageInYears <= ageTo.Value;
-        }
 
         if (ageFrom.HasValue)
-        {
             return ageInYears >= ageFrom.Value;
-        }
 
         if (ageTo.HasValue)
-        {
             return ageInYears <= ageTo.Value;
-        }
 
-        return true; // No filtering on age
+        return true;
     }
 }
