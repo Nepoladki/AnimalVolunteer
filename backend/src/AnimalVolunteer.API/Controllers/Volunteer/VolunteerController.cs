@@ -19,6 +19,7 @@ using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.Chan
 using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.SoftDeletePet;
 using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.HardDeletePet;
 using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.Pet.GetPetsFilteredPaginated;
+using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.Pet.GetPetById;
 
 namespace AnimalVolunteer.API.Controllers.Volunteer;
 public class VolunteerController : ApplicationController
@@ -275,5 +276,20 @@ public class VolunteerController : ApplicationController
         var pets = await handler.Handle(query, cancellationToken);
 
         return Ok(pets);
+    }
+
+    [HttpGet("pets/{petId:guid}")]
+    public async Task<IActionResult> GetPet(
+        [FromRoute] Guid petId,
+        [FromServices] GetPetByIdHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var query = new GetPetByIdQuery(petId);
+
+        var petResult = await handler.Handle(query, cancellationToken);
+        if (petResult.IsFailure)
+            return petResult.Error.ToResponse();
+
+        return Ok(petResult.Value);
     }
 }
