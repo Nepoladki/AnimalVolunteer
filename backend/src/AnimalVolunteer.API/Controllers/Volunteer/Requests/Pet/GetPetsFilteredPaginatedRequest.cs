@@ -16,6 +16,8 @@ public record GetPetsFilteredPaginatedRequest(
     int? HeightTo,
     string? Country,
     string? City,
+    string? SortBy,
+    string? SortDirection,
     int Page,
     int PageSize)
 {
@@ -33,6 +35,8 @@ public record GetPetsFilteredPaginatedRequest(
             HeightTo,
             Country,
             City,
+            SortBy,
+            SortDirection,
             Page,
             PageSize);
 }

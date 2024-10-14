@@ -16,5 +16,7 @@ public record GetPetsFilteredPaginatedQuery(
     int? HeightTo,
     string? Country,
     string? City,
+    string? SortBy,
+    string? SortDirection,
     int Page,
     int PageSize) : IQuery;

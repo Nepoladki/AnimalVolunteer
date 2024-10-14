@@ -1,9 +1,13 @@
-﻿using AnimalVolunteer.Application.DTOs.VolunteerManagement.Pet;
+﻿using AnimalVolunteer.Application.DTOs.Volunteer;
+using AnimalVolunteer.Application.DTOs.VolunteerManagement.Pet;
 using AnimalVolunteer.Application.Extensions;
+using AnimalVolunteer.Application.Features.SpeciesManagement.Queries.GetAllSpecies;
 using AnimalVolunteer.Application.Interfaces;
 using AnimalVolunteer.Application.Models;
 using FluentValidation;
+using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 
 namespace AnimalVolunteer.Application.Features.VolunteerManagement.Queries.Pet.GetPetsFilteredPaginated;
 
@@ -21,58 +25,52 @@ public class GetPetsFilteredPaginatedHandler :
     public async Task<PagedList<PetDto>> Handle(
         GetPetsFilteredPaginatedQuery query, CancellationToken cancellationToken)
     {
-        var petsQuery = _readDbContext.Pets;
+        var petsQuery = ApplyFilters(_readDbContext.Pets, query);
 
-        petsQuery.WhereIf(
-            !string.IsNullOrWhiteSpace(query.Name),
-            p => p.Name.Contains(query.Name!));
+        var keySelector = SortByProperty(query.SortBy);
 
-        petsQuery.WhereIf(
-            !string.IsNullOrWhiteSpace(query.Color),
-            p => p.Color.Contains(query.Color!));
-
-        petsQuery.WhereIf(
-            !string.IsNullOrWhiteSpace(query.Country),
-            p => p.Country.Contains(query.Country!));
-
-        petsQuery.WhereIf(
-            !string.IsNullOrWhiteSpace(query.City),
-            p => p.City.Contains(query.City!));
-
-        petsQuery.WhereIf(
-            query.VolunteerId.GetValueOrDefault(Guid.Empty) != Guid.Empty,
-            p => p.VolunteerId == query.VolunteerId);
-
-        petsQuery.WhereIf(
-            query.SpeciesId.GetValueOrDefault(Guid.Empty) != Guid.Empty,
-            p => p.SpeciesId == query.SpeciesId);
-
-        petsQuery.WhereIf(
-            query.BreedId.GetValueOrDefault(Guid.Empty) != Guid.Empty,
-            p => p.BreedId == query.BreedId);
-
-        petsQuery.WhereIf(
-            query.AgeFrom.HasValue,
-            p => ((DateTime.Today - p.BirthDate.ToDateTime(TimeOnly.MinValue)).TotalDays / 365)
-            >= query.AgeFrom!.Value);
-
-        petsQuery.WhereIf(
-            query.AgeTo.HasValue,
-            p => ((DateTime.Today - p.BirthDate.ToDateTime(TimeOnly.MinValue)).TotalDays / 365)
-            <= query.AgeTo!.Value);
-
-        petsQuery.WhereIf(
-            query.WeightFrom.HasValue, p => p.Weight >= query.WeightFrom!);
-
-        petsQuery.WhereIf(
-            query.WeightTo.HasValue, p => p.Weight <= query.WeightTo!);
-
-        petsQuery.WhereIf(
-            query.HeightFrom.HasValue, p => p.Height >= query.HeightFrom!);
-
-        petsQuery.WhereIf(
-            query.HeightTo.HasValue, p => p.Height <= query.HeightTo!);
+        petsQuery = query.SortDirection?.ToLower() == "desc"
+            ? petsQuery.OrderByDescending(keySelector)
+            : petsQuery.OrderBy(keySelector);
 
         return await petsQuery.ToPagedList(query.Page, query.PageSize, cancellationToken);
+    }
+    private static Expression<Func<PetDto, object>> SortByProperty(string? sortBy)
+    {
+        if (string.IsNullOrEmpty(sortBy))
+            return volunteer => volunteer.Id;
+
+        Expression<Func<PetDto, object>> keySelector = sortBy?.ToLower() switch
+        {
+            "name" => p => p.Name,
+            "color" => p => p.Color,
+            "weight" => p => p.Weight,
+            "height" => p => p.Height,
+            "age" => p => p.BirthDate,
+            "country" => p => p.Country,
+            "city" => p => p.City,
+            _ => p => p.Id
+        };
+
+        return keySelector;
+    }
+
+    private static IQueryable<PetDto> ApplyFilters(
+        IQueryable<PetDto> dbQuery, GetPetsFilteredPaginatedQuery query)
+    {
+        return dbQuery
+            .WhereIf(!string.IsNullOrWhiteSpace(query.Name), p => p.Name.Contains(query.Name!))
+            .WhereIf(!string.IsNullOrWhiteSpace(query.Color), p => p.Color.Contains(query.Color!))
+            .WhereIf(!string.IsNullOrWhiteSpace(query.Country), p => p.Country.Contains(query.Country!))
+            .WhereIf(!string.IsNullOrWhiteSpace(query.City), p => p.City.Contains(query.City!))
+            .WhereIf(query.VolunteerId.GetValueOrDefault(Guid.Empty) != Guid.Empty, p => p.VolunteerId == query.VolunteerId)
+            .WhereIf(query.SpeciesId.GetValueOrDefault(Guid.Empty) != Guid.Empty, p => p.SpeciesId == query.SpeciesId)
+            .WhereIf(query.BreedId.GetValueOrDefault(Guid.Empty) != Guid.Empty, p => p.BreedId == query.BreedId)
+            .WhereIf(query.AgeFrom.HasValue, p => ((DateTime.Today - p.BirthDate.ToDateTime(TimeOnly.MinValue)).TotalDays / 365) >= query.AgeFrom!.Value)
+            .WhereIf(query.AgeTo.HasValue, p => ((DateTime.Today - p.BirthDate.ToDateTime(TimeOnly.MinValue)).TotalDays / 365) <= query.AgeTo!.Value)
+            .WhereIf(query.WeightFrom.HasValue, p => p.Weight >= query.WeightFrom!)
+            .WhereIf(query.WeightTo.HasValue, p => p.Weight <= query.WeightTo!)
+            .WhereIf(query.HeightFrom.HasValue, p => p.Height >= query.HeightFrom!)
+            .WhereIf(query.HeightTo.HasValue, p => p.Height <= query.HeightTo!);
     }
 }
