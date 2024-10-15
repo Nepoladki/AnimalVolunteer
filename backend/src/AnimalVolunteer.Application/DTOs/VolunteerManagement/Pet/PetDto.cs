@@ -25,6 +25,6 @@ public class PetDto
     public DateOnly BirthDate { get; init; }
     public CurrentStatus CurrentStatus { get; init; }
     public bool IsDeleted { get; init; }
-    public IEnumerable<PaymentDetailsDto> PaymentDetails { get; init; } = default!;
+    public IEnumerable<PaymentDetailsDto> PaymentDetails {  get; init; } = default!;
     public IEnumerable<PetPhotoDto> Photos { get; init; } = default!;
 }

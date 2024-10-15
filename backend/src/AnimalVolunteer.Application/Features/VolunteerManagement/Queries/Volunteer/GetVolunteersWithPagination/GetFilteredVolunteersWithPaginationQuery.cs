@@ -4,5 +4,7 @@ namespace AnimalVolunteer.Application.Features.VolunteerManagement.Queries.Volun
 
 public record GetFilteredVolunteersWithPaginationQuery(
     string? Name,
+    string? SortBy,
+    string? SortDirection,
     int Page,
     int PageSize) : IQuery;

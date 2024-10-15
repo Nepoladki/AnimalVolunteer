@@ -4,9 +4,11 @@ namespace AnimalVolunteer.API.Controllers.Volunteer.Requests.Volunteer;
 
 public record GetFilteredVolunteersWithPaginationRequest(
     string? Name,
+    string? SortBy,
+    string? SortDirection,
     int Page, 
     int PageSize)
 {
     public GetFilteredVolunteersWithPaginationQuery ToQuery() =>
-        new(Name, Page, PageSize);
+        new(Name, SortBy, SortDirection, Page, PageSize);
 }
