@@ -1,4 +1,7 @@
-﻿namespace AnimalVolunteer.API.Processors;
+﻿using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
+using Microsoft.AspNetCore.Http;
+
+namespace AnimalVolunteer.Volunteers.Web.Processors;
 
 public class FormFileProcessor : IAsyncDisposable
 {

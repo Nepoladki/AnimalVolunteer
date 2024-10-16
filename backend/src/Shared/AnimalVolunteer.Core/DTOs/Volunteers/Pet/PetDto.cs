@@ -1,7 +1,6 @@
-﻿using AnimalVolunteer.Core.DTOs.VolunteerManagement;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Enums;
+﻿using AnimalVolunteer.Volunteers.Domain.Enums;
 
-namespace AnimalVolunteer.Core.DTOs.VolunteerManagement.Pet;
+namespace AnimalVolunteer.Core.DTOs.Volunteers.Pet;
 
 public class PetDto
 {

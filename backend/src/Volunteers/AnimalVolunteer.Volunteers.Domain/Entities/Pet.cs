@@ -1,9 +1,14 @@
-﻿using AnimalVolunteer.Volunteers.Domain.Enums;
+﻿using AnimalVolunteer.Domain.Common.ValueObjects;
+using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.SharedKernel.ValueObjects;
+using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+using AnimalVolunteer.Volunteers.Domain.Enums;
 using AnimalVolunteer.Volunteers.Domain.ValueObjects.Pet;
+using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.Volunteers.Domain.Entities;
 
-public sealed class Pet : Common.Entity<PetId>
+public sealed class Pet : SharedKernel.Entity<PetId>
 {
     // EF Core ctor
     private Pet(PetId id) : base(id) { }

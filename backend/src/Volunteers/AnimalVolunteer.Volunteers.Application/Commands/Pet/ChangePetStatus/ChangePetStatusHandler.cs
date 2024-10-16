@@ -1,12 +1,13 @@
-﻿using AnimalVolunteer.Application.Database;
-using AnimalVolunteer.Application.Extensions;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
-using AnimalVolunteer.Domain.Common;
+﻿using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using CSharpFunctionalExtensions;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.Core.Abstractions;
+using AnimalVolunteer.Core;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.ChangePetStatus;
 
@@ -20,7 +21,7 @@ public class ChangePetStatusHandler : ICommandHandler<ChangePetStatusCommand>
     public ChangePetStatusHandler(
         IValidator<ChangePetStatusCommand> validator,
         ILogger<ChangePetStatusHandler> logger,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.Volunteers)] IUnitOfWork unitOfWork,
         IVolunteerRepository volunteerRepository)
     {
         _validator = validator;

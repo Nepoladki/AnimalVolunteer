@@ -1,5 +1,5 @@
-﻿using AnimalVolunteer.Application.Interfaces;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Enums;
+﻿using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.Volunteers.Domain.Enums;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.AddPet;
 

@@ -1,13 +1,15 @@
-﻿using AnimalVolunteer.Application.Database;
-using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
-using AnimalVolunteer.Application.Extensions;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
-using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.Common.ValueObjects;
-using AnimalVolunteer.Volunteers.Application;
+﻿using AnimalVolunteer.Core.Abstractions;
+using AnimalVolunteer.Core;
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
+using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+using AnimalVolunteer.SharedKernel.ValueObjects;
+using AnimalVolunteer.Volunteers.Domain.ValueObjects.Pet;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.UpdatePetPhotos;
 
@@ -22,7 +24,7 @@ public class UpdatePetPhotosHandler : ICommandHandler<UpdatePetPhotosCommand>
 
     public UpdatePetPhotosHandler(
         IVolunteerRepository volunteerRepository,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.Volunteers)] IUnitOfWork unitOfWork,
         IFileProvider fileProvider,
         ILogger<UpdatePetPhotosHandler> logger,
         IValidator<UpdatePetPhotosCommand> validator,

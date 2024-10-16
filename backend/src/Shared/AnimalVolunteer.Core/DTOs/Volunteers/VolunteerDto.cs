@@ -1,6 +1,6 @@
-﻿using AnimalVolunteer.Core.DTOs.VolunteerManagement.Pet;
+﻿using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
 
-namespace AnimalVolunteer.Core.DTOs.VolunteerManagement;
+namespace AnimalVolunteer.Core.DTOs.Volunteers;
 
 public class VolunteerDto
 {

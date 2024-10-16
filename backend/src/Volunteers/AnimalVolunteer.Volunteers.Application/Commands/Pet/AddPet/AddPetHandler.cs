@@ -1,14 +1,17 @@
-﻿using AnimalVolunteer.Application.Database;
-using AnimalVolunteer.Application.Extensions;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Entities;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
-using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.Common.ValueObjects;
+﻿using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.SharedKernel.ValueObjects;
+using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+using AnimalVolunteer.Volunteers.Domain.ValueObjects.Pet;
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using DomainEntities = AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Entities;
+using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.Core.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
+using AnimalVolunteer.Core;
+using DomainEntity = AnimalVolunteer.Volunteers.Domain.Entities;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.AddPet;
 
@@ -23,7 +26,7 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
     public AddPetHandler(
         IVolunteerRepository volunteerRepository,
         ILogger<AddPetHandler> logger,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.Volunteers)] IUnitOfWork unitOfWork,
         IValidator<AddPetCommand> validator,
         IReadDbContext readDbContext)
     {
@@ -34,7 +37,7 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
         _readDbContext = readDbContext;
     }
 
-    public async Task<Result<Guid, ErrorList>> Handle(
+    public async Task<Result<Guid, SharedKernel.ErrorList>> Handle(
         AddPetCommand command, CancellationToken cancellationToken = default)
     {
         var validationResult = await _validator
@@ -93,7 +96,7 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
 
         var status = command.CurrentStatus;
 
-        var pet = DomainEntities.Pet.InitialCreate(
+        var pet = DomainEntity.Pet.InitialCreate(
             petId,
             name,
             description,

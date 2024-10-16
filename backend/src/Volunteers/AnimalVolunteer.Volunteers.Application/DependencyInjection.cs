@@ -1,4 +1,4 @@
-﻿using AnimalVolunteer.Application.Interfaces;
+﻿using AnimalVolunteer.Core.Abstractions.CQRS;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -7,7 +7,7 @@ namespace AnimalVolunteer.Volunteers.Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IServiceCollection AddVolunteersApplication(this IServiceCollection services)
     {
         services.AddCommands()
             .AddQueries()

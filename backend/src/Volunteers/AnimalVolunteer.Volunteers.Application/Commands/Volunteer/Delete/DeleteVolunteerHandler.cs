@@ -1,7 +1,9 @@
-﻿using AnimalVolunteer.Application.Database;
-using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Volunteers.Application;
+﻿using AnimalVolunteer.Core.Abstractions;
+using AnimalVolunteer.Core;
 using CSharpFunctionalExtensions;
+using Microsoft.Extensions.DependencyInjection;
+using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.SharedKernel;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Delete;
 
@@ -10,7 +12,8 @@ public class DeleteVolunteerHandler : ICommandHandler<Guid, DeleteVolunteerComma
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IUnitOfWork _unitOfWork;
     public DeleteVolunteerHandler(
-        IVolunteerRepository volunteerRepository, IUnitOfWork unitOfWork)
+        IVolunteerRepository volunteerRepository,
+        [FromKeyedServices(Modules.Volunteers)] IUnitOfWork unitOfWork)
     {
         _volunteerRepository = volunteerRepository;
         _unitOfWork = unitOfWork;

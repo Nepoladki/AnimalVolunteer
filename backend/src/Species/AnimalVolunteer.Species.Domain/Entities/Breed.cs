@@ -1,11 +1,10 @@
-﻿using AnimalVolunteer.Domain.Aggregates.PetType.ValueObjects;
-using AnimalVolunteer.Domain.Aggregates.SpeciesManagement.Root;
-using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.Common.ValueObjects;
+﻿using AnimalVolunteer.SharedKernel.ValueObjects;
+using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+using My = AnimalVolunteer.SharedKernel;
 
 namespace AnimalVolunteer.Species.Domain.Entities;
 
-public class Breed : Entity<BreedId>
+public class Breed : My.Entity<BreedId>
 {
     // EF Core ctor
     private Breed(BreedId id) : base(id) { }

@@ -1,6 +1,5 @@
-﻿using AnimalVolunteer.Domain.Common;
+﻿using AnimalVolunteer.SharedKernel;
 using CSharpFunctionalExtensions;
-using System.Reflection.Metadata.Ecma335;
 
 namespace AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
 public record Statistics

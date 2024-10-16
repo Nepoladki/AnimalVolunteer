@@ -1,13 +1,14 @@
-﻿using AnimalVolunteer.Application.Database;
-using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
-using AnimalVolunteer.Application.Extensions;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
-using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Volunteers.Application;
+﻿using AnimalVolunteer.Core.Abstractions;
+using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.SharedKernel;
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
+using AnimalVolunteer.Core;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.HardDeletePet;
 
@@ -23,7 +24,7 @@ public class HardDeletePetHandler : ICommandHandler<HardDeletePetCommand>
         IValidator<HardDeletePetCommand> validator,
         ILogger<HardDeletePetHandler> logger,
         IFileProvider fileProvider,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.Volunteers)] IUnitOfWork unitOfWork,
         IVolunteerRepository volunteerRepository)
     {
         _validator = validator;

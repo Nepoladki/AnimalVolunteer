@@ -1,6 +1,7 @@
-﻿using AnimalVolunteer.Application.DTOs.Volunteer;
-using AnimalVolunteer.Application.Extensions;
-using AnimalVolunteer.Application.Models;
+﻿using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.Core.DTOs.Volunteers;
+using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.Core.Models;
 using System.Linq.Expressions;
 
 namespace AnimalVolunteer.Volunteers.Application.Queries.Volunteer.GetVolunteersWithPagination;

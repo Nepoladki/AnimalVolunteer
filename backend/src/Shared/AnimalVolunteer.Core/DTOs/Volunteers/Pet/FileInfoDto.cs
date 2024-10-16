@@ -1,3 +1,3 @@
-﻿namespace AnimalVolunteer.Core.DTOs.VolunteerManagement.Pet;
+﻿namespace AnimalVolunteer.Core.DTOs.Volunteers.Pet;
 
 public record FileInfoDto(string BucketName, string ObjectName);

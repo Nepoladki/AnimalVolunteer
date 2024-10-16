@@ -1,6 +1,5 @@
-﻿using AnimalVolunteer.Application.DTOs.Volunteer;
-using AnimalVolunteer.Application.Interfaces;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Enums;
+﻿using AnimalVolunteer.Core.DTOs.Volunteers;
+using AnimalVolunteer.Volunteers.Domain.Enums;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.UpdatePet;
 
@@ -24,4 +23,4 @@ public record UpdatePetCommand(
     DateOnly BirthDate,
     CurrentStatus CurrentStatus,
     IEnumerable<PaymentDetailsDto> PaymentDetails,
-    IEnumerable<ContactInfoDto> ContactInfo) : ICommand;
+    IEnumerable<ContactInfoDto> ContactInfo) : Core.Abstractions.CQRS.ICommand;

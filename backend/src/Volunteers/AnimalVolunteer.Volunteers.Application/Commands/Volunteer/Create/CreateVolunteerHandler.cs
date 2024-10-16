@@ -1,10 +1,13 @@
 ﻿using DomainEntity = AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Root;
 using CSharpFunctionalExtensions;
-using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.Common.ValueObjects;
 using FluentValidation;
-using AnimalVolunteer.Application.Extensions;
 using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
+using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
+using AnimalVolunteer.SharedKernel.ValueObjects;
+using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+using AnimalVolunteer.Core.Extensions;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Create;
 

@@ -1,11 +1,13 @@
 ﻿using DomainPaymentDetails = AnimalVolunteer.Domain.Common.ValueObjects.PaymentDetails;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
-using AnimalVolunteer.Application.Database;
 using FluentValidation;
-using AnimalVolunteer.Application.Extensions;
-using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.Common.ValueObjects;
+using AnimalVolunteer.Core.Abstractions;
+using AnimalVolunteer.Core;
+using Microsoft.Extensions.DependencyInjection;
+using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.Core.Abstractions.CQRS;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.PaymentDetails;
 
@@ -19,7 +21,7 @@ public class UpdateVolunteerPaymentDetailsHandler
     public UpdateVolunteerPaymentDetailsHandler
         (IVolunteerRepository volunteerRepository,
         ILogger<UpdateVolunteerPaymentDetailsHandler> logger,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.Volunteers)] IUnitOfWork unitOfWork,
         IValidator<UpdateVolunteerPaymentDetailsCommand> validator)
     {
         _volunteerRepository = volunteerRepository;

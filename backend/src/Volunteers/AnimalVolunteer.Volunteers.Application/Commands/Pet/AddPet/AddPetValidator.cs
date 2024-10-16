@@ -1,8 +1,8 @@
-﻿using AnimalVolunteer.Application.Validation;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
-using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.Common.ValueObjects;
+﻿using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.SharedKernel.ValueObjects;
+using AnimalVolunteer.Volunteers.Domain.ValueObjects.Pet;
 using FluentValidation;
+using AnimalVolunteer.Core.Validation;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.AddPet
 {

@@ -1,12 +1,8 @@
-﻿using AnimalVolunteer.Application.DTOs.Volunteer;
-using AnimalVolunteer.Application.DTOs.VolunteerManagement.Pet;
-using AnimalVolunteer.Application.Extensions;
-using AnimalVolunteer.Application.Features.SpeciesManagement.Queries.GetAllSpecies;
-using AnimalVolunteer.Application.Models;
-using FluentValidation;
+﻿using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
+using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.Core.Models;
 using System.Linq.Expressions;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
 
 namespace AnimalVolunteer.Volunteers.Application.Queries.Pet.GetPetsFilteredPaginated;
 

@@ -1,7 +1,4 @@
-﻿using AnimalVolunteer.Domain.Common;
-using CSharpFunctionalExtensions;
-
-namespace AnimalVolunteer.Core.Abstractions.CQRS;
+﻿namespace AnimalVolunteer.Core.Abstractions.CQRS;
 
 public interface IQueryHandler<TResponse, in TQuery> where TQuery : IQuery
 {

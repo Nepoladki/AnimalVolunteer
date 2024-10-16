@@ -1,12 +1,12 @@
-﻿using AnimalVolunteer.Application.Database;
-using AnimalVolunteer.Application.Extensions;
-using AnimalVolunteer.Domain.Aggregates.PetType.ValueObjects;
-using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Species.Application;
+﻿using AnimalVolunteer.Core.Abstractions;
+using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using AnimalVolunteer.Core.Extensions;
 
 namespace AnimalVolunteer.Species.Application.Commands.DeleteBreedById;
 

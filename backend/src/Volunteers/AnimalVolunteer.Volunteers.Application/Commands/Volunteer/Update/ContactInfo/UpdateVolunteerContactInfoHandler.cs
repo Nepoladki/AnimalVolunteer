@@ -1,11 +1,13 @@
 ﻿using DomainContactInfo = AnimalVolunteer.Domain.Common.ValueObjects.ContactInfo;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
-using AnimalVolunteer.Application.Database;
 using FluentValidation;
-using AnimalVolunteer.Application.Extensions;
-using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.Common.ValueObjects;
+using AnimalVolunteer.Core.Abstractions;
+using AnimalVolunteer.Core;
+using Microsoft.Extensions.DependencyInjection;
+using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.Core.Extensions;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.ContactInfo;
 
@@ -19,7 +21,7 @@ public class UpdateVolunteerContactInfoHandler
     public UpdateVolunteerContactInfoHandler(
         IVolunteerRepository volunteerRepository,
         ILogger<UpdateVolunteerContactInfoHandler> logger,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.Volunteers)] IUnitOfWork unitOfWork,
         IValidator<UpdateVolunteerContactInfoCommand> validator)
     {
         _volunteerRepository = volunteerRepository;

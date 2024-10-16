@@ -1,7 +1,6 @@
-﻿using AnimalVolunteer.Domain.Common;
+﻿using AnimalVolunteer.SharedKernel;
 using CSharpFunctionalExtensions;
 using FluentValidation;
-using System.Runtime.CompilerServices;
 
 namespace AnimalVolunteer.Core.Validation;
 

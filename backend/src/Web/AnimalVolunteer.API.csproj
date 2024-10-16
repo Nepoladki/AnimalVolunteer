@@ -21,4 +21,11 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Species\AnimalVolunteer.Species.Infrastructure\AnimalVolunteer.Species.Infrastructure.csproj" />
+    <ProjectReference Include="..\Species\AnimalVolunteer.Species.Web\AnimalVolunteer.Species.Web.csproj" />
+    <ProjectReference Include="..\Volunteers\AnimalVolunteer.Volunteers.Infrastructure\AnimalVolunteer.Volunteers.Infrastructure.csproj" />
+    <ProjectReference Include="..\Volunteers\AnimalVolunteer.Volunteers.Web\AnimalVolunteer.Volunteers.Web.csproj" />
+  </ItemGroup>
+
 </Project>

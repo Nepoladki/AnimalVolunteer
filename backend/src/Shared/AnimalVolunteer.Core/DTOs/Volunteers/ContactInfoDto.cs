@@ -1,4 +1,4 @@
-﻿namespace AnimalVolunteer.Core.DTOs.VolunteerManagement;
+﻿namespace AnimalVolunteer.Core.DTOs.Volunteers;
 
 public record ContactInfoDto(
     string PhoneNumber,

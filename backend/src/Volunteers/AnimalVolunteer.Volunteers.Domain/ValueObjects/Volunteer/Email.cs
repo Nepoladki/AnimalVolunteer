@@ -1,4 +1,4 @@
-﻿using AnimalVolunteer.Domain.Common;
+﻿using AnimalVolunteer.SharedKernel;
 using CSharpFunctionalExtensions;
 using System.Text.RegularExpressions;
 

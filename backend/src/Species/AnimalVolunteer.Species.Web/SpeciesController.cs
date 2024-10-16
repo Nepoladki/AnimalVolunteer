@@ -1,7 +1,8 @@
-﻿using AnimalVolunteer.API.Extensions;
-using AnimalVolunteer.Application.Features.SpeciesManagement.Commands.DeleteBreedById;
-using AnimalVolunteer.Application.Features.SpeciesManagement.Commands.DeleteSpeciesById;
-using AnimalVolunteer.Application.Features.SpeciesManagement.Queries.GetAllSpecies;
+﻿using AnimalVolunteer.Framework;
+using AnimalVolunteer.Species.Application.Commands.DeleteBreedById;
+using AnimalVolunteer.Species.Application.Commands.DeleteSpeciesById;
+using AnimalVolunteer.Species.Application.Queries.GetFiltredPaginatedAllSpecies;
+using AnimalVolunteer.Species.Application.Queries.GetPaginatedAllBreedsBySpeciesId;
 using AnimalVolunteer.Species.Web.Requests;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,14 +1,14 @@
-﻿using AnimalVolunteer.Application.Database;
-using AnimalVolunteer.Application.Extensions;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
-using AnimalVolunteer.Domain.Common;
+﻿using AnimalVolunteer.SharedKernel;
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics.CodeAnalysis;
-using System.Windows.Input;
+using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+using AnimalVolunteer.Core.Abstractions;
+using AnimalVolunteer.Core;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.DeletePetPhotos;
 
@@ -23,7 +23,7 @@ public class DeletePetPhotosHandler : ICommandHandler<DeletePetPhotosCommand>
     public DeletePetPhotosHandler(
         IReadDbContext readDbContext,
         IVolunteerRepository volunteerRepository,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.Volunteers)] IUnitOfWork unitOfWork,
         ILogger<DeletePetPhotosHandler> logger,
         IValidator<DeletePetPhotosCommand> validator)
     {

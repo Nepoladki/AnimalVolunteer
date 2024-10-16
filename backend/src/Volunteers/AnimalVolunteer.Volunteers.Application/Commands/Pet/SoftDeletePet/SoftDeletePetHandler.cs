@@ -1,12 +1,13 @@
-﻿using AnimalVolunteer.Application.Database;
-using AnimalVolunteer.Application.Extensions;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
-using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Volunteers.Application;
+﻿using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.Core.Abstractions;
+using AnimalVolunteer.Core;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.SoftDeletePet;
 
@@ -20,7 +21,7 @@ public class SoftDeletePetHandler : ICommandHandler<SoftDeletePetCommand>
     public SoftDeletePetHandler(
         ILogger<SoftDeletePetHandler> logger,
         IValidator<SoftDeletePetCommand> validator,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.Volunteers)] IUnitOfWork unitOfWork,
         IVolunteerRepository volunteerRepository)
     {
         _logger = logger;

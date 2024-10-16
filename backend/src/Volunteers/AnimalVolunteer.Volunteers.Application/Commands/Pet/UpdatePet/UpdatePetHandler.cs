@@ -1,15 +1,17 @@
-﻿using AnimalVolunteer.Application.Database;
-using AnimalVolunteer.Application.Extensions;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
-using AnimalVolunteer.Domain.Common;
+﻿using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.Domain.Common.ValueObjects;
-using AnimalVolunteer.Volunteers.Application;
+using AnimalVolunteer.SharedKernel;
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using DomainEntities = AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Entities;
+using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+using AnimalVolunteer.SharedKernel.ValueObjects;
+using AnimalVolunteer.Volunteers.Domain.ValueObjects.Pet;
+using AnimalVolunteer.Core.Abstractions;
+using AnimalVolunteer.Core;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.UpdatePet;
 
@@ -23,7 +25,7 @@ public class UpdatePetHandler : ICommandHandler<UpdatePetCommand>
 
     public UpdatePetHandler(
         IVolunteerRepository volunteerRepository,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.Volunteers)] IUnitOfWork unitOfWork,
         IReadDbContext readDbContext,
         IValidator<UpdatePetCommand> validator,
         ILogger<UpdatePetHandler> logger)

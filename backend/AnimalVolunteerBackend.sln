@@ -22,62 +22,74 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Domain.Unit
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Application.UnitTests", "tests\AnimalVolunteer.Application.UnitTests\AnimalVolunteer.Application.UnitTests.csproj", "{D98B0C6F-DC7E-47D5-87E8-08D8770CC37A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Volunteers.Application", "src\Volunteers\AnimalVolunteer.Volunteers.Application\AnimalVolunteer.Volunteers.Application.csproj", "{F42DC073-C574-4472-A16C-1E5FE9648947}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Volunteers.Application", "src\Volunteers\AnimalVolunteer.Volunteers.Application\AnimalVolunteer.Volunteers.Application.csproj", "{F42DC073-C574-4472-A16C-1E5FE9648947}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0A277D43-3C2E-4E82-AC97-06C91D876F17} = {0A277D43-3C2E-4E82-AC97-06C91D876F17}
 		{A5B45483-E12E-45F4-8712-A40D648F382E} = {A5B45483-E12E-45F4-8712-A40D648F382E}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Volunteers.Domain", "src\Volunteers\AnimalVolunteer.Volunteers.Domain\AnimalVolunteer.Volunteers.Domain.csproj", "{0A277D43-3C2E-4E82-AC97-06C91D876F17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Volunteers.Domain", "src\Volunteers\AnimalVolunteer.Volunteers.Domain\AnimalVolunteer.Volunteers.Domain.csproj", "{0A277D43-3C2E-4E82-AC97-06C91D876F17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Volunteers.Infrastructure", "src\Volunteers\AnimalVolunteer.Volunteers.Infrastructure\AnimalVolunteer.Volunteers.Infrastructure.csproj", "{EF25F817-4DC5-4535-B20F-B2CF7A19CF88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Volunteers.Infrastructure", "src\Volunteers\AnimalVolunteer.Volunteers.Infrastructure\AnimalVolunteer.Volunteers.Infrastructure.csproj", "{EF25F817-4DC5-4535-B20F-B2CF7A19CF88}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F42DC073-C574-4472-A16C-1E5FE9648947} = {F42DC073-C574-4472-A16C-1E5FE9648947}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Volunteers.Contracts", "src\Volunteers\AnimalVolunteer.Volunteers.Contracts\AnimalVolunteer.Volunteers.Contracts.csproj", "{DD9D9BD4-CD19-461C-8361-9B99F05967FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Volunteers.Contracts", "src\Volunteers\AnimalVolunteer.Volunteers.Contracts\AnimalVolunteer.Volunteers.Contracts.csproj", "{DD9D9BD4-CD19-461C-8361-9B99F05967FE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A277D43-3C2E-4E82-AC97-06C91D876F17} = {0A277D43-3C2E-4E82-AC97-06C91D876F17}
+		{F42DC073-C574-4472-A16C-1E5FE9648947} = {F42DC073-C574-4472-A16C-1E5FE9648947}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Volunteers.Web", "src\Volunteers\AnimalVolunteer.Volunteers.Web\AnimalVolunteer.Volunteers.Web.csproj", "{91C4E1F3-7766-4D9D-BFB3-EE0D2540E01E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Volunteers.Web", "src\Volunteers\AnimalVolunteer.Volunteers.Web\AnimalVolunteer.Volunteers.Web.csproj", "{91C4E1F3-7766-4D9D-BFB3-EE0D2540E01E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{DD9D9BD4-CD19-461C-8361-9B99F05967FE} = {DD9D9BD4-CD19-461C-8361-9B99F05967FE}
 		{EF25F817-4DC5-4535-B20F-B2CF7A19CF88} = {EF25F817-4DC5-4535-B20F-B2CF7A19CF88}
 		{F42DC073-C574-4472-A16C-1E5FE9648947} = {F42DC073-C574-4472-A16C-1E5FE9648947}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Core", "src\Shared\AnimalVolunteer.Core\AnimalVolunteer.Core.csproj", "{A5B45483-E12E-45F4-8712-A40D648F382E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Core", "src\Shared\AnimalVolunteer.Core\AnimalVolunteer.Core.csproj", "{A5B45483-E12E-45F4-8712-A40D648F382E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CD1973DA-9177-4617-A30B-E76D77FAC78E} = {CD1973DA-9177-4617-A30B-E76D77FAC78E}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.SharedKernel", "src\Shared\AnimalVolunteer.SharedKernel\AnimalVolunteer.SharedKernel.csproj", "{CD1973DA-9177-4617-A30B-E76D77FAC78E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.SharedKernel", "src\Shared\AnimalVolunteer.SharedKernel\AnimalVolunteer.SharedKernel.csproj", "{CD1973DA-9177-4617-A30B-E76D77FAC78E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Framework", "src\Shared\AnimalVolunteer.Framework\AnimalVolunteer.Framework.csproj", "{6A3E865C-183B-4678-8E31-900748C5AACC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Framework", "src\Shared\AnimalVolunteer.Framework\AnimalVolunteer.Framework.csproj", "{6A3E865C-183B-4678-8E31-900748C5AACC}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A5B45483-E12E-45F4-8712-A40D648F382E} = {A5B45483-E12E-45F4-8712-A40D648F382E}
 		{CD1973DA-9177-4617-A30B-E76D77FAC78E} = {CD1973DA-9177-4617-A30B-E76D77FAC78E}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Species.Web", "src\Species\AnimalVolunteer.Species.Web\AnimalVolunteer.Species.Web.csproj", "{3A86BE01-DA59-40AB-BF74-A8B9AF0E21B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Species.Web", "src\Species\AnimalVolunteer.Species.Web\AnimalVolunteer.Species.Web.csproj", "{3A86BE01-DA59-40AB-BF74-A8B9AF0E21B2}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0F2E7C0E-EEBA-45F1-A16E-2C0BA51557BC} = {0F2E7C0E-EEBA-45F1-A16E-2C0BA51557BC}
 		{1D691C1D-C6B1-4D01-B837-F1A358B5102D} = {1D691C1D-C6B1-4D01-B837-F1A358B5102D}
 		{DEA6DC62-64F2-4FF6-B35C-E87D5CD16999} = {DEA6DC62-64F2-4FF6-B35C-E87D5CD16999}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Species.Infrastructure", "src\Species\AnimalVolunteer.Species.Infrastructure\AnimalVolunteer.Species.Infrastructure.csproj", "{1D691C1D-C6B1-4D01-B837-F1A358B5102D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Species.Infrastructure", "src\Species\AnimalVolunteer.Species.Infrastructure\AnimalVolunteer.Species.Infrastructure.csproj", "{1D691C1D-C6B1-4D01-B837-F1A358B5102D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{DEA6DC62-64F2-4FF6-B35C-E87D5CD16999} = {DEA6DC62-64F2-4FF6-B35C-E87D5CD16999}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Species.Domain", "src\Species\AnimalVolunteer.Species.Domain\AnimalVolunteer.Species.Domain.csproj", "{147AECEB-7395-49A1-B081-E26C038B8DE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Species.Domain", "src\Species\AnimalVolunteer.Species.Domain\AnimalVolunteer.Species.Domain.csproj", "{147AECEB-7395-49A1-B081-E26C038B8DE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Species.Contracts", "src\Species\AnimalVolunteer.Species.Contracts\AnimalVolunteer.Species.Contracts.csproj", "{0F2E7C0E-EEBA-45F1-A16E-2C0BA51557BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Species.Contracts", "src\Species\AnimalVolunteer.Species.Contracts\AnimalVolunteer.Species.Contracts.csproj", "{0F2E7C0E-EEBA-45F1-A16E-2C0BA51557BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Species.Application", "src\Species\AnimalVolunteer.Species.Application\AnimalVolunteer.Species.Application.csproj", "{DEA6DC62-64F2-4FF6-B35C-E87D5CD16999}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Species.Application", "src\Species\AnimalVolunteer.Species.Application\AnimalVolunteer.Species.Application.csproj", "{DEA6DC62-64F2-4FF6-B35C-E87D5CD16999}"
 	ProjectSection(ProjectDependencies) = postProject
 		{147AECEB-7395-49A1-B081-E26C038B8DE6} = {147AECEB-7395-49A1-B081-E26C038B8DE6}
 		{A5B45483-E12E-45F4-8712-A40D648F382E} = {A5B45483-E12E-45F4-8712-A40D648F382E}
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Volunteers", "Volunteers", "{E1F2FF9D-3BEE-43CB-BC7F-7DEF660033DD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Species", "Species", "{DEF5AA1D-8263-4467-A872-0856E93A2D7F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{2F358FC5-F8A8-4345-B056-9466BB2A7EFE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AEA13C3B-54FD-4CA1-BF42-440C610CF504}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -150,6 +162,23 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{88B80E7A-9A10-49A2-B895-2674CB3EBC44} = {AEA13C3B-54FD-4CA1-BF42-440C610CF504}
+		{D98B0C6F-DC7E-47D5-87E8-08D8770CC37A} = {AEA13C3B-54FD-4CA1-BF42-440C610CF504}
+		{F42DC073-C574-4472-A16C-1E5FE9648947} = {E1F2FF9D-3BEE-43CB-BC7F-7DEF660033DD}
+		{0A277D43-3C2E-4E82-AC97-06C91D876F17} = {E1F2FF9D-3BEE-43CB-BC7F-7DEF660033DD}
+		{EF25F817-4DC5-4535-B20F-B2CF7A19CF88} = {E1F2FF9D-3BEE-43CB-BC7F-7DEF660033DD}
+		{DD9D9BD4-CD19-461C-8361-9B99F05967FE} = {E1F2FF9D-3BEE-43CB-BC7F-7DEF660033DD}
+		{91C4E1F3-7766-4D9D-BFB3-EE0D2540E01E} = {E1F2FF9D-3BEE-43CB-BC7F-7DEF660033DD}
+		{A5B45483-E12E-45F4-8712-A40D648F382E} = {2F358FC5-F8A8-4345-B056-9466BB2A7EFE}
+		{CD1973DA-9177-4617-A30B-E76D77FAC78E} = {2F358FC5-F8A8-4345-B056-9466BB2A7EFE}
+		{6A3E865C-183B-4678-8E31-900748C5AACC} = {2F358FC5-F8A8-4345-B056-9466BB2A7EFE}
+		{3A86BE01-DA59-40AB-BF74-A8B9AF0E21B2} = {DEF5AA1D-8263-4467-A872-0856E93A2D7F}
+		{1D691C1D-C6B1-4D01-B837-F1A358B5102D} = {DEF5AA1D-8263-4467-A872-0856E93A2D7F}
+		{147AECEB-7395-49A1-B081-E26C038B8DE6} = {DEF5AA1D-8263-4467-A872-0856E93A2D7F}
+		{0F2E7C0E-EEBA-45F1-A16E-2C0BA51557BC} = {DEF5AA1D-8263-4467-A872-0856E93A2D7F}
+		{DEA6DC62-64F2-4FF6-B35C-E87D5CD16999} = {DEF5AA1D-8263-4467-A872-0856E93A2D7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2918F184-1665-4379-B2CA-AE86614A7E61}

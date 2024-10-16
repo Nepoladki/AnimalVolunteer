@@ -1,4 +1,4 @@
-﻿using AnimalVolunteer.Domain.Common;
+﻿using AnimalVolunteer.SharedKernel;
 using FluentValidation.Results;
 
 namespace AnimalVolunteer.Core.Extensions;

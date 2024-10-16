@@ -1,7 +1,8 @@
-﻿using AnimalVolunteer.API.Response;
-using AnimalVolunteer.Domain.Common;
+﻿using AnimalVolunteer.Core.Models;
+using AnimalVolunteer.SharedKernel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static AnimalVolunteer.Domain.Common.Error;
+using static AnimalVolunteer.SharedKernel.Error;
 
 namespace AnimalVolunteer.Framework;
 

@@ -1,5 +1,5 @@
-﻿using AnimalVolunteer.Application.Validation;
-using AnimalVolunteer.Domain.Common;
+﻿using AnimalVolunteer.Core.Validation;
+using AnimalVolunteer.SharedKernel;
 using FluentValidation;
 
 namespace AnimalVolunteer.Volunteers.Application.Queries.Volunteer.GetVolunteersWithPagination;

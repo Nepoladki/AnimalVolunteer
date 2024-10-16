@@ -1,21 +1,22 @@
-﻿using AnimalVolunteer.Application.Database;
-using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
-using AnimalVolunteer.Infrastructure.BackgroundServices;
-using AnimalVolunteer.Infrastructure.MessageQueues;
-using AnimalVolunteer.Infrastructure.Options;
+﻿using AnimalVolunteer.Core;
+using AnimalVolunteer.Core.Abstractions;
+using AnimalVolunteer.Core.BackgroundServices;
+using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
+using AnimalVolunteer.Core.MessageQueues;
+using AnimalVolunteer.Core.Options;
+using AnimalVolunteer.Volunteers.Application;
 using AnimalVolunteer.Volunteers.Infrastructure;
 using AnimalVolunteer.Volunteers.Infrastructure.DbContexts;
 using AnimalVolunteer.Volunteers.Infrastructure.Files;
 using AnimalVolunteer.Volunteers.Infrastructure.Providers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Minio;
 
 namespace AnimalVolunteer.Volunteers.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(
+    public static IServiceCollection AddVolunteersInfrastructure(
         this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContexts(configuration)
@@ -23,7 +24,7 @@ public static class DependencyInjection
             .AddRepositories();
 
         services.AddScoped<IFileProvider, MinioProvider>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(Modules.Volunteers);
 
         services.AddHostedService<FileCleanerBackgroundService>();
         services.AddScoped<IFilesCleanerService, FilesCleanerService>();
@@ -37,7 +38,6 @@ public static class DependencyInjection
         this IServiceCollection services)
     {
         services.AddScoped<IVolunteerRepository, VolunteerRepository>();
-        services.AddScoped<ISpeciesRepository, SpeciesRepository>();
 
         return services;
     }

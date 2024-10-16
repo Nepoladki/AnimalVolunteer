@@ -1,4 +1,4 @@
-﻿namespace AnimalVolunteer.Core.DTOs.SpeciesManagement;
+﻿namespace AnimalVolunteer.Core.DTOs.Species;
 
 public class SpeciesDto
 {

@@ -1,5 +1,5 @@
-﻿using AnimalVolunteer.Domain.Aggregates.PetType.ValueObjects;
-using AnimalVolunteer.Domain.Common;
+﻿using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.Volunteers.Domain.ValueObjects.Pet;

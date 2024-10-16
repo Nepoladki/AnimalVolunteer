@@ -1,4 +1,7 @@
-﻿using AnimalVolunteer.Core.DTOs.VolunteerManagement.Pet;
+﻿using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
+using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.SharedKernel.ValueObjects;
+using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.Core.Abstractions;
 

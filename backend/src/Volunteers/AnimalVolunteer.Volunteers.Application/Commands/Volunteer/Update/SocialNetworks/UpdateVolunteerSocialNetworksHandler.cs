@@ -1,10 +1,13 @@
-﻿using AnimalVolunteer.Application.Database;
-using AnimalVolunteer.Application.Extensions;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
-using AnimalVolunteer.Domain.Common;
+﻿using AnimalVolunteer.Core.Abstractions;
+using AnimalVolunteer.Core;
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.SocialNetworks;
 
@@ -18,7 +21,7 @@ public class UpdateVolunteerSocialNetworksHandler
     public UpdateVolunteerSocialNetworksHandler(
         IVolunteerRepository volunteerRepository,
         ILogger<UpdateVolunteerSocialNetworksHandler> logger,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.Volunteers)] IUnitOfWork unitOfWork,
         IValidator<UpdateVolunteerSocialNetworksCommand> validator)
     {
         _volunteerRepository = volunteerRepository;

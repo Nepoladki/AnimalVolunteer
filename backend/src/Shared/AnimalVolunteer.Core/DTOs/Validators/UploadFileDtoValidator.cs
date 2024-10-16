@@ -1,6 +1,6 @@
 ﻿using AnimalVolunteer.Core.DTOs.VolunteerManagement.Pet;
 using AnimalVolunteer.Core.Validation;
-using AnimalVolunteer.Domain.Common;
+using AnimalVolunteer.SharedKernel;
 using FluentValidation;
 
 namespace AnimalVolunteer.Core.DTOs.Validators

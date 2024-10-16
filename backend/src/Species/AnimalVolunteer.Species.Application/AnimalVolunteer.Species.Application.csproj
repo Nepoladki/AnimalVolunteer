@@ -7,4 +7,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\AnimalVolunteer.Core\AnimalVolunteer.Core.csproj" />
+    <ProjectReference Include="..\..\Shared\AnimalVolunteer.SharedKernel\AnimalVolunteer.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\Species\AnimalVolunteer.Species.Domain\AnimalVolunteer.Species.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

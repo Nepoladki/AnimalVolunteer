@@ -7,6 +7,13 @@ using AnimalVolunteer.Application.Extensions;
 using AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using AnimalVolunteer.Volunteers.Application;
+using AnimalVolunteer.Core.Abstractions;
+using AnimalVolunteer.Core;
+using Microsoft.Extensions.DependencyInjection;
+using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
+using AnimalVolunteer.SharedKernel.ValueObjects;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.MainInfo;
 
@@ -21,7 +28,7 @@ public class UpdateVolunteerMainInfoHandler
         IVolunteerRepository volunteerRepository,
         ILogger<UpdateVolunteerMainInfoHandler> logger,
         IValidator<UpdateVolunteerMainInfoCommand> validator,
-        IUnitOfWork unitOfWork)
+        [FromKeyedServices(Modules.Volunteers)] IUnitOfWork unitOfWork)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;

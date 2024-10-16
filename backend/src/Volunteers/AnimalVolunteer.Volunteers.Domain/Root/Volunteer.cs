@@ -1,17 +1,17 @@
 ﻿using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
-using Common = AnimalVolunteer.Domain.Common;
 using AnimalVolunteer.Domain.Common.ValueObjects;
 using CSharpFunctionalExtensions;
-using AnimalVolunteer.Domain.Common;
-using System.Reflection.Metadata.Ecma335;
 using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
 using AnimalVolunteer.Volunteers.Domain.Enums;
 using AnimalVolunteer.Volunteers.Domain.ValueObjects.Pet;
 using AnimalVolunteer.Volunteers.Domain.Entities;
+using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+using AnimalVolunteer.SharedKernel.ValueObjects;
+using AnimalVolunteer.SharedKernel;
 
 namespace AnimalVolunteer.Volunteers.Domain.Root;
 
-public class Volunteer : Common.Entity<VolunteerId>
+public class Volunteer : SharedKernel.Entity<VolunteerId>
 {
     // EF Core ctor
     private Volunteer(VolunteerId id) : base(id) { }
@@ -270,7 +270,7 @@ public class Volunteer : Common.Entity<VolunteerId>
                     return result.Error;
             }
         }
-        else //if (newPosition > currentPosition)
+        else
         {
             var petsToMove = _pets
                 .Where(x => x.Position > currentPosition && x.Position <= newPosition);

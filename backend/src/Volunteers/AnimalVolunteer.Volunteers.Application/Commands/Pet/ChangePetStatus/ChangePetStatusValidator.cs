@@ -1,5 +1,4 @@
-﻿using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Enums;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.ChangePetStatus;
 
