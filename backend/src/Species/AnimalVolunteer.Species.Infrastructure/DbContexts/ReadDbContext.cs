@@ -1,13 +1,12 @@
-﻿using AnimalVolunteer.Core.DTOs.Volunteers;
-using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
+﻿using AnimalVolunteer.Core.DTOs.Species;
 using AnimalVolunteer.Core.Options;
-using AnimalVolunteer.Volunteers.Application;
+using AnimalVolunteer.Species.Application;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AnimalVolunteer.Volunteers.Infrastructure.DbContexts;
+namespace AnimalVolunteer.Species.Infrastructure.DbContexts;
 
 public class ReadDbContext : DbContext, IReadDbContext
 {
@@ -21,9 +20,8 @@ public class ReadDbContext : DbContext, IReadDbContext
         _configuration = configuration;
         _dbOptions = dbOptions.Value;
     }
-
-    public IQueryable<VolunteerDto> Volunteers => Set<VolunteerDto>();
-    public IQueryable<PetDto> Pets => Set<PetDto>();
+    public IQueryable<SpeciesDto> Species => Set<SpeciesDto>();
+    public IQueryable<BreedDto> Breeds => Set<BreedDto>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -40,9 +38,5 @@ public class ReadDbContext : DbContext, IReadDbContext
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(ReadDbContext).Assembly,
             type => type.FullName?.Contains("Configurations.Read") ?? false);
-
-        modelBuilder.Entity<VolunteerDto>().HasQueryFilter(v => !v.IsDeleted);
-
-        modelBuilder.Entity<PetDto>().HasQueryFilter(p => !p.IsDeleted);
     }
 }

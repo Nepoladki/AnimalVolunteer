@@ -1,4 +1,4 @@
-﻿using AnimalVolunteer.Domain.Common;
+﻿using AnimalVolunteer.SharedKernel;
 
 namespace AnimalVolunteer.Core.Models;
 

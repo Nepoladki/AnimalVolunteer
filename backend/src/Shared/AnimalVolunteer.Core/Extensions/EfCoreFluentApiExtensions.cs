@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Reactive.Disposables;
-using System.Security.Cryptography.Xml;
 using System.Text.Json;
 
 namespace AnimalVolunteer.Core.Extensions;

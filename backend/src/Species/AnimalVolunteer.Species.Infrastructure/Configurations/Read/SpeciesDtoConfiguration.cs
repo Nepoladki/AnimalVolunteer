@@ -1,7 +1,6 @@
-﻿using AnimalVolunteer.Application.DTOs.SpeciesManagement;
+﻿using AnimalVolunteer.Core.DTOs.Species;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Text.Json;
 
 namespace AnimalVolunteer.Species.Infrastructure.Configurations.Read;
 

@@ -1,8 +1,8 @@
-﻿using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
-using AnimalVolunteer.SharedKernel;
+﻿using AnimalVolunteer.SharedKernel;
 using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using AnimalVolunteer.Volunteers.Application;
 using AnimalVolunteer.Volunteers.Domain.Root;
+using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
 using AnimalVolunteer.Volunteers.Infrastructure.DbContexts;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;

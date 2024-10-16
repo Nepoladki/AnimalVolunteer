@@ -1,6 +1,5 @@
-﻿using AnimalVolunteer.Domain.Aggregates.SpeciesManagement.Root;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Root;
-using AnimalVolunteer.Infrastructure.Options;
+﻿using AnimalVolunteer.Core.Options;
+using AnimalVolunteer.Volunteers.Domain.Root;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -12,6 +11,7 @@ public class WriteDbContext : DbContext
 {
     private readonly DatabaseOptions _dbOptions;
     private readonly IConfiguration _configuration;
+    private readonly ILoggerFactory _loggerFactory = new LoggerFactory();
 
     public WriteDbContext(
         IConfiguration configuration, IOptions<DatabaseOptions> dbOptions)
@@ -21,14 +21,13 @@ public class WriteDbContext : DbContext
     }
 
     public DbSet<Volunteer> Volunteers { get; set; }
-    public DbSet<Species> Species { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseNpgsql(_configuration
             .GetConnectionString(_dbOptions.PostgresConnectionName));
         optionsBuilder.UseSnakeCaseNamingConvention();
-        optionsBuilder.UseLoggerFactory(CreateLoggerFactory());
+        optionsBuilder.UseLoggerFactory(_loggerFactory);
         optionsBuilder.EnableSensitiveDataLogging();
     }
 
@@ -38,7 +37,4 @@ public class WriteDbContext : DbContext
             typeof(WriteDbContext).Assembly,
             type => type.FullName?.Contains("Configurations.Write") ?? false);
     }
-
-    private ILoggerFactory CreateLoggerFactory() =>
-        LoggerFactory.Create(builder => builder.AddConsole());
 }

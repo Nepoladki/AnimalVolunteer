@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using AnimalVolunteer.Application.DTOs.Volunteer;
 using System.Text.Json;
 using AnimalVolunteer.Domain.Common.ValueObjects;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
+using AnimalVolunteer.Core.DTOs.Volunteers;
+using AnimalVolunteer.SharedKernel.ValueObjects;
+using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
 
 namespace AnimalVolunteer.Volunteers.Infrastructure.Configurations.Read;
 

@@ -1,4 +1,7 @@
-﻿namespace AnimalVolunteer.API.Middlewares;
+﻿using AnimalVolunteer.Core.Models;
+using AnimalVolunteer.SharedKernel;
+
+namespace AnimalVolunteer.API.Middlewares;
 
 public class ExceptionMiddleware
 {

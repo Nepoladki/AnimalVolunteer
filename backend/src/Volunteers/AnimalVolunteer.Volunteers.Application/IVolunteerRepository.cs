@@ -1,7 +1,7 @@
-﻿using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
-using AnimalVolunteer.SharedKernel;
+﻿using AnimalVolunteer.SharedKernel;
 using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using AnimalVolunteer.Volunteers.Domain.Root;
+using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
 using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.Volunteers.Application;

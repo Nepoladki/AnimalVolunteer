@@ -1,14 +1,14 @@
-﻿using AnimalVolunteer.Domain.Aggregates.PetType.ValueObjects;
-using AnimalVolunteer.Domain.Aggregates.SpeciesManagement.Root;
-using AnimalVolunteer.Domain.Common.ValueObjects;
+﻿using AnimalVolunteer.SharedKernel.ValueObjects;
+using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using DomainEntity = AnimalVolunteer.Species.Domain.Root;
 
 namespace AnimalVolunteer.Species.Infrastructure.Configurations.Write;
 
-public class SpeciesConfigurations : IEntityTypeConfiguration<Species>
+public class SpeciesConfigurations : IEntityTypeConfiguration<DomainEntity.Species>
 {
-    public void Configure(EntityTypeBuilder<Species> builder)
+    public void Configure(EntityTypeBuilder<DomainEntity.Species> builder)
     {
         builder.ToTable("species");
 

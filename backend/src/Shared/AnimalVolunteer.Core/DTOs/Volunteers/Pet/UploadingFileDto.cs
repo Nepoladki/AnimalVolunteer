@@ -1,4 +1,4 @@
-﻿using AnimalVolunteer.Domain.Common.ValueObjects;
+﻿using AnimalVolunteer.SharedKernel.ValueObjects;
 
 namespace AnimalVolunteer.Core.DTOs.Volunteers.Pet;
 

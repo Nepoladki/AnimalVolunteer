@@ -3,5 +3,6 @@
 public enum Modules
 {
     Volunteers,
-    Species
+    Species,
+    Accounts
 }

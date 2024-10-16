@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AnimalVolunteer.Domain.Common.ValueObjects;
-using AnimalVolunteer.Infrastructure.Extensions;
-using AnimalVolunteer.Application.DTOs.Volunteer;
-using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
-using AnimalVolunteer.Domain.Aggregates.PetType.ValueObjects;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Entities;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Enums;
+using AnimalVolunteer.Volunteers.Domain.Entities;
+using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+using AnimalVolunteer.SharedKernel.ValueObjects;
+using AnimalVolunteer.Volunteers.Domain.ValueObjects.Pet;
+using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.Core.DTOs.Volunteers;
+using AnimalVolunteer.Volunteers.Domain.Enums;
+using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
 
 namespace AnimalVolunteer.Volunteers.Infrastructure.Configurations.Write;
 
