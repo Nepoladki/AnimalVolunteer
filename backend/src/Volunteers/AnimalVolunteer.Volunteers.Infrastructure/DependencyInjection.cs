@@ -45,7 +45,7 @@ public static class DependencyInjection
     private static IServiceCollection AddDbContexts(
         this IServiceCollection services, IConfiguration configuration)
     {
-        services.ConfigureOptions<DatabaseOptions>();
+        services.Configure<DatabaseOptions>(configuration.GetSection(DatabaseOptions.SECTION_NAME));
 
         services.AddScoped<WriteDbContext>();
         services.AddScoped<IReadDbContext, ReadDbContext>();
@@ -56,14 +56,12 @@ public static class DependencyInjection
     private static IServiceCollection AddMinioVault(
         this IServiceCollection services, IConfiguration configuration)
     {
-        services.ConfigureOptions<MinioOptions>();
+        services.Configure<MinioOptions>(configuration.GetSection(MinioOptions.SECTION_NAME));
 
         services.AddMinio(options =>
         {
             var minioOptions = configuration.GetSection(MinioOptions.SECTION_NAME).Get<MinioOptions>()
                 ?? throw new ApplicationException("Missing minio configuration");
-
-
 
             options.WithEndpoint(minioOptions.Endpoint);
 

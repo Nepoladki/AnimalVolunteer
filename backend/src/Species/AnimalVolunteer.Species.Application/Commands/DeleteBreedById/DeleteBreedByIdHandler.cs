@@ -4,33 +4,34 @@ using AnimalVolunteer.SharedKernel;
 using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using CSharpFunctionalExtensions;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.Volunteers.Contracts;
+using AnimalVolunteer.Volunteers.Contracts.Requests;
 
 namespace AnimalVolunteer.Species.Application.Commands.DeleteBreedById;
 
 public class DeleteBreedByIdHandler :
     ICommandHandler<DeleteBreedByIdCommand>
 {
-    private readonly IReadDbContext _readDbContext;
     private readonly ILogger<DeleteBreedByIdHandler> _logger;
     private readonly ISpeciesRepository _speciesRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<DeleteBreedByIdCommand> _validator;
+    private readonly IVolunteersContract _volunteersContract;
 
     public DeleteBreedByIdHandler(
         ILogger<DeleteBreedByIdHandler> logger,
-        IReadDbContext readDbContext,
         ISpeciesRepository speciesRepository,
         IUnitOfWork unitOfWork,
-        IValidator<DeleteBreedByIdCommand> validator)
+        IValidator<DeleteBreedByIdCommand> validator,
+        IVolunteersContract volunteersContract)
     {
         _logger = logger;
-        _readDbContext = readDbContext;
         _speciesRepository = speciesRepository;
         _unitOfWork = unitOfWork;
         _validator = validator;
+        _volunteersContract = volunteersContract;
     }
     public async Task<UnitResult<ErrorList>> Handle(
         DeleteBreedByIdCommand command,
@@ -41,8 +42,8 @@ public class DeleteBreedByIdHandler :
         if (validationResult.IsValid == false)
             return validationResult.ToErrorList();
 
-        var anyPet = await _readDbContext.Pets
-            .AnyAsync(p => p.BreedId == command.BreedId, cancellationToken);
+        var anyPet = await _volunteersContract.AnyPetExistsByBreed(
+            new AnyPetExistsByBreedRequest(command.BreedId), cancellationToken);
         if (anyPet == true)
             return Errors.General.DeleteingConflict(command.BreedId).ToErrorList();
 

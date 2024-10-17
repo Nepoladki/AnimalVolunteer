@@ -1,11 +1,11 @@
-﻿using AnimalVolunteer.Core.DTOs.Species;
-using AnimalVolunteer.SharedKernel;
+﻿using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.Species.Contracts.Requests;
 using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.Species.Contracts;
 
 public interface ISpeciesContract
 {
-    public Task<Result<SpeciesDto, Error>> GetSpeciesById(
-        Guid speciesId, CancellationToken cancellationToken);
+    public Task<UnitResult<Error>> SpeciesAndBreedExists(
+        SpeciesAndBreedExistRequest request, CancellationToken cancellationToken = default);
 }
