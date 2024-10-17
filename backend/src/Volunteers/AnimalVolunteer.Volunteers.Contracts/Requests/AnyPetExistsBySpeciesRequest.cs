@@ -2,4 +2,4 @@
 
 namespace AnimalVolunteer.Volunteers.Contracts.Requests;
 
-public record AnyPetExistsBySpeciesRequest(SpeciesId SpeciesId);
+public record AnyPetExistsBySpeciesRequest(Guid SpeciesId);

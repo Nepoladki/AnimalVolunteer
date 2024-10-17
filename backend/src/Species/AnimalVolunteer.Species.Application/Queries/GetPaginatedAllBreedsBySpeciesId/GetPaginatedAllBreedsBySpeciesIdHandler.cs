@@ -1,12 +1,11 @@
-﻿using AnimalVolunteer.Application.DTOs.SpeciesManagement;
-using AnimalVolunteer.Application.Extensions;
-using AnimalVolunteer.Application.Interfaces;
-using AnimalVolunteer.Application.Models;
-using AnimalVolunteer.Domain.Common;
+﻿using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.Core.DTOs.Species;
+using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.Core.Models;
+using AnimalVolunteer.SharedKernel;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Runtime.CompilerServices;
 
 namespace AnimalVolunteer.Species.Application.Queries.GetPaginatedAllBreedsBySpeciesId;
 

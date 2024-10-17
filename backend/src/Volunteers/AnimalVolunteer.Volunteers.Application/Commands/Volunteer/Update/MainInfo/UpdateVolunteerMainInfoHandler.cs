@@ -1,12 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
-using AnimalVolunteer.Application.Database;
 using FluentValidation;
-using AnimalVolunteer.Application.Extensions;
-using AnimalVolunteer.Domain.Common;
-using AnimalVolunteer.Domain.Common.ValueObjects;
-using AnimalVolunteer.Volunteers.Application;
 using AnimalVolunteer.Core.Abstractions;
 using AnimalVolunteer.Core;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +8,7 @@ using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.SharedKernel;
 using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
 using AnimalVolunteer.SharedKernel.ValueObjects;
+using AnimalVolunteer.Core.Abstractions.CQRS;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.MainInfo;
 

@@ -1,6 +1,6 @@
-﻿using AnimalVolunteer.Application.Validation;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
-using AnimalVolunteer.Domain.Common.ValueObjects;
+﻿using AnimalVolunteer.Core.Validation;
+using AnimalVolunteer.SharedKernel.ValueObjects;
+using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
 using FluentValidation;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.MainInfo;
@@ -10,11 +10,11 @@ public class UpdateVolunteerMainInfoValidator :
 {
     public UpdateVolunteerMainInfoValidator()
     {
-        RuleFor(c => c)
+        RuleFor(c => c.FullName)
             .MustBeValueObject(c => FullName.Create(
-                c.FullName.FirstName,
-                c.FullName.SurName,
-                c.FullName.LastName));
+                c.FirstName,
+                c.SurName,
+                c.LastName));
 
         RuleFor(c => c.Email).MustBeValueObject(Email.Create);
 

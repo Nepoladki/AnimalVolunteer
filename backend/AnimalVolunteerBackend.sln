@@ -6,9 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.API", "src\Web\AnimalVolunteer.API.csproj", "{50CB1F7D-CCA4-4791-A9C6-E08EB3FC3B2A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3A86BE01-DA59-40AB-BF74-A8B9AF0E21B2} = {3A86BE01-DA59-40AB-BF74-A8B9AF0E21B2}
-		{6A3E865C-183B-4678-8E31-900748C5AACC} = {6A3E865C-183B-4678-8E31-900748C5AACC}
 		{91C4E1F3-7766-4D9D-BFB3-EE0D2540E01E} = {91C4E1F3-7766-4D9D-BFB3-EE0D2540E01E}
-		{CD1973DA-9177-4617-A30B-E76D77FAC78E} = {CD1973DA-9177-4617-A30B-E76D77FAC78E}
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{6BEDAD03-A0AC-44D0-9740-DE654403792B}"
@@ -36,16 +34,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Volunteers.
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Volunteers.Contracts", "src\Volunteers\AnimalVolunteer.Volunteers.Contracts\AnimalVolunteer.Volunteers.Contracts.csproj", "{DD9D9BD4-CD19-461C-8361-9B99F05967FE}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0A277D43-3C2E-4E82-AC97-06C91D876F17} = {0A277D43-3C2E-4E82-AC97-06C91D876F17}
-		{F42DC073-C574-4472-A16C-1E5FE9648947} = {F42DC073-C574-4472-A16C-1E5FE9648947}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Volunteers.Web", "src\Volunteers\AnimalVolunteer.Volunteers.Web\AnimalVolunteer.Volunteers.Web.csproj", "{91C4E1F3-7766-4D9D-BFB3-EE0D2540E01E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{DD9D9BD4-CD19-461C-8361-9B99F05967FE} = {DD9D9BD4-CD19-461C-8361-9B99F05967FE}
 		{EF25F817-4DC5-4535-B20F-B2CF7A19CF88} = {EF25F817-4DC5-4535-B20F-B2CF7A19CF88}
-		{F42DC073-C574-4472-A16C-1E5FE9648947} = {F42DC073-C574-4472-A16C-1E5FE9648947}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Core", "src\Shared\AnimalVolunteer.Core\AnimalVolunteer.Core.csproj", "{A5B45483-E12E-45F4-8712-A40D648F382E}"

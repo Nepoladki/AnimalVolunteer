@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Core.Abstractions;
 using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
+using AnimalVolunteer.Volunteers.Infrastructure.Providers;
 
 namespace AnimalVolunteer.Volunteers.Infrastructure.Files;
 

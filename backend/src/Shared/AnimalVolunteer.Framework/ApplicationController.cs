@@ -1,6 +1,5 @@
-﻿using AnimalVolunteer.API.Response;
+﻿using AnimalVolunteer.Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace AnimalVolunteer.Framework;
 

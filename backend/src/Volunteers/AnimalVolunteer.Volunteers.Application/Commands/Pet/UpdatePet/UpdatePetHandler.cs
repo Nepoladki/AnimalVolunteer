@@ -12,6 +12,8 @@ using AnimalVolunteer.Volunteers.Domain.ValueObjects.Pet;
 using AnimalVolunteer.Core.Abstractions;
 using AnimalVolunteer.Core;
 using Microsoft.Extensions.DependencyInjection;
+using AnimalVolunteer.Species.Contracts;
+using AnimalVolunteer.Species.Contracts.Requests;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.UpdatePet;
 
@@ -19,22 +21,22 @@ public class UpdatePetHandler : ICommandHandler<UpdatePetCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IReadDbContext _readDbContext;
+    private readonly ISpeciesContract _speciesContract;
     private readonly IValidator<UpdatePetCommand> _validator;
     private readonly ILogger<UpdatePetHandler> _logger;
 
     public UpdatePetHandler(
         IVolunteerRepository volunteerRepository,
         [FromKeyedServices(Modules.Volunteers)] IUnitOfWork unitOfWork,
-        IReadDbContext readDbContext,
         IValidator<UpdatePetCommand> validator,
-        ILogger<UpdatePetHandler> logger)
+        ILogger<UpdatePetHandler> logger,
+        ISpeciesContract speciesContract)
     {
         _volunteerRepository = volunteerRepository;
         _unitOfWork = unitOfWork;
-        _readDbContext = readDbContext;
         _validator = validator;
         _logger = logger;
+        _speciesContract = speciesContract;
     }
 
 
@@ -46,13 +48,11 @@ public class UpdatePetHandler : ICommandHandler<UpdatePetCommand>
         if (validationResult.IsValid == false)
             return validationResult.ToErrorList();
 
-        var breedAndSpeciesExist = await _readDbContext.Breeds
-            .AnyAsync(b => b.Id == command.BreedId &&
-                    b.SpeciesId == command.SpeciesId, cancellationToken);
-        if (breedAndSpeciesExist == false)
-            return Errors.Pet
-                .NonExistantSpeciesAndBreed(command.SpeciesId, command.BreedId)
-                .ToErrorList();
+        var breedAndSpeciesExistResult = await _speciesContract.SpeciesAndBreedExists(
+            new SpeciesAndBreedExistRequest(command.SpeciesId, command.BreedId), 
+            cancellationToken);
+        if (breedAndSpeciesExistResult.IsFailure)
+            return breedAndSpeciesExistResult.Error.ToErrorList();
 
         var volunteerId = VolunteerId.CreateWithGuid(command.VolunteerId);
 

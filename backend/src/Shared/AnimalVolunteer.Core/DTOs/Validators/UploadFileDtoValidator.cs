@@ -1,4 +1,4 @@
-﻿using AnimalVolunteer.Core.DTOs.VolunteerManagement.Pet;
+﻿using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
 using AnimalVolunteer.Core.Validation;
 using AnimalVolunteer.SharedKernel;
 using FluentValidation;

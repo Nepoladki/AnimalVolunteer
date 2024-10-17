@@ -12,6 +12,8 @@ using AnimalVolunteer.Core.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using AnimalVolunteer.Core;
 using DomainEntity = AnimalVolunteer.Volunteers.Domain.Entities;
+using AnimalVolunteer.Species.Contracts;
+using AnimalVolunteer.Species.Contracts.Requests;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.AddPet;
 
@@ -19,25 +21,26 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IReadDbContext _readDbContext;
+    private readonly ISpeciesContract _speciesContract;
     private readonly IValidator<AddPetCommand> _validator;
     private readonly ILogger<AddPetHandler> _logger;
 
     public AddPetHandler(
+
         IVolunteerRepository volunteerRepository,
         ILogger<AddPetHandler> logger,
         [FromKeyedServices(Modules.Volunteers)] IUnitOfWork unitOfWork,
         IValidator<AddPetCommand> validator,
-        IReadDbContext readDbContext)
+        ISpeciesContract speciesContract)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;
         _unitOfWork = unitOfWork;
         _validator = validator;
-        _readDbContext = readDbContext;
+        _speciesContract = speciesContract;
     }
 
-    public async Task<Result<Guid, SharedKernel.ErrorList>> Handle(
+    public async Task<Result<Guid, ErrorList>> Handle(
         AddPetCommand command, CancellationToken cancellationToken = default)
     {
         var validationResult = await _validator
@@ -45,27 +48,18 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
         if (!validationResult.IsValid)
             return validationResult.ToErrorList();
 
-
-
         var volunteerResult = await _volunteerRepository
             .GetById(command.VolunteerId, cancellationToken);
         if (volunteerResult.IsFailure)
             return volunteerResult.Error.ToErrorList();
 
-        var speciesExists = await _readDbContext.Species
-            .AnyAsync(s => s.Id == command.SpeciesId, cancellationToken);
-        if (speciesExists == false)
+        var speciesExistsResult = await _speciesContract.SpeciesAndBreedExists(
+            new SpeciesAndBreedExistRequest(command.SpeciesId, command.BreedId), 
+            cancellationToken);
+        if (speciesExistsResult.IsFailure)
         {
-            _logger.LogInformation("Tried to create pet with unexisting species id");
-            return Errors.Pet.NonExistantSpecies(command.SpeciesId).ToErrorList();
-        }
-
-        var breedExists = await _readDbContext.Breeds
-            .AnyAsync(b => b.Id == command.BreedId, cancellationToken);
-        if (breedExists == false)
-        {
-            _logger.LogInformation("Tried to create pet with unexisting breed id");
-            return Errors.Pet.NonExistantBreed(command.BreedId).ToErrorList();
+            _logger.LogInformation("Tried to create pet with unexisting species or breed id");
+            return speciesExistsResult.Error.ToErrorList();
         }
 
         var petId = PetId.Create();

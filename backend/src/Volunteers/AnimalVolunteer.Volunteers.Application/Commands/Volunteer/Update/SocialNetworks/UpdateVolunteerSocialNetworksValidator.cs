@@ -1,5 +1,5 @@
-﻿using AnimalVolunteer.Application.Validation;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
+﻿using AnimalVolunteer.Core.Validation;
+using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
 using FluentValidation;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.SocialNetworks;

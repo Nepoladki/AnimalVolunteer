@@ -1,6 +1,6 @@
-﻿using AnimalVolunteer.Application.DTOs.Validators;
-using AnimalVolunteer.Application.Validation;
-using AnimalVolunteer.Domain.Common;
+﻿using AnimalVolunteer.Core.DTOs.Validators;
+using AnimalVolunteer.Core.Validation;
+using AnimalVolunteer.SharedKernel;
 using FluentValidation;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.UpdatePetPhotos

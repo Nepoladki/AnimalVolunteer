@@ -1,4 +1,4 @@
-﻿using AnimalVolunteer.Application.Interfaces;
+﻿using AnimalVolunteer.Core.Abstractions.CQRS;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Delete;
 

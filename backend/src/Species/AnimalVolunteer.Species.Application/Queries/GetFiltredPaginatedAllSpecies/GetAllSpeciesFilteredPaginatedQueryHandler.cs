@@ -1,8 +1,7 @@
-﻿using AnimalVolunteer.Application.DTOs.SpeciesManagement;
-using AnimalVolunteer.Application.Extensions;
-using AnimalVolunteer.Application.Interfaces;
-using AnimalVolunteer.Application.Models;
-using Microsoft.Extensions.Logging;
+﻿using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.Core.DTOs.Species;
+using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.Core.Models;
 
 namespace AnimalVolunteer.Species.Application.Queries.GetFiltredPaginatedAllSpecies;
 

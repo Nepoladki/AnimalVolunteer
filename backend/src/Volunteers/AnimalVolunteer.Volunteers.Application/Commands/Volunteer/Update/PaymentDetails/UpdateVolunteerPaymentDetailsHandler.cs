@@ -1,5 +1,4 @@
-﻿using DomainPaymentDetails = AnimalVolunteer.Domain.Common.ValueObjects.PaymentDetails;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
 using FluentValidation;
 using AnimalVolunteer.Core.Abstractions;
@@ -8,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.SharedKernel;
 using AnimalVolunteer.Core.Abstractions.CQRS;
+using DomainEntities = AnimalVolunteer.SharedKernel.ValueObjects;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.PaymentDetails;
 
@@ -44,7 +44,7 @@ public class UpdateVolunteerPaymentDetailsHandler
             return validationResult.ToErrorList();
 
         var paymentDetails = command.PaymentDetails.Select(x =>
-                DomainPaymentDetails.Create(x.Name, x.Description).Value).ToList();
+                DomainEntities.PaymentDetails.Create(x.Name, x.Description).Value).ToList();
 
         volunteerResult.Value.UpdatePaymentDetails(paymentDetails);
 

@@ -1,5 +1,5 @@
-﻿using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
-using AnimalVolunteer.Application.Interfaces;
+﻿using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.UpdatePetPhotos;
 

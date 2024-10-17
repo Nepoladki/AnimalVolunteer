@@ -6,13 +6,15 @@ using FluentValidation;
 using Microsoft.Extensions.Logging;
 using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+using AnimalVolunteer.Volunteers.Contracts;
+using AnimalVolunteer.Volunteers.Contracts.Requests;
 
 namespace AnimalVolunteer.Species.Application.Commands.DeleteSpeciesById;
 
 public class DeleteSpeciesByIdHandler :
     ICommandHandler<DeleteSpeciesByIdCommand>
 {
-    private readonly IReadDbContext _readDbContext;
+    private readonly IVolunteersContract _volunteersContract;
     private readonly ISpeciesRepository _speciesRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<DeleteSpeciesByIdHandler> _logger;
@@ -20,16 +22,16 @@ public class DeleteSpeciesByIdHandler :
 
     public DeleteSpeciesByIdHandler(
         ISpeciesRepository speciesRepository,
-        IReadDbContext readDbContext,
         IUnitOfWork unitOfWork,
         ILogger<DeleteSpeciesByIdHandler> logger,
-        IValidator<DeleteSpeciesByIdCommand> validator)
+        IValidator<DeleteSpeciesByIdCommand> validator,
+        IVolunteersContract volunteersContract)
     {
         _speciesRepository = speciesRepository;
-        _readDbContext = readDbContext;
         _unitOfWork = unitOfWork;
         _logger = logger;
         _validator = validator;
+        _volunteersContract = volunteersContract;
     }
 
     public async Task<UnitResult<ErrorList>> Handle(
@@ -48,8 +50,8 @@ public class DeleteSpeciesByIdHandler :
         if (speciesToDelete is null)
             return Errors.General.NotFound(speciesId.Value).ToErrorList();
 
-        var anyPet = _readDbContext.Pets
-            .Any(p => p.SpeciesId == speciesId.Value);
+        var anyPet = await _volunteersContract.AnyPetExistsBySpecies(
+            new AnyPetExistsBySpeciesRequest(speciesId), cancellationToken);
         if (anyPet == true)
             return Errors.General
                 .DeleteingConflict(speciesId.Value, nameof(Species)).ToErrorList();

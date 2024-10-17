@@ -1,7 +1,6 @@
-﻿using DomainEntity = AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Root;
+﻿using DomainEntity = AnimalVolunteer.Volunteers.Domain.Root;
 using CSharpFunctionalExtensions;
 using FluentValidation;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Volunteer;
 using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.SharedKernel;
 using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;

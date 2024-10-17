@@ -1,9 +1,11 @@
-﻿using AnimalVolunteer.Application.Validation;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.ValueObjects.Pet;
+﻿using AnimalVolunteer.Core.Validation;
 using AnimalVolunteer.Domain.Common.ValueObjects;
-using AnimalVolunteer.Domain.Common;
+using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.SharedKernel.ValueObjects;
+using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+using AnimalVolunteer.Volunteers.Domain.Enums;
+using AnimalVolunteer.Volunteers.Domain.ValueObjects.Pet;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.UpdatePet;
 
@@ -16,39 +18,40 @@ public class UpdatePetValidator : AbstractValidator<UpdatePetCommand>
 
         RuleFor(x => x.Description).NotEmpty()
             .MaximumLength(Description.MAX_DESC_LENGTH)
-            .WithError(Errors.General.InvalidValue());
+            .WithError(Errors.General.InvalidValue(nameof(Description)));
 
         RuleFor(x => x.Color).NotEmpty()
-            .WithError(Errors.General.InvalidValue());
+            .WithError(Errors.General.InvalidValue("Color"));
 
         RuleFor(x => x.Weight).GreaterThan(0)
-            .WithError(Errors.General.InvalidValue());
+            .WithError(Errors.General.InvalidValue("Weight"));
 
         RuleFor(x => x.Height).GreaterThan(0)
-            .WithError(Errors.General.InvalidValue());
+            .WithError(Errors.General.InvalidValue("Height"));
 
         RuleFor(x => x.SpeciesId).NotEqual(Guid.Empty)
-            .WithError(Errors.General.InvalidValue());
+            .WithError(Errors.General.InvalidValue(nameof(SpeciesId)));
 
         RuleFor(x => x.BreedId).NotEqual(Guid.Empty)
             .WithError(Errors.General.InvalidValue());
 
         RuleFor(x => x.HealthDescription).NotEmpty()
-            .WithError(Errors.General.InvalidValue());
+            .WithError(Errors.General.InvalidValue("HealthDescription"));
 
         RuleFor(x => x.Country).NotEmpty().MaximumLength(Address.MAX_LENGTH)
-            .WithError(Errors.General.InvalidValue());
+            .WithError(Errors.General.InvalidValue("Country"));
 
         RuleFor(x => x.City).NotEmpty().MaximumLength(Address.MAX_LENGTH)
-            .WithError(Errors.General.InvalidValue());
+            .WithError(Errors.General.InvalidValue("City"));
 
         RuleFor(x => x.Street).NotEmpty().MaximumLength(Address.MAX_LENGTH)
-            .WithError(Errors.General.InvalidValue());
+            .WithError(Errors.General.InvalidValue("Street"));
 
         RuleFor(x => x.BirthDate).NotEmpty()
-            .WithError(Errors.General.InvalidValue());
+            .WithError(Errors.General.InvalidValue("BirthDate"));
 
-        RuleFor(x => x.CurrentStatus).IsInEnum();
+        RuleFor(x => x.CurrentStatus).IsInEnum()
+            .WithError(Errors.General.InvalidValue(nameof(CurrentStatus)));
 
         RuleForEach(r => r.ContactInfo).ChildRules(contactInfo =>
         {

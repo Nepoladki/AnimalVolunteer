@@ -10,6 +10,7 @@ using AnimalVolunteer.SharedKernel;
 using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using AnimalVolunteer.SharedKernel.ValueObjects;
 using AnimalVolunteer.Volunteers.Domain.ValueObjects.Pet;
+using AnimalVolunteer.Core.Extensions;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.UpdatePetPhotos;
 
