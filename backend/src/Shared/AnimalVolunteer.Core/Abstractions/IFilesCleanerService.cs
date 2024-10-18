@@ -1,4 +1,4 @@
-﻿namespace AnimalVolunteer.Volunteers.Infrastructure.Files;
+﻿namespace AnimalVolunteer.Core.Abstractions;
 
 public interface IFilesCleanerService
 {

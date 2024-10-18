@@ -1,4 +1,4 @@
-﻿using AnimalVolunteer.Application.Features.VolunteerManagement.Queries.Pet.GetPetsFilteredPaginated;
+﻿using AnimalVolunteer.Volunteers.Application.Queries.Pet.GetPetsFilteredPaginated;
 
 namespace AnimalVolunteer.Volunteers.Web.Requests.Pet;
 

@@ -1,5 +1,5 @@
-﻿using AnimalVolunteer.Application.DTOs.Volunteer;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Volunteer.Update.SocialNetworks;
+﻿using AnimalVolunteer.Core.DTOs.Volunteers;
+using AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.SocialNetworks;
 
 namespace AnimalVolunteer.Volunteers.Web.Requests.Volunteer;
 

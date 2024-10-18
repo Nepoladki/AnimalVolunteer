@@ -1,4 +1,4 @@
-﻿using AnimalVolunteer.Application.Features.SpeciesManagement.Queries.GetAllSpecies;
+﻿using AnimalVolunteer.Species.Application.Queries.GetFiltredPaginatedAllSpecies;
 
 namespace AnimalVolunteer.Species.Web.Requests;
 

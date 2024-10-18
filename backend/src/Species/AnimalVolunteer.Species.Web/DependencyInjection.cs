@@ -1,5 +1,7 @@
 ﻿using AnimalVolunteer.Species.Application;
+using AnimalVolunteer.Species.Contracts;
 using AnimalVolunteer.Species.Infrastructure;
+using AnimalVolunteer.Volunteers.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,7 +13,8 @@ public static class DependencyInjection
         this IServiceCollection services, IConfiguration configuration)
     {
         return services
-            .AddSpeciesApplication()
-            .AddSpeciesInfrastructure(configuration);
+            .AddScoped<ISpeciesContract, SpeciesContract>()
+            .AddSpeciesInfrastructure(configuration)
+            .AddSpeciesApplication();
     }
 }

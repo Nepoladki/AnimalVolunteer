@@ -1,5 +1,4 @@
-﻿using AnimalVolunteer.Core.Abstractions;
-using AnimalVolunteer.Core.Abstractions.CQRS;
+﻿using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.SharedKernel;
 using CSharpFunctionalExtensions;
 using FluentValidation;
@@ -8,6 +7,8 @@ using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using AnimalVolunteer.Volunteers.Contracts;
 using AnimalVolunteer.Volunteers.Contracts.Requests;
+using AnimalVolunteer.Core;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AnimalVolunteer.Species.Application.Commands.DeleteSpeciesById;
 
@@ -22,7 +23,7 @@ public class DeleteSpeciesByIdHandler :
 
     public DeleteSpeciesByIdHandler(
         ISpeciesRepository speciesRepository,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.Species)] IUnitOfWork unitOfWork,
         ILogger<DeleteSpeciesByIdHandler> logger,
         IValidator<DeleteSpeciesByIdCommand> validator,
         IVolunteersContract volunteersContract)

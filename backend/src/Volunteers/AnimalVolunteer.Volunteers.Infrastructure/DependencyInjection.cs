@@ -2,11 +2,11 @@
 using AnimalVolunteer.Core.Abstractions;
 using AnimalVolunteer.Core.BackgroundServices;
 using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
+using AnimalVolunteer.Core.Files;
 using AnimalVolunteer.Core.MessageQueues;
 using AnimalVolunteer.Core.Options;
 using AnimalVolunteer.Volunteers.Application;
 using AnimalVolunteer.Volunteers.Infrastructure.DbContexts;
-using AnimalVolunteer.Volunteers.Infrastructure.Files;
 using AnimalVolunteer.Volunteers.Infrastructure.Providers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,4 +1,4 @@
-﻿using AnimalVolunteer.Core.Abstractions;
+﻿using AnimalVolunteer.Volunteers.Application;
 using AnimalVolunteer.Volunteers.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;

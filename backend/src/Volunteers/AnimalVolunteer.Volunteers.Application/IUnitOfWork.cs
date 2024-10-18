@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace AnimalVolunteer.Core.Abstractions;
+namespace AnimalVolunteer.Volunteers.Application;
 
 public interface IUnitOfWork
 {

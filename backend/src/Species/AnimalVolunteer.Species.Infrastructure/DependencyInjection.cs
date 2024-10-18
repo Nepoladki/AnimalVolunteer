@@ -1,5 +1,4 @@
 ﻿using AnimalVolunteer.Core;
-using AnimalVolunteer.Core.Abstractions;
 using AnimalVolunteer.Core.Options;
 using AnimalVolunteer.Species.Application;
 using AnimalVolunteer.Species.Infrastructure.DbContexts;

@@ -3,7 +3,7 @@ using AnimalVolunteer.SharedKernel;
 using AnimalVolunteer.SharedKernel.ValueObjects;
 using CSharpFunctionalExtensions;
 
-namespace AnimalVolunteer.Volunteers.Infrastructure.Providers;
+namespace AnimalVolunteer.Core.Abstractions;
 
 public interface IFileProvider
 {

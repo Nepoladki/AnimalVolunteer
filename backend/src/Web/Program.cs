@@ -1,5 +1,4 @@
 using AnimalVolunteer.API;
-using AnimalVolunteer.API.Extensions;
 using AnimalVolunteer.API.Middlewares;
 using AnimalVolunteer.Species.Web;
 using AnimalVolunteer.Volunteers.Web;
@@ -31,9 +30,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-
-    // Auto-migrations
-    await app.AddAutoMigrations();
 }
 
 app.UseSerilogRequestLogging();

@@ -9,7 +9,6 @@ using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using AnimalVolunteer.SharedKernel.ValueObjects;
 using AnimalVolunteer.Volunteers.Domain.ValueObjects.Pet;
-using AnimalVolunteer.Core.Abstractions;
 using AnimalVolunteer.Core;
 using Microsoft.Extensions.DependencyInjection;
 using AnimalVolunteer.Species.Contracts;

@@ -1,4 +1,5 @@
-﻿using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
+﻿using AnimalVolunteer.Core.Abstractions;
+using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
 using AnimalVolunteer.Core.Options;
 using AnimalVolunteer.SharedKernel;
 using AnimalVolunteer.SharedKernel.ValueObjects;

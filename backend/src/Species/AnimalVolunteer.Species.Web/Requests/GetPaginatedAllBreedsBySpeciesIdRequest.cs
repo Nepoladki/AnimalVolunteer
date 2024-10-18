@@ -1,4 +1,4 @@
-﻿using AnimalVolunteer.Application.Features.SpeciesManagement.Queries.GetPaginatedAllBreedsBySpeciesId;
+﻿using AnimalVolunteer.Species.Application.Queries.GetPaginatedAllBreedsBySpeciesId;
 
 namespace AnimalVolunteer.Species.Web.Requests
 {

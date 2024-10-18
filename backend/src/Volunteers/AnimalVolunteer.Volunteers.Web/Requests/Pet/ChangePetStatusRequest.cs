@@ -1,5 +1,5 @@
-﻿using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.ChangePetStatus;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Enums;
+﻿using AnimalVolunteer.Volunteers.Application.Commands.Pet.ChangePetStatus;
+using AnimalVolunteer.Volunteers.Domain.Enums;
 
 namespace AnimalVolunteer.Volunteers.Web.Requests.Pet;
 

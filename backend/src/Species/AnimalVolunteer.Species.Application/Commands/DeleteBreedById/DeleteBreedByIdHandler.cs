@@ -1,5 +1,4 @@
-﻿using AnimalVolunteer.Core.Abstractions;
-using AnimalVolunteer.Core.Abstractions.CQRS;
+﻿using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.SharedKernel;
 using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using CSharpFunctionalExtensions;
@@ -8,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.Volunteers.Contracts;
 using AnimalVolunteer.Volunteers.Contracts.Requests;
+using Microsoft.Extensions.DependencyInjection;
+using AnimalVolunteer.Core;
 
 namespace AnimalVolunteer.Species.Application.Commands.DeleteBreedById;
 
@@ -23,7 +24,7 @@ public class DeleteBreedByIdHandler :
     public DeleteBreedByIdHandler(
         ILogger<DeleteBreedByIdHandler> logger,
         ISpeciesRepository speciesRepository,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.Species)] IUnitOfWork unitOfWork,
         IValidator<DeleteBreedByIdCommand> validator,
         IVolunteersContract volunteersContract)
     {

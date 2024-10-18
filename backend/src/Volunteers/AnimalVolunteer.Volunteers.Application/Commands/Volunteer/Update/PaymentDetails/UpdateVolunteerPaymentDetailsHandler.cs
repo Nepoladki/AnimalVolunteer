@@ -1,7 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
 using FluentValidation;
-using AnimalVolunteer.Core.Abstractions;
 using AnimalVolunteer.Core;
 using Microsoft.Extensions.DependencyInjection;
 using AnimalVolunteer.Core.Extensions;

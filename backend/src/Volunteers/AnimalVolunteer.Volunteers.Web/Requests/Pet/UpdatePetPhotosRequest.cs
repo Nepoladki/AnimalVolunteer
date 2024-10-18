@@ -1,5 +1,6 @@
-﻿using AnimalVolunteer.Application.DTOs.Volunteer.Pet;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.AddPetPhotos;
+﻿using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
+using AnimalVolunteer.Volunteers.Application.Commands.Pet.UpdatePetPhotos;
+using Microsoft.AspNetCore.Http;
 
 namespace AnimalVolunteer.Volunteers.Web.Requests.Pet;
 

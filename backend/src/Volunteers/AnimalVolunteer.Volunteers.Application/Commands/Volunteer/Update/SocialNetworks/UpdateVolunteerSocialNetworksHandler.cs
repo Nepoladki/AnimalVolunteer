@@ -1,5 +1,4 @@
-﻿using AnimalVolunteer.Core.Abstractions;
-using AnimalVolunteer.Core;
+﻿using AnimalVolunteer.Core;
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;

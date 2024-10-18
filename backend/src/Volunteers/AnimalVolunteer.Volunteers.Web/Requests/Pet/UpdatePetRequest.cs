@@ -1,6 +1,6 @@
-﻿using AnimalVolunteer.Application.DTOs.Volunteer;
-using AnimalVolunteer.Application.Features.VolunteerManagement.Commands.Pet.UpdatePet;
-using AnimalVolunteer.Domain.Aggregates.VolunteerManagement.Enums;
+﻿using AnimalVolunteer.Core.DTOs.Volunteers;
+using AnimalVolunteer.Volunteers.Application.Commands.Pet.UpdatePet;
+using AnimalVolunteer.Volunteers.Domain.Enums;
 
 namespace AnimalVolunteer.Volunteers.Web.Requests.Pet;
 

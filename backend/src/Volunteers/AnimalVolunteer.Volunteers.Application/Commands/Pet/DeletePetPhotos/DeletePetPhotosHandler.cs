@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
-using AnimalVolunteer.Core.Abstractions;
 using AnimalVolunteer.Core;
 using Microsoft.Extensions.DependencyInjection;
 

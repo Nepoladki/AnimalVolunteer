@@ -8,7 +8,6 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using AnimalVolunteer.Core.Extensions;
-using AnimalVolunteer.Core.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using AnimalVolunteer.Core;
 using DomainEntity = AnimalVolunteer.Volunteers.Domain.Entities;
