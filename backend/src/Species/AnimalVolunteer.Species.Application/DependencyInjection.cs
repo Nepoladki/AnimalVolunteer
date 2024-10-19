@@ -8,18 +8,19 @@ namespace AnimalVolunteer.Species.Application;
 
 public static class DependencyInjection
 {
+    private static readonly Assembly _assembly = Assembly.GetExecutingAssembly();
     public static IServiceCollection AddSpeciesApplication(
         this IServiceCollection services)
     {
         return services
             .AddCommands()
             .AddQueries()
-            .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly()); ;
+            .AddValidatorsFromAssembly(_assembly); ;
     }
 
     private static IServiceCollection AddCommands(this IServiceCollection services)
     {
-        return services.Scan(scan => scan.FromAssemblies(typeof(DependencyInjection).Assembly)
+        return services.Scan(scan => scan.FromAssemblies(_assembly)
         .AddClasses(c => c
             .AssignableToAny(typeof(ICommandHandler<,>), typeof(ICommandHandler<>)))
             .AsSelfWithInterfaces()
@@ -29,7 +30,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddQueries(this IServiceCollection services) 
     {
-        return services.Scan(scan => scan.FromAssemblies(typeof(DependencyInjection).Assembly)
+        return services.Scan(scan => scan.FromAssemblies(_assembly)
         .AddClasses(c => c
             .AssignableToAny(typeof(IQueryHandler<,>)))
             .AsSelfWithInterfaces()
