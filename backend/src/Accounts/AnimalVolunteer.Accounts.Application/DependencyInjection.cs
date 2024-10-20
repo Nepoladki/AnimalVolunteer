@@ -1,4 +1,5 @@
-﻿using AnimalVolunteer.Core.Abstractions.CQRS;
+﻿using AnimalVolunteer.Accounts.Application.Interfaces;
+using AnimalVolunteer.Core.Abstractions.CQRS;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -10,6 +11,7 @@ public static class DependencyInjection
     public static IServiceCollection AddAccountsApplication(this IServiceCollection services)
     {
         services.AddCommands();
+
         return services;
     }
 

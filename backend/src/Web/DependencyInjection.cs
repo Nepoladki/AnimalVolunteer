@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using AnimalVolunteer.Core.Options;
+using AnimalVolunteer.SharedKernel.ValueObjects;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 using System.Text;
@@ -12,9 +15,9 @@ public static class DependencyInjection
     {
         AddSerilogLogger(services, config);
 
-        services.AddJwtAuthentication(config);
+        
 
-        services.AddAuthorization();
+        services.AddCustomSwaggerGen();
 
         return services;
     }
@@ -34,24 +37,41 @@ public static class DependencyInjection
         services.AddSerilog();
     }
 
-    private static IServiceCollection AddJwtAuthentication(
-        this IServiceCollection services, IConfiguration config)
+    private static IServiceCollection AddCustomSwaggerGen(this IServiceCollection services)
     {
-        services
-            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo
             {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = false,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = "validIssuer",
-                    ValidAudience = "validaudience",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("somebytes"))
-                };
+                Title = "AnimalVolunteer API",
+                Version = "1"
             });
+
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                In = ParameterLocation.Header,
+                Description = "Insert JWT token value",
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+
+            { 
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
+                }
+            });
+        });
 
         return services;
     }

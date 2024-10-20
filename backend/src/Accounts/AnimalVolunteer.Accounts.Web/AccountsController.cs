@@ -1,4 +1,5 @@
-﻿using AnimalVolunteer.Accounts.Application.Commands.RegisterUser;
+﻿using AnimalVolunteer.Accounts.Application.Commands.LoginUser;
+using AnimalVolunteer.Accounts.Application.Commands.RegisterUser;
 using AnimalVolunteer.Accounts.Web.Requests;
 using AnimalVolunteer.Framework;
 using Microsoft.AspNetCore.Mvc;
@@ -21,4 +22,19 @@ public partial class AccountsController : ApplicationController
 
         return Ok();
     }
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(
+        [FromBody] LoginUserRequest request,
+        [FromServices] LoginUserHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var command = request.ToCommand();
+
+        var handleResult = await handler.Handle(command, cancellationToken);
+        if (handleResult.IsFailure)
+            return handleResult.Error.ToResponse();
+
+        return Ok();
+    }
+
 }

@@ -17,9 +17,7 @@ services.AddApi(config)
 
 services.AddControllers();
 
-// Swagger Generation
-services.AddEndpointsApiExplorer();
-services.AddSwaggerGen();
+// Swagger Generation moved to DependencyInjection.cs
 
 var app = builder.Build();
 
