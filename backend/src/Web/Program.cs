@@ -2,16 +2,18 @@ using AnimalVolunteer.API;
 using AnimalVolunteer.API.Middlewares;
 using AnimalVolunteer.Species.Web;
 using AnimalVolunteer.Volunteers.Web;
+using AnimalVolunteer.Accounts.Web;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 var services = builder.Services;
 var config = builder.Configuration;
 
 // Add other layers
-services.AddApi(config)
+services
+    .AddApi(config)
+    .AddAccountsModule(config)
     .AddVolunteersModule(config)
     .AddSpeciesModule(config);
 

@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Accounts\AnimalVolunteer.Accounts.Web\AnimalVolunteer.Accounts.Web.csproj" />
     <ProjectReference Include="..\Species\AnimalVolunteer.Species.Infrastructure\AnimalVolunteer.Species.Infrastructure.csproj" />
     <ProjectReference Include="..\Species\AnimalVolunteer.Species.Web\AnimalVolunteer.Species.Web.csproj" />
     <ProjectReference Include="..\Volunteers\AnimalVolunteer.Volunteers.Infrastructure\AnimalVolunteer.Volunteers.Infrastructure.csproj" />

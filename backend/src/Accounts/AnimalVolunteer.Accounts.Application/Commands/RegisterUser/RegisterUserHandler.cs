@@ -26,7 +26,7 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
 
         var creationResult = await _userManager.CreateAsync(user, command.Password);
         if (creationResult.Succeeded == false)
-            creationResult.Errors.ToDomainErrors();
+            return creationResult.Errors.ToDomainErrors();
 
         _logger.LogInformation("Created user with username {Name}", command.UserName);
 

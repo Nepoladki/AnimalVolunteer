@@ -5,20 +5,25 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace AnimalVolunteer.Accounts.Infrastructure;
 public class AuthDbContext : IdentityDbContext<User, Role, Guid>
 {
     private readonly IConfiguration _config;
+    private readonly DatabaseOptions _dbOptions;
 
-    public AuthDbContext(IConfiguration configuration)
+    public AuthDbContext(
+        IConfiguration configuration, 
+        IOptions<DatabaseOptions> dbOptions)
     {
+        _dbOptions = dbOptions.Value;
         _config = configuration;
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
-        builder.UseNpgsql(_config.GetConnectionString(DatabaseOptions.SECTION_NAME));
+        builder.UseNpgsql(_config.GetConnectionString(_dbOptions.PostgresConnectionName));
         builder.UseSnakeCaseNamingConvention();
         builder.EnableSensitiveDataLogging();
         builder.UseLoggerFactory(new LoggerFactory());

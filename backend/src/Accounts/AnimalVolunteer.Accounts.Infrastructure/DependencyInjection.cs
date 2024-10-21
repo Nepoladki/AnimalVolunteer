@@ -57,25 +57,13 @@ public static class DependencyInjection
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = jwtOptions.Issuer,
                     ValidAudience = jwtOptions.Audience,
+                    ClockSkew = TimeSpan.FromMinutes(jwtOptions.ClockSkewMinutes),
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
                 };
             });
 
-        services.AddAuthorization(options =>
-        {
-            options.DefaultPolicy = new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            .RequireClaim(CustomJwtClaims.ROLE, JwtClaimValues.ROLE_USER)
-            .Build();
-
-            options.AddPolicy("AdminPolicy", policyBuilder =>
-            {
-                policyBuilder
-                .RequireAuthenticatedUser()
-                .RequireClaim(CustomJwtClaims.ROLE, JwtClaimValues.ROLE_ADMIN);
-            });
-        }); 
+        services.AddAuthorization(); 
 
         return services;
     } 

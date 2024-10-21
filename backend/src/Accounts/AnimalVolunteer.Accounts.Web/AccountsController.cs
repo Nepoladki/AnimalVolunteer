@@ -34,7 +34,7 @@ public partial class AccountsController : ApplicationController
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
 
-        return Ok();
+        return Ok(handleResult.Value);
     }
 
 }
