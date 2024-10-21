@@ -4,10 +4,11 @@ using AnimalVolunteer.Species.Application.Commands.DeleteSpeciesById;
 using AnimalVolunteer.Species.Application.Queries.GetFiltredPaginatedAllSpecies;
 using AnimalVolunteer.Species.Application.Queries.GetPaginatedAllBreedsBySpeciesId;
 using AnimalVolunteer.Species.Web.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnimalVolunteer.Species.Web;
-
+[Authorize]
 public class SpeciesController : ApplicationController
 {
     [HttpGet]

@@ -78,4 +78,10 @@ public static class Errors
         public static Error DeleteFailure(string name) =>
             Error.Failure("Minio.DeleteFailure", $"Failed to delete {name} from Minio");
     }
+
+    public static class Authentication
+    {
+        public static Error WrongCredentials() =>
+            Error.NotFound("Auth.WrongCreds", "Failed to login using current credentials");
+    }
 }

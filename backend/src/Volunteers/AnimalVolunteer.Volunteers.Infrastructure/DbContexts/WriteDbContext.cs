@@ -11,7 +11,6 @@ public class WriteDbContext : DbContext
 {
     private readonly DatabaseOptions _dbOptions;
     private readonly IConfiguration _configuration;
-    private readonly ILoggerFactory _loggerFactory = new LoggerFactory();
 
     public WriteDbContext(
         IConfiguration configuration, IOptions<DatabaseOptions> dbOptions)
@@ -27,7 +26,7 @@ public class WriteDbContext : DbContext
         optionsBuilder.UseNpgsql(_configuration
             .GetConnectionString(_dbOptions.PostgresConnectionName));
         optionsBuilder.UseSnakeCaseNamingConvention();
-        optionsBuilder.UseLoggerFactory(_loggerFactory);
+        optionsBuilder.UseLoggerFactory(new LoggerFactory());
         optionsBuilder.EnableSensitiveDataLogging();
     }
 

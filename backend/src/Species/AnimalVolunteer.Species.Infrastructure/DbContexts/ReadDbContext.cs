@@ -12,7 +12,6 @@ public class ReadDbContext : DbContext, IReadDbContext
 {
     private readonly DatabaseOptions _dbOptions;
     private readonly IConfiguration _configuration;
-    private readonly ILoggerFactory _loggerFactory = new LoggerFactory();
 
     public ReadDbContext(
         IConfiguration configuration, IOptions<DatabaseOptions> dbOptions)
@@ -28,7 +27,7 @@ public class ReadDbContext : DbContext, IReadDbContext
         optionsBuilder.UseNpgsql(_configuration
             .GetConnectionString(_dbOptions.PostgresConnectionName));
         optionsBuilder.UseSnakeCaseNamingConvention();
-        optionsBuilder.UseLoggerFactory(_loggerFactory);
+        optionsBuilder.UseLoggerFactory(new LoggerFactory());
         optionsBuilder.EnableSensitiveDataLogging();
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     }

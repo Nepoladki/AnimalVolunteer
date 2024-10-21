@@ -20,8 +20,10 @@ using AnimalVolunteer.Volunteers.Application.Queries.Pet.GetPetsFilteredPaginate
 using AnimalVolunteer.Volunteers.Application.Queries.Pet.GetPetById;
 using AnimalVolunteer.Volunteers.Web.Processors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AnimalVolunteer.Volunteers.Web;
+[Authorize]
 public class VolunteerController : ApplicationController
 {
     [HttpGet]
