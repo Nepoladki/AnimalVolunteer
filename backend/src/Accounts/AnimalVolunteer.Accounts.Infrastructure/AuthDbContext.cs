@@ -40,5 +40,18 @@ public class AuthDbContext : IdentityDbContext<User, Role, Guid>
         builder.Entity<IdentityUserLogin<Guid>>().ToTable("user_logins");
         builder.Entity<IdentityRoleClaim<Guid>>().ToTable("role_claims");
         builder.Entity<IdentityUserRole<Guid>>().ToTable("user_roles");
+
+        builder.Entity<RolePermission>().ToTable("roles_permissions")
+            .HasKey(rp => new {rp.RoleId, rp.PermissionId});
+
+        builder.Entity<RolePermission>()
+            .HasOne(rp => rp.Role)
+            .WithMany(rp => rp.RolePermissions)
+            .HasForeignKey(rp => rp.RoleId);
+
+        builder.Entity<RolePermission>()
+            .HasOne(rp => rp.Permission)
+            .WithMany()
+            .HasForeignKey(rp => rp.PermissionId);
     }
 }  
