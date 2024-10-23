@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using AnimalVolunteer.Accounts.Domain.Models.Users;
+using AnimalVolunteer.Accounts.Infrastructure.Providers;
 
 namespace AnimalVolunteer.Accounts.Infrastructure;
 

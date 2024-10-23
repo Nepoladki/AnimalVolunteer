@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Accounts.Domain.Models;
+using AnimalVolunteer.Accounts.Domain.Models.Users;
 using AnimalVolunteer.Core.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Text.Json;
 
 namespace AnimalVolunteer.Accounts.Infrastructure;
 public class AuthDbContext : IdentityDbContext<User, Role, Guid>
@@ -34,7 +36,14 @@ public class AuthDbContext : IdentityDbContext<User, Role, Guid>
         base.OnModelCreating(builder);
 
         builder.Entity<User>().ToTable("users");
+        builder.Entity<User>().Property(u => u.SocialNetworks)
+            .HasConversion(
+            sn => JsonSerializer.Serialize(sn, JsonSerializerOptions.Default), 
+            json => JsonSerializer.Deserialize<List<SocialNetwork>>(json, JsonSerializerOptions.Default)!);
+
+
         builder.Entity<Role>().ToTable("roles");
+        builder.Entity<Permission>().ToTable("permissions");
         builder.Entity<IdentityUserClaim<Guid>>().ToTable("user_claims");
         builder.Entity<IdentityUserToken<Guid>>().ToTable("user_tokens");
         builder.Entity<IdentityUserLogin<Guid>>().ToTable("user_logins");
@@ -46,7 +55,7 @@ public class AuthDbContext : IdentityDbContext<User, Role, Guid>
 
         builder.Entity<RolePermission>()
             .HasOne(rp => rp.Role)
-            .WithMany(rp => rp.RolePermissions)
+            .WithMany(r => r.RolePermissions)
             .HasForeignKey(rp => rp.RoleId);
 
         builder.Entity<RolePermission>()

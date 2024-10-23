@@ -21,4 +21,8 @@
     <ProjectReference Include="..\AnimalVolunteer.Accounts.Domain\AnimalVolunteer.Accounts.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DatabaseSeeding\" />
+  </ItemGroup>
+
 </Project>
