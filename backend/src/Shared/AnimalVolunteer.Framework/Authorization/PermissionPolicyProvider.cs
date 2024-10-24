@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace AnimalVolunteer.Accounts.Infrastructure.Authorization;
+namespace AnimalVolunteer.Framework.Authorization;
 
 public class PermissionPolicyProvider : IAuthorizationPolicyProvider
 {

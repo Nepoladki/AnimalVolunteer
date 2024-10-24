@@ -1,4 +1,5 @@
-﻿using AnimalVolunteer.Core.Options;
+﻿using AnimalVolunteer.Core;
+using AnimalVolunteer.Core.Options;
 using AnimalVolunteer.Volunteers.Domain.Root;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

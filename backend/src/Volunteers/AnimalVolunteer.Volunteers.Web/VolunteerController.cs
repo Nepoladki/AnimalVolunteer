@@ -21,12 +21,12 @@ using AnimalVolunteer.Volunteers.Application.Queries.Pet.GetPetById;
 using AnimalVolunteer.Volunteers.Web.Processors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using AnimalVolunteer.Accounts.Infrastructure.Authorization;
+using AnimalVolunteer.Framework.Authorization;
 
 namespace AnimalVolunteer.Volunteers.Web;
 public class VolunteerController : ApplicationController
 {
-    [Permission("volunteers.get")]
+    //[Permission("volunteers.get")]
     [HttpGet]
     public async Task<IActionResult> GetAll(
         [FromQuery] GetFilteredVolunteersWithPaginationRequest request,
@@ -54,7 +54,7 @@ public class VolunteerController : ApplicationController
         return Ok(response.Value);
     }
 
-    [Permission("volunteers.create")]
+    //[Permission("volunteers.create")]
     [HttpPost]
     public async Task<IActionResult> Create(
         [FromBody] CreateVolunteerRequest request,

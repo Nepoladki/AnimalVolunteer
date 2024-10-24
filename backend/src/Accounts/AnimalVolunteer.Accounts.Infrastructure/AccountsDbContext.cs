@@ -10,12 +10,15 @@ using Microsoft.Extensions.Options;
 using System.Text.Json;
 
 namespace AnimalVolunteer.Accounts.Infrastructure;
-public class AuthDbContext : IdentityDbContext<User, Role, Guid>
+public class AccountsDbContext : IdentityDbContext<User, Role, Guid>
 {
     private readonly IConfiguration _config;
     private readonly DatabaseOptions _dbOptions;
 
-    public AuthDbContext(
+    public DbSet<RolePermission> RolesPermissions { get; set; }
+    public DbSet<Permission> Permissions { get; set; }
+
+    public AccountsDbContext(
         IConfiguration configuration, 
         IOptions<DatabaseOptions> dbOptions)
     {
@@ -35,6 +38,8 @@ public class AuthDbContext : IdentityDbContext<User, Role, Guid>
     {
         base.OnModelCreating(builder);
 
+        builder.HasDefaultSchema("accounts");
+
         builder.Entity<User>().ToTable("users");
         builder.Entity<User>().Property(u => u.SocialNetworks)
             .HasConversion(
@@ -43,7 +48,7 @@ public class AuthDbContext : IdentityDbContext<User, Role, Guid>
 
 
         builder.Entity<Role>().ToTable("roles");
-        builder.Entity<Permission>().ToTable("permissions");
+        builder.Entity<Permission>().ToTable("permissions").HasIndex(p => p.CodeName).IsUnique();
         builder.Entity<IdentityUserClaim<Guid>>().ToTable("user_claims");
         builder.Entity<IdentityUserToken<Guid>>().ToTable("user_tokens");
         builder.Entity<IdentityUserLogin<Guid>>().ToTable("user_logins");

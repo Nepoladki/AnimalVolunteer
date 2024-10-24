@@ -1,0 +1,36 @@
+{
+  "Permissions": {
+    "Volunteers": [
+      "volunteers.create",
+      "volunteers.read",
+      "volunteers.update",
+      "volunteers.hard.delete",
+      "volunteers.soft.delete"
+    ],
+    "Species": [
+      "species.create",
+      "species.read",
+      "species.update",
+      "species.soft.delete",
+      "species.hard.delete"
+    ],
+    "Accounts": [
+
+    ]
+  },
+  "Roles": {
+    "Admin": [
+      "volunteers.create",
+      "volunteers.read",
+      "volunteers.update",
+      "volunteers.hard.delete",
+      "volunteers.soft.delete",
+      "species.create",
+      "species.read",
+      "species.update",
+      "species.soft.delete",
+      "species.hard.delete"
+    ]
+  }
+
+}
