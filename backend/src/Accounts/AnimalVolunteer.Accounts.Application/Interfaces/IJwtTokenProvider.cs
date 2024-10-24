@@ -1,4 +1,4 @@
-﻿using AnimalVolunteer.Accounts.Domain.Models;
+﻿using AnimalVolunteer.Accounts.Domain.Models.Users;
 
 namespace AnimalVolunteer.Accounts.Application.Interfaces;
 

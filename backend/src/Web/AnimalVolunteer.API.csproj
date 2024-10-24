@@ -30,4 +30,8 @@
     <ProjectReference Include="..\Volunteers\AnimalVolunteer.Volunteers.Web\AnimalVolunteer.Volunteers.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Etc\" />
+  </ItemGroup>
+
 </Project>

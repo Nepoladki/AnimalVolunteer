@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Volunteers\AnimalVolunteer.Volunteers.Domain\AnimalVolunteer.Volunteers.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

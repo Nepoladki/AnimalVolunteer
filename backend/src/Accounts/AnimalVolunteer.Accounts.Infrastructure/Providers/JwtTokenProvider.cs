@@ -1,5 +1,5 @@
 ﻿using AnimalVolunteer.Accounts.Application.Interfaces;
-using AnimalVolunteer.Accounts.Domain.Models;
+using AnimalVolunteer.Accounts.Domain.Models.Users;
 using AnimalVolunteer.Core.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -7,7 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace AnimalVolunteer.Accounts.Infrastructure;
+namespace AnimalVolunteer.Accounts.Infrastructure.Providers;
 
 public class JwtTokenProvider : IJwtTokenProvider
 {
@@ -23,8 +23,8 @@ public class JwtTokenProvider : IJwtTokenProvider
     {
         Claim[] claims = 
         [
-            new Claim(CustomJwtClaims.SUB, user.Id.ToString()),
-            new Claim(CustomJwtClaims.EMAIL, user.Email ?? string.Empty)
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty)
         ];
 
         var securityKey = new SymmetricSecurityKey(
