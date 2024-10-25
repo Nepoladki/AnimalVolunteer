@@ -8,12 +8,17 @@
   </PropertyGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\Accounts\AnimalVolunteer.Accounts.Contracts\AnimalVolunteer.Accounts.Contracts.csproj" />
 	  <ProjectReference Include="..\AnimalVolunteer.Core\AnimalVolunteer.Core.csproj" />
 	  <ProjectReference Include="..\AnimalVolunteer.SharedKernel\AnimalVolunteer.SharedKernel.csproj" />
 	</ItemGroup>
 	
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
 	</ItemGroup>
 
 </Project>

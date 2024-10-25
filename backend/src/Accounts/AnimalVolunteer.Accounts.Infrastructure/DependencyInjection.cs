@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using AnimalVolunteer.Accounts.Domain.Models.Users;
+using AnimalVolunteer.Accounts.Infrastructure.Providers;
+using AnimalVolunteer.Accounts.Infrastructure.DatabaseSeeding;
+using AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
 
 namespace AnimalVolunteer.Accounts.Infrastructure;
 
@@ -20,16 +24,18 @@ public static class DependencyInjection
             .AddIdentityCore<User>(options =>
                 {options.User.RequireUniqueEmail = true;})
             .AddRoles<Role>()
-            .AddEntityFrameworkStores<AuthDbContext>()
+            .AddEntityFrameworkStores<AccountsDbContext>()
             .AddDefaultTokenProviders();
 
         services.Configure<JwtOptions>(config.GetSection(JwtOptions.SECTION_NAME));
 
-        services.AddScoped<AuthDbContext>();
+        services.AddScoped<AccountsDbContext>();
 
         services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
 
         services.AddAuthenticationAndAuthorization(config);
+
+        services.AddAccountsPermissionsSeeding();
 
         return services;
     }
@@ -66,5 +72,13 @@ public static class DependencyInjection
         services.AddAuthorization(); 
 
         return services;
-    } 
+    }
+
+    private static IServiceCollection AddAccountsPermissionsSeeding(this IServiceCollection services)
+    {
+        services.AddScoped<PermissonManager>();
+        services.AddScoped<RolePermissonManager>();
+
+        return services.AddSingleton<AccountsSeeder>();
+    }
 }

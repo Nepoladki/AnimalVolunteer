@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Framework;
+using AnimalVolunteer.Framework.Authorization;
 using AnimalVolunteer.Species.Application.Commands.DeleteBreedById;
 using AnimalVolunteer.Species.Application.Commands.DeleteSpeciesById;
 using AnimalVolunteer.Species.Application.Queries.GetFiltredPaginatedAllSpecies;
@@ -11,6 +12,7 @@ namespace AnimalVolunteer.Species.Web;
 [Authorize]
 public class SpeciesController : ApplicationController
 {
+    [Permission(Permissions.Species.Read)]
     [HttpGet]
     public async Task<IActionResult> GetAllSpecies(
         [FromQuery] GetAllSpeciesFilteredPaginatedRequest request,
@@ -24,6 +26,7 @@ public class SpeciesController : ApplicationController
         return Ok(species);
     }
 
+    [Permission(Permissions.Species.Read)]
     [HttpGet("{id:guid}/breeds")]
     public async Task<IActionResult> GetBreedsBySpecies(
         [FromRoute] Guid id,
@@ -40,6 +43,7 @@ public class SpeciesController : ApplicationController
         return Ok(handleResult.Value);
     }
 
+    [Permission(Permissions.Species.HardDelete)]
     [HttpDelete("{speciesId:guid}/breeds/{breedId:guid}")]
     public async Task<IActionResult> DeleteBreed(
         [FromRoute] Guid speciesId,
@@ -56,6 +60,7 @@ public class SpeciesController : ApplicationController
         return Ok();
     }
 
+    [Permission(Permissions.Species.HardDelete)]
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteSpecies(
         [FromRoute] Guid id,

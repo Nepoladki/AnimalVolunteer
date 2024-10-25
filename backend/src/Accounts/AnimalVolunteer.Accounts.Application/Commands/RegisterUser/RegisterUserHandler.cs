@@ -1,5 +1,5 @@
 ﻿using AnimalVolunteer.Accounts.Application.Extensions;
-using AnimalVolunteer.Accounts.Domain.Models;
+using AnimalVolunteer.Accounts.Domain.Models.Users;
 using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.SharedKernel;
 using CSharpFunctionalExtensions;
