@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using AnimalVolunteer.Accounts.Domain.Models.Users;
 using AnimalVolunteer.Accounts.Infrastructure.Providers;
 using AnimalVolunteer.Accounts.Infrastructure.DatabaseSeeding;
+using AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
 
 namespace AnimalVolunteer.Accounts.Infrastructure;
 

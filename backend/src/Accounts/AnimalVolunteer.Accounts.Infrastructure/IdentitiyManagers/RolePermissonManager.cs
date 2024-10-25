@@ -1,7 +1,7 @@
 ﻿using AnimalVolunteer.Accounts.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AnimalVolunteer.Accounts.Infrastructure;
+namespace AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
 
 public class RolePermissonManager
 {
@@ -18,14 +18,16 @@ public class RolePermissonManager
         {
             var permission = await _accountsDbContext.Permissions
                 .FirstOrDefaultAsync(p => p.CodeName == permissionCodeName);
+            if (permission is null)
+                throw new ApplicationException($"Permission with codename {permissionCodeName} was not found in database");
 
             var rolePermissionExists = await _accountsDbContext.RolesPermissions
                     .AnyAsync(rp => rp.RoleId == roleId && rp.PermissionId == permission!.Id);
             if (rolePermissionExists)
-                return;
+                continue;
 
             await _accountsDbContext.RolesPermissions
-                .AddAsync(new RolePermission 
+                .AddAsync(new RolePermission
                 {
                     RoleId = roleId,
                     PermissionId = permission!.Id

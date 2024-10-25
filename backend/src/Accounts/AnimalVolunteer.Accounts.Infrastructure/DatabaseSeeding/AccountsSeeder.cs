@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Accounts.Domain.Models;
+using AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
 using AnimalVolunteer.Framework;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
