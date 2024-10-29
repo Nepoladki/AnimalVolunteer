@@ -1,4 +1,4 @@
-﻿namespace AnimalVolunteer.Accounts.Domain.Models.Users;
+﻿namespace AnimalVolunteer.Accounts.Domain.Models.ValueObjects;
 
 public class SocialNetwork
 {

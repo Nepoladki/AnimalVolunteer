@@ -6,6 +6,8 @@ using AnimalVolunteer.Accounts.Web;
 using Serilog;
 using AnimalVolunteer.Accounts.Infrastructure.DatabaseSeeding;
 
+DotNetEnv.Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;

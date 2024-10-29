@@ -1,5 +1,5 @@
 ﻿using AnimalVolunteer.Accounts.Application.Interfaces;
-using AnimalVolunteer.Accounts.Domain.Models.Users;
+using AnimalVolunteer.Accounts.Domain.Models;
 using AnimalVolunteer.Core.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

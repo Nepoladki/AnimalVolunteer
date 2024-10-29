@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
 
-public class RolePermissonManager
+public class RolePermissionManager
 {
     private readonly AccountsDbContext _accountsDbContext;
 
-    public RolePermissonManager(AccountsDbContext accountsDbContext)
+    public RolePermissionManager(AccountsDbContext accountsDbContext)
     {
         _accountsDbContext = accountsDbContext;
     }

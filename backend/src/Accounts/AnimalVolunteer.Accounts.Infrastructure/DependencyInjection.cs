@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
-using AnimalVolunteer.Accounts.Domain.Models.Users;
 using AnimalVolunteer.Accounts.Infrastructure.Providers;
 using AnimalVolunteer.Accounts.Infrastructure.DatabaseSeeding;
 using AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
+using AnimalVolunteer.Accounts.Infrastructure.Options;
 
 namespace AnimalVolunteer.Accounts.Infrastructure;
 
@@ -28,6 +28,7 @@ public static class DependencyInjection
             .AddDefaultTokenProviders();
 
         services.Configure<JwtOptions>(config.GetSection(JwtOptions.SECTION_NAME));
+        services.Configure<AdminOptions>(config.GetSection(AdminOptions.SECTION_NAME));
 
         services.AddScoped<AccountsDbContext>();
 
@@ -77,8 +78,11 @@ public static class DependencyInjection
     private static IServiceCollection AddAccountsPermissionsSeeding(this IServiceCollection services)
     {
         services.AddScoped<PermissonManager>();
-        services.AddScoped<RolePermissonManager>();
+        services.AddScoped<RolePermissionManager>();
 
-        return services.AddSingleton<AccountsSeeder>();
+        services.AddScoped<AccountsSeederService>();
+        services.AddSingleton<AccountsSeeder>();
+
+        return services;
     }
 }

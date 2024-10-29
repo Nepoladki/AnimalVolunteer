@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Accounts.Domain.Models;
-using AnimalVolunteer.Accounts.Domain.Models.Users;
+using AnimalVolunteer.Accounts.Domain.Models.AccountTypes;
+using AnimalVolunteer.Accounts.Domain.Models.ValueObjects;
 using AnimalVolunteer.Core.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -17,6 +18,9 @@ public class AccountsDbContext : IdentityDbContext<User, Role, Guid>
 
     public DbSet<RolePermission> RolesPermissions { get; set; }
     public DbSet<Permission> Permissions { get; set; }
+    public DbSet<ParticipantAccount> ParticipantsAccounts { get; set; }
+    public DbSet<VolunteerAccount> VolunteerAccounts { get; set; }
+    public DbSet<AdminAccount> AdminAccounts { get; set; }
 
     public AccountsDbContext(
         IConfiguration configuration, 
@@ -45,6 +49,10 @@ public class AccountsDbContext : IdentityDbContext<User, Role, Guid>
             .HasConversion(
             sn => JsonSerializer.Serialize(sn, JsonSerializerOptions.Default), 
             json => JsonSerializer.Deserialize<List<SocialNetwork>>(json, JsonSerializerOptions.Default)!);
+
+        builder.Entity<AdminAccount>().ToTable("admin_accounts");
+        builder.Entity<ParticipantAccount>().ToTable("participant_accounts");
+        builder.Entity<VolunteerAccount>().ToTable("volunteer_accounts");
 
 
         builder.Entity<Role>().ToTable("roles");

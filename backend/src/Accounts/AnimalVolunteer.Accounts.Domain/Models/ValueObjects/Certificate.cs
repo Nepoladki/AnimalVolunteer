@@ -1,4 +1,4 @@
-﻿namespace AnimalVolunteer.Accounts.Domain.Models.VolunteerAccount;
+﻿namespace AnimalVolunteer.Accounts.Domain.Models.ValueObjects;
 
 public class Certificate
 {
