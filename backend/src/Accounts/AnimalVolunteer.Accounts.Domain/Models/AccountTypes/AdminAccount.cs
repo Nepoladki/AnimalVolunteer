@@ -2,17 +2,16 @@
 
 namespace AnimalVolunteer.Accounts.Domain.Models.AccountTypes;
 
-public class AdminAccount
+public sealed class AdminAccount
 {
-    public const string ADMIN_ACCOUNT_NAME = nameof(AdminAccount);
+    public const string ADMIN_ACCOUNT_NAME = "Admin";
    
-    //Ef core ctor
+    // EF Core ctor
     private AdminAccount() { }
 
-    public AdminAccount(User user)
+    public static AdminAccount Create (User user)
     {
-        Id = Guid.NewGuid();
-        User = user;
+        return new() { User = user };
     }
 
     public Guid Id { get; set; }

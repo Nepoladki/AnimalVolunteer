@@ -59,11 +59,19 @@ public class AccountsSeederService
         var adminRole = await _roleManager.FindByNameAsync(AdminAccount.ADMIN_ACCOUNT_NAME)
                     ?? throw new ApplicationException("Seeding error: unable to find admin role");
 
+        if (await _adminAccountManager.AnyAdminAccountExists())
+        {
+            _logger.LogInformation("Admin account already exists in database, aborting admin seeding");
+            return;
+        }
+
         var adminUser = User.CreateAdmin(_adminOptions.Username, _adminOptions.Email, adminRole);
         await _userManager.CreateAsync(adminUser, _adminOptions.Password);
 
-        var adminAccount = new AdminAccount(adminUser);
+        var adminAccount = AdminAccount.Create(adminUser);
         await _adminAccountManager.AddAdminAccount(adminAccount);
+
+        _logger.LogInformation("Succesfully seeded admin account to database");
     }
 
     private async Task SeedRolesPermissions(RolePermissionOptions seedData)
@@ -76,7 +84,9 @@ public class AccountsSeederService
 
             await _rolePermissionManager.AddRolesPermissionsIfNotExists(role!.Id, rolePermissions);
 
-            _logger.LogInformation("Succsessfulley seeded roles-permissions relations to the database");
+            _logger.LogInformation(
+                "Succsessfulley seeded roles-permissions relations for {roleName} role to the database", 
+                roleName);
         }
     }
 
@@ -95,9 +105,10 @@ public class AccountsSeederService
         {
             var existingRole = await _roleManager.FindByNameAsync(role);
             if (existingRole is null)
+            {
                 await _roleManager.CreateAsync(new Role { Name = role });
-
-            _logger.LogInformation("Succsessfully seeded roles to the database");
+                _logger.LogInformation("Succsessfully seeded {roleName} role to the database", role);
+            }
         }
     }
 }

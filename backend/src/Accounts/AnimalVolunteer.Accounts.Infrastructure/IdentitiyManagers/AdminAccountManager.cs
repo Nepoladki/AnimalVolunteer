@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Accounts.Domain.Models.AccountTypes;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
 
@@ -11,8 +12,15 @@ public class AdminAccountManager
         _context = context;
     }
 
-    public Task AddAdminAccount(AdminAccount adminAccount, CancellationToken cancellationToken = default)
+    public async Task AddAdminAccount(
+        AdminAccount adminAccount, CancellationToken cancellationToken = default)
     {
-        _context.Admi
+        await _context.AdminAccounts.AddAsync(adminAccount, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<bool> AnyAdminAccountExists(CancellationToken cancellationToken = default)
+    {
+        return await _context.AdminAccounts.AnyAsync(cancellationToken);
     }
 }

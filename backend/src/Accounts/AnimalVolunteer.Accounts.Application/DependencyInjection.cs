@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Accounts.Application.Interfaces;
 using AnimalVolunteer.Core.Abstractions.CQRS;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -10,6 +11,7 @@ public static class DependencyInjection
     private static readonly Assembly _assembly = Assembly.GetExecutingAssembly();
     public static IServiceCollection AddAccountsApplication(this IServiceCollection services)
     {
+        services.AddValidatorsFromAssembly(_assembly);
         services.AddCommands();
 
         return services;

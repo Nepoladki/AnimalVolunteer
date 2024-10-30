@@ -77,9 +77,10 @@ public static class DependencyInjection
 
     private static IServiceCollection AddAccountsPermissionsSeeding(this IServiceCollection services)
     {
+        services.AddScoped<IParticipantAccountManager, ParticipantAccountManager>();
         services.AddScoped<PermissonManager>();
         services.AddScoped<RolePermissionManager>();
-
+        services.AddScoped<AdminAccountManager>();
         services.AddScoped<AccountsSeederService>();
         services.AddSingleton<AccountsSeeder>();
 

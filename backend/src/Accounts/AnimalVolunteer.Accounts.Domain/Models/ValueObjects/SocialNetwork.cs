@@ -1,4 +1,6 @@
-﻿namespace AnimalVolunteer.Accounts.Domain.Models.ValueObjects;
+﻿using CSharpFunctionalExtensions;
+
+namespace AnimalVolunteer.Accounts.Domain.Models.ValueObjects;
 
 public class SocialNetwork
 {
