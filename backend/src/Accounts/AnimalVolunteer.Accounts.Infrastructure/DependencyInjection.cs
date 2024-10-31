@@ -39,6 +39,8 @@ public static class DependencyInjection
 
         services.AddAuthenticationAndAuthorization(config);
 
+        services.AddCustomIdentityManagers();
+
         services.AddAccountsPermissionsSeeding();
 
         return services;
@@ -78,7 +80,7 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddAccountsPermissionsSeeding(this IServiceCollection services)
+    private static IServiceCollection AddCustomIdentityManagers(this IServiceCollection services)
     {
         services
             .AddScoped<IVolunteerAccountManager, VolunteerAccountManager>()
@@ -86,7 +88,14 @@ public static class DependencyInjection
             .AddScoped<PermissonManager>()
             .AddScoped<RolePermissionManager>()
             .AddScoped<AdminAccountManager>()
-            .AddScoped<AccountsSeederService>()
+            .AddScoped<AccountsSeederService>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddAccountsPermissionsSeeding(this IServiceCollection services)
+    {
+        services
             .AddSingleton<AccountsSeeder>();
 
         return services;
