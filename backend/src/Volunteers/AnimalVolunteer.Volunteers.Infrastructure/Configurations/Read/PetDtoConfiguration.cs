@@ -2,10 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
-using AnimalVolunteer.Core.DTOs.Volunteers;
 using AnimalVolunteer.SharedKernel.ValueObjects;
 using AnimalVolunteer.Volunteers.Domain.ValueObjects.Pet;
 using AnimalVolunteer.Volunteers.Domain.Enums;
+using AnimalVolunteer.Core.DTOs.Common;
 
 namespace AnimalVolunteer.Volunteers.Infrastructure.Configurations.Read;
 

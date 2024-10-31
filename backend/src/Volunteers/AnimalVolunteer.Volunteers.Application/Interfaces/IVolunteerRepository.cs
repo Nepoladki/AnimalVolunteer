@@ -4,7 +4,7 @@ using AnimalVolunteer.Volunteers.Domain.Root;
 using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
 using CSharpFunctionalExtensions;
 
-namespace AnimalVolunteer.Volunteers.Application;
+namespace AnimalVolunteer.Volunteers.Application.Interfaces;
 
 public interface IVolunteerRepository
 {

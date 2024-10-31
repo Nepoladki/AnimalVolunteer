@@ -1,4 +1,4 @@
-﻿namespace AnimalVolunteer.Core.DTOs.Volunteers;
+﻿namespace AnimalVolunteer.Core.DTOs.Common;
 
 public record SocialNetworkDto(
     string Name,

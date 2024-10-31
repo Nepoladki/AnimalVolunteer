@@ -1,4 +1,5 @@
-﻿using AnimalVolunteer.Core.DTOs.Volunteers;
+﻿using AnimalVolunteer.Core.DTOs.Common;
+using AnimalVolunteer.Core.DTOs.Volunteers;
 using AnimalVolunteer.Volunteers.Application.Commands.Pet.UpdatePet;
 using AnimalVolunteer.Volunteers.Domain.Enums;
 

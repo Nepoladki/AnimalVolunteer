@@ -1,5 +1,5 @@
 ﻿using AnimalVolunteer.Core.Abstractions.CQRS;
-using AnimalVolunteer.Core.DTOs.Volunteers;
+using AnimalVolunteer.Core.DTOs.Common;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.PaymentDetails;
 

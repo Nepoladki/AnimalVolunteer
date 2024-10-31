@@ -7,6 +7,7 @@ using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
 using AnimalVolunteer.SharedKernel.ValueObjects;
 using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.Core.DTOs.Volunteers;
+using AnimalVolunteer.Core.DTOs.Common;
 
 namespace AnimalVolunteer.Volunteers.Infrastructure.Configurations.Write;
 
@@ -34,10 +35,10 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
             .HasMaxLength(FullName.MAX_NAME_LENGTH)
             .HasColumnName(FullName.DB_COLUMN_FIRSTNAME);
 
-            fn.Property(i => i.SurName)
+            fn.Property(i => i.Patronymic)
             .IsRequired(false)
             .HasMaxLength(FullName.MAX_NAME_LENGTH)
-            .HasColumnName(FullName.DB_COLUMN_SURNAME);
+            .HasColumnName(FullName.DB_COLUMN_PATRONYMIC);
 
             fn.Property(i => i.LastName)
             .IsRequired()

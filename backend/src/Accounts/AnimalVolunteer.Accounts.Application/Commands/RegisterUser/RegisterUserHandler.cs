@@ -6,6 +6,7 @@ using AnimalVolunteer.Accounts.Domain.Models.ValueObjects;
 using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.SharedKernel.ValueObjects;
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
@@ -40,7 +41,10 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
         if (validationResult.IsValid == false)
             return validationResult.ToErrorList();
 
-        var fullName = new FullName(command.FirstName, command.LastName, command.Patronymic);
+        var fullName = FullName.Create(
+            command.FullName.FirstName, 
+            command.FullName.Patronymic, 
+            command.FullName.LastName).Value;
 
         var role = await _roleManager.FindByNameAsync(ParticipantAccount.PARTICIPANT_ACCOUNT_NAME);
         if (role is null)
@@ -53,6 +57,7 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
             return creationResult.Errors.ToDomainErrors();
 
         var participantAccount = ParticipantAccount.Create(user);
+
         await _participantAccountManager.AddParticipant(participantAccount,  cancellationToken);
 
         _logger.LogInformation("Created user with username {Name}", command.UserName);

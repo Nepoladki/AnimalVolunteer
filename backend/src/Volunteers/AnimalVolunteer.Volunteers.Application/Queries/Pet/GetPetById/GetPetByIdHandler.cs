@@ -1,6 +1,7 @@
 ﻿using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
 using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.Volunteers.Application.Interfaces;
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;

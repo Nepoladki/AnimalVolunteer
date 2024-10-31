@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.Volunteers.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 namespace AnimalVolunteer.Volunteers.Application.Queries.Pet.AnyPetExistsBySpecies;
 

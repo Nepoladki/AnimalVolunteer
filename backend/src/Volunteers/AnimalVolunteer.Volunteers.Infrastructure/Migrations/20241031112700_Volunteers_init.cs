@@ -24,7 +24,7 @@ namespace AnimalVolunteer.Volunteers.Infrastructure.Migrations
                     email = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     first_name = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
                     last_name = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
-                    surname = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: true),
+                    patronymic = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: true),
                     expirience_years = table.Column<int>(type: "integer", nullable: false),
                     pets_founded_home = table.Column<int>(type: "integer", nullable: false),
                     pets_in_vet_clinic = table.Column<int>(type: "integer", nullable: false),

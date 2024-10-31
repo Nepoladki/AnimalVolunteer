@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace AnimalVolunteer.Volunteers.Application;
+namespace AnimalVolunteer.Volunteers.Application.Interfaces;
 
 public interface IUnitOfWork
 {

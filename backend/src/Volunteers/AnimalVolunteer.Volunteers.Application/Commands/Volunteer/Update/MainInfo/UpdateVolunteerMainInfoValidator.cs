@@ -13,7 +13,7 @@ public class UpdateVolunteerMainInfoValidator :
         RuleFor(c => c.FullName)
             .MustBeValueObject(c => FullName.Create(
                 c.FirstName,
-                c.SurName,
+                c.Patronymic,
                 c.LastName));
 
         RuleFor(c => c.Email).MustBeValueObject(Email.Create);

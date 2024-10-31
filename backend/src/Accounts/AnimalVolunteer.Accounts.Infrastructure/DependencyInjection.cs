@@ -12,6 +12,7 @@ using AnimalVolunteer.Accounts.Infrastructure.Providers;
 using AnimalVolunteer.Accounts.Infrastructure.DatabaseSeeding;
 using AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
 using AnimalVolunteer.Accounts.Infrastructure.Options;
+using AnimalVolunteer.Core;
 
 namespace AnimalVolunteer.Accounts.Infrastructure;
 
@@ -31,6 +32,8 @@ public static class DependencyInjection
         services.Configure<AdminOptions>(config.GetSection(AdminOptions.SECTION_NAME));
 
         services.AddScoped<AccountsDbContext>();
+
+        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(Modules.Accounts);
 
         services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
 
@@ -77,12 +80,14 @@ public static class DependencyInjection
 
     private static IServiceCollection AddAccountsPermissionsSeeding(this IServiceCollection services)
     {
-        services.AddScoped<IParticipantAccountManager, ParticipantAccountManager>();
-        services.AddScoped<PermissonManager>();
-        services.AddScoped<RolePermissionManager>();
-        services.AddScoped<AdminAccountManager>();
-        services.AddScoped<AccountsSeederService>();
-        services.AddSingleton<AccountsSeeder>();
+        services
+            .AddScoped<IVolunteerAccountManager, VolunteerAccountManager>()
+            .AddScoped<IParticipantAccountManager, ParticipantAccountManager>()
+            .AddScoped<PermissonManager>()
+            .AddScoped<RolePermissionManager>()
+            .AddScoped<AdminAccountManager>()
+            .AddScoped<AccountsSeederService>()
+            .AddSingleton<AccountsSeeder>();
 
         return services;
     }

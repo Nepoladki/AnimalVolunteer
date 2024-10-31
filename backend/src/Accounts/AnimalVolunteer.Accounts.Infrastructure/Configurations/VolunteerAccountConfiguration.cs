@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Accounts.Domain.Models.AccountTypes;
 using AnimalVolunteer.Accounts.Domain.Models.ValueObjects;
+using AnimalVolunteer.SharedKernel.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Text.Json;

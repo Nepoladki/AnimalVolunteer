@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Accounts.Domain.Models;
 using AnimalVolunteer.Accounts.Domain.Models.ValueObjects;
+using AnimalVolunteer.SharedKernel.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -21,23 +22,24 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.ComplexProperty(u => u.FullName, builder =>
         {
             builder.Property(fn => fn.FirstName)
-                .HasColumnName("first_name")
-                .HasMaxLength(FullName.MAX_LENGTH)
+                .HasColumnName(FullName.DB_COLUMN_FIRSTNAME)
+                .HasMaxLength(FullName.MAX_NAME_LENGTH)
                 .IsRequired();
 
             builder.Property(fn => fn.LastName)
-                .HasColumnName("last_name")
-                .HasMaxLength(FullName.MAX_LENGTH)
+                .HasColumnName(FullName.DB_COLUMN_LASTNAME)
+                .HasMaxLength(FullName.MAX_NAME_LENGTH)
                 .IsRequired();
 
             builder.Property(fn => fn.Patronymic)
-                .HasColumnName("patronymic")
-                .HasMaxLength(FullName.MAX_LENGTH);
+                .HasColumnName(FullName.DB_COLUMN_PATRONYMIC)
+                .HasMaxLength(FullName.MAX_NAME_LENGTH);
         });
 
         builder.Property(u => u.SocialNetworks)
             .HasConversion(
             sn => JsonSerializer.Serialize(sn, JsonSerializerOptions.Default),
-            json => JsonSerializer.Deserialize<List<SocialNetwork>>(json, JsonSerializerOptions.Default)!);
+            json => JsonSerializer.Deserialize<List<SocialNetwork>>(json, JsonSerializerOptions.Default)!)
+            .HasColumnName(SocialNetwork.DB_COLUMN_NAME);
     }
 }

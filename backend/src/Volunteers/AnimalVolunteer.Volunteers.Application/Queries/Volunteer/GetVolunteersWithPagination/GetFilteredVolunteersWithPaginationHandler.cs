@@ -2,6 +2,7 @@
 using AnimalVolunteer.Core.DTOs.Volunteers;
 using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.Core.Models;
+using AnimalVolunteer.Volunteers.Application.Interfaces;
 using System.Linq.Expressions;
 
 namespace AnimalVolunteer.Volunteers.Application.Queries.Volunteer.GetVolunteersWithPagination;

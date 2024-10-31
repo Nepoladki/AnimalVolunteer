@@ -1,4 +1,4 @@
-﻿using AnimalVolunteer.Core.DTOs.Volunteers;
+﻿using AnimalVolunteer.Core.DTOs.Common;
 using AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.MainInfo;
 
 namespace AnimalVolunteer.Volunteers.Web.Requests.Volunteer;

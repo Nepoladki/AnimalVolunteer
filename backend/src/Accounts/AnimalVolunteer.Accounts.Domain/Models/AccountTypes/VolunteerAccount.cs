@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Accounts.Domain.Models.ValueObjects;
+using AnimalVolunteer.SharedKernel.ValueObjects;
 
 namespace AnimalVolunteer.Accounts.Domain.Models.AccountTypes;
 

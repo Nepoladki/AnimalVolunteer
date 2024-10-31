@@ -1,11 +1,10 @@
 ﻿using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.Core.DTOs.Common;
 
 namespace AnimalVolunteer.Accounts.Application.Commands.RegisterUser;
 
 public record RegisterUserCommand(
     string Email, 
-    string FirstName,
-    string LastName,
-    string? Patronymic,
+    FullNameDto FullName,
     string UserName, 
     string Password) : ICommand;

@@ -1,4 +1,5 @@
-﻿using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
+﻿using AnimalVolunteer.Core.DTOs.Common;
+using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
 
 namespace AnimalVolunteer.Core.DTOs.Volunteers;
 

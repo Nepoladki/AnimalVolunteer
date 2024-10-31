@@ -19,7 +19,9 @@
       "species.hard.delete"
     ],
     "Accounts": [
-
+      "accounts.read",
+      "accounts.create",
+      "accounts.update"
     ]
   },
   "Roles": {
@@ -37,7 +39,8 @@
     "Participant": [
       "volunteers.read",
       "volunteers.pets.read",
-      "species.read"
+      "species.read",
+      "accounts.update"
     ],
     "Volunteer": [
       

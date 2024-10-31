@@ -9,6 +9,7 @@ using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.Core.DTOs.Volunteers;
 using AnimalVolunteer.Volunteers.Domain.Enums;
 using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
+using AnimalVolunteer.Core.DTOs.Common;
 
 namespace AnimalVolunteer.Volunteers.Infrastructure.Configurations.Write;
 

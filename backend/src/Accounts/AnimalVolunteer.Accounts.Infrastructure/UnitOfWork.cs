@@ -1,15 +1,14 @@
-﻿using AnimalVolunteer.Volunteers.Application.Interfaces;
-using AnimalVolunteer.Volunteers.Infrastructure.DbContexts;
+﻿using AnimalVolunteer.Accounts.Application.Interfaces;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
 
-namespace AnimalVolunteer.Volunteers.Infrastructure;
+namespace AnimalVolunteer.Accounts.Infrastructure;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly WriteDbContext _context;
+    private readonly AccountsDbContext _context;
 
-    public UnitOfWork(WriteDbContext context)
+    public UnitOfWork(AccountsDbContext context)
     {
         _context = context;
     }

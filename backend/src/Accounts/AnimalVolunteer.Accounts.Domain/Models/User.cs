@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Accounts.Domain.Models.ValueObjects;
+using AnimalVolunteer.SharedKernel.ValueObjects;
 using Microsoft.AspNetCore.Identity;
 
 namespace AnimalVolunteer.Accounts.Domain.Models;
@@ -16,7 +17,7 @@ public sealed class User : IdentityUser<Guid>
         return new User
         {
             Photo = "",
-            FullName = new FullName("admin", "admin", null),
+            FullName = FullName.Create("admin", null, "admin").Value,
             SocialNetworks = [],
             UserName = userName,
             Email = email,

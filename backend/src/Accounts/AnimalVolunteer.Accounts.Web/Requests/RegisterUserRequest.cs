@@ -1,16 +1,15 @@
 ﻿using AnimalVolunteer.Accounts.Application.Commands.RegisterUser;
+using AnimalVolunteer.Core.DTOs.Common;
 using System.Reflection.Metadata.Ecma335;
 
 namespace AnimalVolunteer.Accounts.Web.Requests;
 
 public record RegisterUserRequest(
     string Email, 
-    string FirstName, 
-    string LastName, 
-    string? Patronymic, 
+    FullNameDto FullName, 
     string UserName, 
     string Password)
 {
     public RegisterUserCommand ToCommand() => 
-        new(Email, FirstName, LastName, Patronymic, UserName, Password);
+        new(Email, FullName, UserName, Password);
 };

@@ -8,6 +8,7 @@ using AnimalVolunteer.SharedKernel;
 using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
 using AnimalVolunteer.SharedKernel.ValueObjects;
 using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.Volunteers.Application.Interfaces;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.MainInfo;
 
@@ -46,7 +47,7 @@ public class UpdateVolunteerMainInfoHandler
 
         var fullName = FullName.Create(
             command.FullName.FirstName,
-            command.FullName.SurName,
+            command.FullName.Patronymic,
             command.FullName.LastName).Value;
 
         var email = Email.Create(command.Email).Value;
