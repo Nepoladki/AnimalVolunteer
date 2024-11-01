@@ -22,6 +22,7 @@ public class AccountsDbContext : IdentityDbContext<User, Role, Guid>
     public DbSet<ParticipantAccount> ParticipantsAccounts { get; set; }
     public DbSet<VolunteerAccount> VolunteerAccounts { get; set; }
     public DbSet<AdminAccount> AdminAccounts { get; set; }
+    public DbSet<RefreshSession> RefreshSessions { get; set; }
 
     public AccountsDbContext(
         IConfiguration configuration, 
