@@ -3,6 +3,7 @@ using CSharpFunctionalExtensions;
 using Microsoft.Extensions.DependencyInjection;
 using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.Volunteers.Application.Interfaces;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Delete;
 

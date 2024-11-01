@@ -5,6 +5,7 @@ using AnimalVolunteer.Domain.Common.ValueObjects;
 using AnimalVolunteer.Core.DTOs.Volunteers;
 using AnimalVolunteer.SharedKernel.ValueObjects;
 using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
+using AnimalVolunteer.Core.DTOs.Common;
 
 namespace AnimalVolunteer.Volunteers.Infrastructure.Configurations.Read;
 

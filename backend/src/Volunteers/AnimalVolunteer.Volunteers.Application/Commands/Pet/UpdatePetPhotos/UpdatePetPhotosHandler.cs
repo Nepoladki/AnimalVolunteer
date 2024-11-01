@@ -11,6 +11,7 @@ using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using AnimalVolunteer.SharedKernel.ValueObjects;
 using AnimalVolunteer.Volunteers.Domain.ValueObjects.Pet;
 using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.Volunteers.Application.Interfaces;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.UpdatePetPhotos;
 

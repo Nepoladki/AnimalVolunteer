@@ -7,6 +7,7 @@ using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
 using AnimalVolunteer.SharedKernel.ValueObjects;
 using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.Volunteers.Application.Interfaces;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Create;
 
@@ -38,7 +39,7 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, CreateVolunteerComma
 
         var fullName = FullName.Create(
            command.FullName.FirstName,
-           command.FullName.SurName,
+           command.FullName.Patronymic,
            command.FullName.LastName).Value;
 
         var description = Description.Create(command.Description).Value;

@@ -7,6 +7,7 @@ using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.SharedKernel;
 using AnimalVolunteer.Core.Abstractions.CQRS;
 using DomainEntities = AnimalVolunteer.SharedKernel.ValueObjects;
+using AnimalVolunteer.Volunteers.Application.Interfaces;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.PaymentDetails;
 

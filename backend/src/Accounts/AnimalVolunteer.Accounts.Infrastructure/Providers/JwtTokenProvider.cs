@@ -1,6 +1,7 @@
 ﻿using AnimalVolunteer.Accounts.Application.Interfaces;
-using AnimalVolunteer.Accounts.Domain.Models.Users;
+using AnimalVolunteer.Accounts.Domain.Models;
 using AnimalVolunteer.Core.Options;
+using AnimalVolunteer.Framework.Authorization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -22,10 +23,7 @@ public class JwtTokenProvider : IJwtTokenProvider
         User user, CancellationToken cancellationToken)
     {
         Claim[] claims = 
-        [
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty)
-        ];
+        [ new Claim(JwtClaimTypes.ID, user.Id.ToString()) ];
 
         var securityKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(_jwtOptions.SecretKey));

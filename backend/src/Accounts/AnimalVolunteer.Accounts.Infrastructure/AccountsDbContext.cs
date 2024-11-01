@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Accounts.Domain.Models;
-using AnimalVolunteer.Accounts.Domain.Models.Users;
+using AnimalVolunteer.Accounts.Domain.Models.AccountTypes;
+using AnimalVolunteer.Accounts.Domain.Models.ValueObjects;
 using AnimalVolunteer.Core.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Reflection;
 using System.Text.Json;
 
 namespace AnimalVolunteer.Accounts.Infrastructure;
@@ -17,6 +19,9 @@ public class AccountsDbContext : IdentityDbContext<User, Role, Guid>
 
     public DbSet<RolePermission> RolesPermissions { get; set; }
     public DbSet<Permission> Permissions { get; set; }
+    public DbSet<ParticipantAccount> ParticipantsAccounts { get; set; }
+    public DbSet<VolunteerAccount> VolunteerAccounts { get; set; }
+    public DbSet<AdminAccount> AdminAccounts { get; set; }
 
     public AccountsDbContext(
         IConfiguration configuration, 
@@ -39,33 +44,13 @@ public class AccountsDbContext : IdentityDbContext<User, Role, Guid>
         base.OnModelCreating(builder);
 
         builder.HasDefaultSchema("accounts");
-
-        builder.Entity<User>().ToTable("users");
-        builder.Entity<User>().Property(u => u.SocialNetworks)
-            .HasConversion(
-            sn => JsonSerializer.Serialize(sn, JsonSerializerOptions.Default), 
-            json => JsonSerializer.Deserialize<List<SocialNetwork>>(json, JsonSerializerOptions.Default)!);
-
-
-        builder.Entity<Role>().ToTable("roles");
-        builder.Entity<Permission>().ToTable("permissions").HasIndex(p => p.CodeName).IsUnique();
+        
         builder.Entity<IdentityUserClaim<Guid>>().ToTable("user_claims");
         builder.Entity<IdentityUserToken<Guid>>().ToTable("user_tokens");
         builder.Entity<IdentityUserLogin<Guid>>().ToTable("user_logins");
         builder.Entity<IdentityRoleClaim<Guid>>().ToTable("role_claims");
         builder.Entity<IdentityUserRole<Guid>>().ToTable("user_roles");
 
-        builder.Entity<RolePermission>().ToTable("roles_permissions")
-            .HasKey(rp => new {rp.RoleId, rp.PermissionId});
-
-        builder.Entity<RolePermission>()
-            .HasOne(rp => rp.Role)
-            .WithMany(r => r.RolePermissions)
-            .HasForeignKey(rp => rp.RoleId);
-
-        builder.Entity<RolePermission>()
-            .HasOne(rp => rp.Permission)
-            .WithMany()
-            .HasForeignKey(rp => rp.PermissionId);
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }  

@@ -8,10 +8,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
-using AnimalVolunteer.Accounts.Domain.Models.Users;
 using AnimalVolunteer.Accounts.Infrastructure.Providers;
 using AnimalVolunteer.Accounts.Infrastructure.DatabaseSeeding;
 using AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
+using AnimalVolunteer.Accounts.Infrastructure.Options;
+using AnimalVolunteer.Core;
+using AnimalVolunteer.Framework.Authorization;
 
 namespace AnimalVolunteer.Accounts.Infrastructure;
 
@@ -28,14 +30,22 @@ public static class DependencyInjection
             .AddDefaultTokenProviders();
 
         services.Configure<JwtOptions>(config.GetSection(JwtOptions.SECTION_NAME));
+        services.Configure<AdminOptions>(config.GetSection(AdminOptions.SECTION_NAME));
 
         services.AddScoped<AccountsDbContext>();
+
+        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(Modules.Accounts);
 
         services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
 
         services.AddAuthenticationAndAuthorization(config);
 
+        services.AddCustomIdentityManagers();
+
         services.AddAccountsPermissionsSeeding();
+
+        services.AddSingleton<IAuthorizationHandler, PermissionRequirementHandler>();
+        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 
         return services;
     }
@@ -74,11 +84,24 @@ public static class DependencyInjection
         return services;
     }
 
+    private static IServiceCollection AddCustomIdentityManagers(this IServiceCollection services)
+    {
+        services
+            .AddScoped<IVolunteerAccountManager, VolunteerAccountManager>()
+            .AddScoped<IParticipantAccountManager, ParticipantAccountManager>()
+            .AddScoped<PermissonManager>()
+            .AddScoped<RolePermissionManager>()
+            .AddScoped<AdminAccountManager>()
+            .AddScoped<AccountsSeederService>();
+
+        return services;
+    }
+
     private static IServiceCollection AddAccountsPermissionsSeeding(this IServiceCollection services)
     {
-        services.AddScoped<PermissonManager>();
-        services.AddScoped<RolePermissonManager>();
+        services
+            .AddSingleton<AccountsSeeder>();
 
-        return services.AddSingleton<AccountsSeeder>();
+        return services;
     }
 }

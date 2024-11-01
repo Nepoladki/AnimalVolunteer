@@ -1,6 +1,6 @@
 ﻿using AnimalVolunteer.SharedKernel;
 using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
-using AnimalVolunteer.Volunteers.Application;
+using AnimalVolunteer.Volunteers.Application.Interfaces;
 using AnimalVolunteer.Volunteers.Domain.Root;
 using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
 using AnimalVolunteer.Volunteers.Infrastructure.DbContexts;

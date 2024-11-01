@@ -5,6 +5,9 @@ using AnimalVolunteer.Volunteers.Web;
 using AnimalVolunteer.Accounts.Web;
 using Serilog;
 using AnimalVolunteer.Accounts.Infrastructure.DatabaseSeeding;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+DotNetEnv.Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 

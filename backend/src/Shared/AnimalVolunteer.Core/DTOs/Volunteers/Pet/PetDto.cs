@@ -1,4 +1,5 @@
-﻿using AnimalVolunteer.Volunteers.Domain.Enums;
+﻿using AnimalVolunteer.Core.DTOs.Common;
+using AnimalVolunteer.Volunteers.Domain.Enums;
 
 namespace AnimalVolunteer.Core.DTOs.Volunteers.Pet;
 

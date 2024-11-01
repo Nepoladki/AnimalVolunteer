@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.SharedKernel;
 using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.Volunteers.Application.Interfaces;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.ContactInfo;
 

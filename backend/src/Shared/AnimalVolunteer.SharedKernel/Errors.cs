@@ -84,4 +84,16 @@ public static class Errors
         public static Error WrongCredentials() =>
             Error.NotFound("Auth.WrongCreds", "Failed to login using current credentials");
     }
+
+    public static class Accounts
+    {
+        public static Error RoleNotFound(string roleName) =>
+            Error.NotFound("Accounts.RoleNotFound", $"Failed to find {roleName} role");
+
+        public static Error UserNotFoud(Guid id) =>
+            Error.NotFound("Accounts.UserNotFound", $"Failed to find user with id {id}");
+
+        public static Error VolunteerNotFound(Guid id) =>
+            Error.NotFound("Accounts.VolunteerNotFound", $"Failed to find volunteer account with userId {id}");
+    }
 }

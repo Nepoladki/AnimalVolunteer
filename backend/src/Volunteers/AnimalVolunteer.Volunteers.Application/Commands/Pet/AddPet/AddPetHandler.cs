@@ -13,6 +13,7 @@ using AnimalVolunteer.Core;
 using DomainEntity = AnimalVolunteer.Volunteers.Domain.Entities;
 using AnimalVolunteer.Species.Contracts;
 using AnimalVolunteer.Species.Contracts.Requests;
+using AnimalVolunteer.Volunteers.Application.Interfaces;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.AddPet;
 

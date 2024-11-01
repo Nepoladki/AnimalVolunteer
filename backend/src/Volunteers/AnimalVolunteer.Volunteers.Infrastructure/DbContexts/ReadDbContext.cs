@@ -1,7 +1,7 @@
 ﻿using AnimalVolunteer.Core.DTOs.Volunteers;
 using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
 using AnimalVolunteer.Core.Options;
-using AnimalVolunteer.Volunteers.Application;
+using AnimalVolunteer.Volunteers.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

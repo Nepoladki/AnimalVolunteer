@@ -1,6 +1,7 @@
 ﻿using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.Core.DTOs.Volunteers;
 using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.Volunteers.Application.Interfaces;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

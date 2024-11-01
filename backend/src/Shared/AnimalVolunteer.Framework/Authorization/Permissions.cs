@@ -28,6 +28,8 @@ public static class Permissions
     }
     public static class Accounts
     {
-        
+        public const string Create = "accounts.create";
+        public const string Read = "accounts.read";
+        public const string Update = "accounts.update";
     }
 }

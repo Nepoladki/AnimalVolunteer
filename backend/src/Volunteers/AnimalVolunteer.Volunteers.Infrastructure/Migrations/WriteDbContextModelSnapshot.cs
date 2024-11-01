@@ -247,10 +247,10 @@ namespace AnimalVolunteer.Volunteers.Infrastructure.Migrations
                                 .HasColumnType("character varying(25)")
                                 .HasColumnName("last_name");
 
-                            b1.Property<string>("SurName")
+                            b1.Property<string>("Patronymic")
                                 .HasMaxLength(25)
                                 .HasColumnType("character varying(25)")
-                                .HasColumnName("surname");
+                                .HasColumnName("patronymic");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("Statistics", "AnimalVolunteer.Volunteers.Domain.Root.Volunteer.Statistics#Statistics", b1 =>
