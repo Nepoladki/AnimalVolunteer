@@ -1,5 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
-using System.Security.Cryptography.X509Certificates;
+using System.Text.Json.Serialization;
 
 namespace AnimalVolunteer.SharedKernel.ValueObjects;
 
@@ -8,6 +8,8 @@ public record PaymentDetails
     public const int MAX_NAME_LENGTH = 50;
     public const int MAX_DESC_LENGTH = 500;
     public const string DB_COLUMN_NAME = "payment_details";
+
+    [JsonConstructor]
     private PaymentDetails(string name, string description)
     {
         Name = name;
