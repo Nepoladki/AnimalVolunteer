@@ -17,18 +17,11 @@ using AnimalVolunteer.Framework.Authorization;
 
 namespace AnimalVolunteer.Accounts.Infrastructure;
 
-public static class DependencyInjection
+public static partial class DependencyInjection
 {
     public static IServiceCollection AddAccountsInfrastructure(
         this IServiceCollection services, IConfiguration config)
     {
-        services
-            .AddIdentityCore<User>(options =>
-                {options.User.RequireUniqueEmail = true;})
-            .AddRoles<Role>()
-            .AddEntityFrameworkStores<AccountsDbContext>()
-            .AddDefaultTokenProviders();
-
         services.Configure<JwtOptions>(config.GetSection(JwtOptions.SECTION_NAME));
         services.Configure<AdminOptions>(config.GetSection(AdminOptions.SECTION_NAME));
 
@@ -36,16 +29,12 @@ public static class DependencyInjection
 
         services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(Modules.Accounts);
 
-        services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
-
         services.AddAuthenticationAndAuthorization(config);
 
         services.AddCustomIdentityManagers();
 
         services.AddAccountsPermissionsSeeding();
 
-        services.AddSingleton<IAuthorizationHandler, PermissionRequirementHandler>();
-        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 
         return services;
     }
@@ -57,29 +46,27 @@ public static class DependencyInjection
              ?? throw new ApplicationException("Missing JwtOptions configuration");
 
         services
-            .AddAuthentication(options => 
+            .AddIdentityCore<User>(options => options.User.RequireUniqueEmail = true)
+            .AddRoles<Role>()
+            .AddEntityFrameworkStores<AccountsDbContext>()
+            .AddDefaultTokenProviders();
+
+        services
+            .AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
             })
             .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtOptions.Issuer,
-                    ValidAudience = jwtOptions.Audience,
-                    ClockSkew = TimeSpan.FromMinutes(jwtOptions.ClockSkewMinutes),
-                    IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
-                };
-            });
+                options.TokenValidationParameters = TokenValidationParametersFactory
+                    .CreateWithLifetimeValidation(jwtOptions)); 
 
-        services.AddAuthorization(); 
+        services
+            .AddAuthorization()
+            .AddScoped<IJwtTokenProvider, JwtTokenProvider>()
+            .AddSingleton<IAuthorizationHandler, PermissionRequirementHandler>()
+            .AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 
         return services;
     }
@@ -87,12 +74,10 @@ public static class DependencyInjection
     private static IServiceCollection AddCustomIdentityManagers(this IServiceCollection services)
     {
         services
-            .AddScoped<IVolunteerAccountManager, VolunteerAccountManager>()
-            .AddScoped<IParticipantAccountManager, ParticipantAccountManager>()
+            .AddScoped<IAccountManager, AccountManager>()
+            .AddScoped<IRefreshSessionManager, RefreshSessionManager>()
             .AddScoped<PermissonManager>()
-            .AddScoped<RolePermissionManager>()
-            .AddScoped<AdminAccountManager>()
-            .AddScoped<AccountsSeederService>();
+            .AddScoped<RolePermissionManager>();
 
         return services;
     }
@@ -100,7 +85,8 @@ public static class DependencyInjection
     private static IServiceCollection AddAccountsPermissionsSeeding(this IServiceCollection services)
     {
         services
-            .AddSingleton<AccountsSeeder>();
+            .AddSingleton<AccountsSeeder>()
+            .AddScoped<AccountsSeederService>();
 
         return services;
     }

@@ -18,7 +18,7 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
 {
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<Role> _roleManager;
-    private readonly IParticipantAccountManager _participantAccountManager;
+    private readonly IAccountManager _accountManager;
     private readonly ILogger<RegisterUserHandler> _logger;
     private readonly IValidator<RegisterUserCommand> _validator;
     public RegisterUserHandler(
@@ -26,13 +26,13 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
         ILogger<RegisterUserHandler> logger,
         RoleManager<Role> roleManager,
         IValidator<RegisterUserCommand> validator,
-        IParticipantAccountManager participantAccountManager)
+        IAccountManager accountManager)
     {
         _userManager = userManager;
         _logger = logger;
         _roleManager = roleManager;
         _validator = validator;
-        _participantAccountManager = participantAccountManager;
+        _accountManager = accountManager;
     }
     public async Task<UnitResult<ErrorList>> Handle(
         RegisterUserCommand command, CancellationToken cancellationToken = default)
@@ -58,7 +58,7 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
 
         var participantAccount = ParticipantAccount.Create(user);
 
-        await _participantAccountManager.AddParticipant(participantAccount,  cancellationToken);
+        await _accountManager.AddParticipantAccount(participantAccount, cancellationToken);
 
         _logger.LogInformation("Created user with username {Name}", command.UserName);
 

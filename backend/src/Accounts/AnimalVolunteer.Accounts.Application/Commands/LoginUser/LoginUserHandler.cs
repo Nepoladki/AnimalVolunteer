@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Accounts.Application.Interfaces;
+using AnimalVolunteer.Accounts.Contracts.Responses;
 using AnimalVolunteer.Accounts.Domain.Models;
 using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.Core.Extensions;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AnimalVolunteer.Accounts.Application.Commands.LoginUser;
 
-public class LoginUserHandler : ICommandHandler<string, LoginUserCommand>
+public class LoginUserHandler : ICommandHandler<LoginResponse, LoginUserCommand>
 {
     private readonly UserManager<User> _userManager;
     private readonly IJwtTokenProvider _jwtTokenProvider;
@@ -29,7 +30,7 @@ public class LoginUserHandler : ICommandHandler<string, LoginUserCommand>
         _validator = validator;
     }
 
-    public async Task<Result<string, ErrorList>> Handle( 
+    public async Task<Result<LoginResponse, ErrorList>> Handle( 
         LoginUserCommand command, CancellationToken cancellationToken)
     {
         var validationResult = _validator.Validate(command);
@@ -45,11 +46,13 @@ public class LoginUserHandler : ICommandHandler<string, LoginUserCommand>
         if (passwordIsCorrect == false)
             return Errors.Authentication.WrongCredentials().ToErrorList();
 
-        var token = _jwtTokenProvider.GenerateAccessToken(user, cancellationToken);
+        var jwtInfo = _jwtTokenProvider.GenerateAccessToken(user);
+
+        var refreshToken = await _jwtTokenProvider.GenerateRefreshToken(user, jwtInfo.Jti, cancellationToken);
 
         _logger.LogInformation("User with email {email} signed in", command.Email);
 
-        return token;
+        return new LoginResponse(jwtInfo.AccessToken, refreshToken);
     }
 
 }

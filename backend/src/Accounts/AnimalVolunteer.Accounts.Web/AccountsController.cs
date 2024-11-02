@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Accounts.Application.Commands.LoginUser;
+using AnimalVolunteer.Accounts.Application.Commands.RefreshUser;
 using AnimalVolunteer.Accounts.Application.Commands.RegisterUser;
 using AnimalVolunteer.Accounts.Application.Commands.UpdatePaymentDetails;
 using AnimalVolunteer.Accounts.Application.Commands.UpdateSocialNetworks;
@@ -29,6 +30,21 @@ public partial class AccountsController : ApplicationController
     public async Task<IActionResult> Login(
         [FromBody] LoginUserRequest request,
         [FromServices] LoginUserHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var command = request.ToCommand();
+
+        var handleResult = await handler.Handle(command, cancellationToken);
+        if (handleResult.IsFailure)
+            return handleResult.Error.ToResponse();
+
+        return Ok(handleResult.Value);
+    }
+
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh(
+        [FromBody] RefreshUserRequest request,
+        [FromServices] RefreshUserHandler handler,
         CancellationToken cancellationToken = default)
     {
         var command = request.ToCommand();

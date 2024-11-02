@@ -16,7 +16,7 @@ public class AccountsSeederService
     private readonly RoleManager<Role> _roleManager;
     private readonly PermissonManager _permissionManager;
     private readonly RolePermissionManager _rolePermissionManager;
-    private readonly AdminAccountManager _adminAccountManager;
+    private readonly AccountManager _adminAccountManager;
     private readonly AdminOptions _adminOptions;
     private readonly ILogger<AccountsSeederService> _logger;
 
@@ -27,7 +27,7 @@ public class AccountsSeederService
         RolePermissionManager rolePermissionManager,
         IOptions<AdminOptions> adminOptions,
         ILogger<AccountsSeederService> logger,
-        AdminAccountManager adminAccountManager)
+        AccountManager adminAccountManager)
     {
         _permissionManager = permissionManager;
         _userManager = userManager;

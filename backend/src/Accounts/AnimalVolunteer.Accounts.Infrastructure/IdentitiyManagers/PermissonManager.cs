@@ -13,8 +13,12 @@ public class PermissonManager
     }
 
 
-    public async Task<Permission?> FindByCodeName(string codeName) =>
-        await _accountsDbContext.Permissions.FirstOrDefaultAsync(p => p.CodeName == codeName);
+    public async Task<Permission?> FindByCodeName(
+        string codeName, CancellationToken cancellationToken)
+    {
+        return await _accountsDbContext.Permissions
+        .FirstOrDefaultAsync(p => p.CodeName == codeName, cancellationToken);
+    }
 
     public async Task AddPermissionsIfNotExists(IEnumerable<string> permissionCodeNames)
     {
@@ -26,8 +30,8 @@ public class PermissonManager
             if (permissionExists)
                 continue;
 
-            await _accountsDbContext.Permissions
-                .AddAsync(new Permission { CodeName = permissionCodeName });
+            _accountsDbContext.Permissions
+                .Add(new Permission { CodeName = permissionCodeName });
         }
 
         await _accountsDbContext.SaveChangesAsync();
@@ -44,4 +48,4 @@ public class PermissonManager
 
         return user?.Role.RolePermissions.Select(rp => rp.Permission.CodeName);
     }
-}
+} 
