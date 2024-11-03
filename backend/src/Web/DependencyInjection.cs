@@ -15,8 +15,6 @@ public static class DependencyInjection
     {
         AddSerilogLogger(services, config);
 
-        
-
         services.AddCustomSwaggerGen();
 
         return services;

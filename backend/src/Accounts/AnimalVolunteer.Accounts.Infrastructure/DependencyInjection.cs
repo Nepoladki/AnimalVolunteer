@@ -35,7 +35,6 @@ public static partial class DependencyInjection
 
         services.AddAccountsPermissionsSeeding();
 
-
         return services;
     }
 
@@ -75,6 +74,7 @@ public static partial class DependencyInjection
     {
         services
             .AddScoped<IAccountManager, AccountManager>()
+            .AddScoped<AccountManager>()
             .AddScoped<IRefreshSessionManager, RefreshSessionManager>()
             .AddScoped<PermissonManager>()
             .AddScoped<RolePermissionManager>();
