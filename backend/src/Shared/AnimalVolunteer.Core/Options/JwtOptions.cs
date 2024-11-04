@@ -8,4 +8,5 @@ public class JwtOptions
     public string SecretKey { get; init; } = string.Empty;
     public int ClockSkewMinutes { get; init; }
     public int ExpiringMinutes { get; init; }
+    public int RefreshExpiringHours { get; init; }
 }

@@ -14,16 +14,16 @@ namespace AnimalVolunteer.Accounts.Application.Commands.UpdatePaymentDetails;
 
 public class UpdatePaymentDetailsHandler : ICommandHandler<UpdatePaymentDetailsCommand>
 {
-    private readonly IVolunteerAccountManager _volunteerAccountManager;
+    private readonly IAccountManager _accountManager;
     private readonly IValidator<UpdatePaymentDetailsCommand> _validator;
     private readonly IUnitOfWork _unitOfWork;
 
     public UpdatePaymentDetailsHandler(
-        IVolunteerAccountManager volunteerAccountManager, 
+        IAccountManager accountManager, 
         IValidator<UpdatePaymentDetailsCommand> validator,
         [FromKeyedServices(Modules.Accounts)] IUnitOfWork unitOfWork)
     {
-        _volunteerAccountManager = volunteerAccountManager;
+        _accountManager = accountManager;
         _validator = validator;
         _unitOfWork = unitOfWork;
     }
@@ -35,7 +35,7 @@ public class UpdatePaymentDetailsHandler : ICommandHandler<UpdatePaymentDetailsC
         if (validationResult.IsValid == false)
             return validationResult.ToErrorList();
 
-        var volunteerAccount = await _volunteerAccountManager
+        var volunteerAccount = await _accountManager
             .GerVolunteerAccountByUserId(command.UserId, cancellationToken);
         if (volunteerAccount is null)
             return Errors.Accounts.VolunteerNotFound(command.UserId).ToErrorList();

@@ -120,6 +120,42 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                     b.ToTable("permissions", "accounts");
                 });
 
+            modelBuilder.Entity("AnimalVolunteer.Accounts.Domain.Models.RefreshSession", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_at");
+
+                    b.Property<Guid>("Jti")
+                        .HasColumnType("uuid")
+                        .HasColumnName("jti");
+
+                    b.Property<Guid>("RefreshToken")
+                        .HasColumnType("uuid")
+                        .HasColumnName("refresh_token");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_refresh_session");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_refresh_session_user_id");
+
+                    b.ToTable("refresh_session", "accounts");
+                });
+
             modelBuilder.Entity("AnimalVolunteer.Accounts.Domain.Models.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -453,6 +489,18 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_volunteer_accounts_users_user_id");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AnimalVolunteer.Accounts.Domain.Models.RefreshSession", b =>
+                {
+                    b.HasOne("AnimalVolunteer.Accounts.Domain.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_refresh_session_asp_net_users_user_id");
 
                     b.Navigation("User");
                 });

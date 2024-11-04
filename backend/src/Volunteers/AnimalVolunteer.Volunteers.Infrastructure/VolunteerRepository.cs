@@ -49,7 +49,7 @@ public class VolunteerRepository : IVolunteerRepository
     public async Task Create(
         Volunteer volunteer, CancellationToken cancellationToken = default)
     {
-        await _dbContext.Volunteers.AddAsync(volunteer, cancellationToken);
+        _dbContext.Volunteers.Add(volunteer);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 

@@ -26,8 +26,8 @@ public class RolePermissionManager
             if (rolePermissionExists)
                 continue;
 
-            await _accountsDbContext.RolesPermissions
-                .AddAsync(new RolePermission
+            _accountsDbContext.RolesPermissions
+                .Add(new RolePermission
                 {
                     RoleId = roleId,
                     PermissionId = permission!.Id

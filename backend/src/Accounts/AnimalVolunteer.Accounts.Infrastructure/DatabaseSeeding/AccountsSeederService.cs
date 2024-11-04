@@ -16,7 +16,7 @@ public class AccountsSeederService
     private readonly RoleManager<Role> _roleManager;
     private readonly PermissonManager _permissionManager;
     private readonly RolePermissionManager _rolePermissionManager;
-    private readonly AdminAccountManager _adminAccountManager;
+    private readonly AccountManager _accountManager;
     private readonly AdminOptions _adminOptions;
     private readonly ILogger<AccountsSeederService> _logger;
 
@@ -27,7 +27,7 @@ public class AccountsSeederService
         RolePermissionManager rolePermissionManager,
         IOptions<AdminOptions> adminOptions,
         ILogger<AccountsSeederService> logger,
-        AdminAccountManager adminAccountManager)
+        AccountManager accountManager)
     {
         _permissionManager = permissionManager;
         _userManager = userManager;
@@ -35,7 +35,8 @@ public class AccountsSeederService
         _rolePermissionManager = rolePermissionManager;
         _adminOptions = adminOptions.Value;
         _logger = logger;
-        _adminAccountManager = adminAccountManager;
+        _accountManager = accountManager;
+
     }
 
     public async Task SeedAsync()
@@ -59,7 +60,7 @@ public class AccountsSeederService
         var adminRole = await _roleManager.FindByNameAsync(AdminAccount.ADMIN_ACCOUNT_NAME)
                     ?? throw new ApplicationException("Seeding error: unable to find admin role");
 
-        if (await _adminAccountManager.AnyAdminAccountExists())
+        if (await _accountManager.AnyAdminAccountExists())
         {
             _logger.LogInformation("Admin account already exists in database, aborting admin seeding");
             return;
@@ -72,7 +73,7 @@ public class AccountsSeederService
         
 
         var adminAccount = AdminAccount.Create(adminUser);
-        await _adminAccountManager.AddAdminAccount(adminAccount);
+        await _accountManager.AddAdminAccount(adminAccount);
 
         _logger.LogInformation("Succesfully seeded admin account to database");
     }

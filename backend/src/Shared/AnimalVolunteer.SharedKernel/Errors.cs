@@ -83,6 +83,15 @@ public static class Errors
     {
         public static Error WrongCredentials() =>
             Error.NotFound("Auth.WrongCreds", "Failed to login using current credentials");
+
+        public static Error RefreshExpired() =>
+            Error.Failure("Auth.RefreshExpired", "Refresh token expired");
+
+        public static Error InvalidToken() =>
+            Error.Failure("Auth.InvalidToken", "Access token is invalid");
+
+        public static Error IdMismatch() =>
+            Error.Failure("Auth.IdMismatch", "User id from access token doesn't match with id in system");
     }
 
     public static class Accounts
@@ -95,5 +104,8 @@ public static class Errors
 
         public static Error VolunteerNotFound(Guid id) =>
             Error.NotFound("Accounts.VolunteerNotFound", $"Failed to find volunteer account with userId {id}");
+
+        public static Error RefreshSessionNotFound(Guid refreshToken) =>
+            Error.NotFound("Accounts.RefreshSessionNotFound", $"Failed to find refresh session by refresh token {refreshToken}");
     }
 }

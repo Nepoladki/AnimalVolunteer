@@ -1,7 +1,10 @@
 ﻿using AnimalVolunteer.Accounts.Application.Interfaces;
+using AnimalVolunteer.Accounts.Application.Models;
 using AnimalVolunteer.Accounts.Domain.Models;
 using AnimalVolunteer.Core.Options;
 using AnimalVolunteer.Framework.Authorization;
+using AnimalVolunteer.SharedKernel;
+using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,17 +16,24 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Providers;
 public class JwtTokenProvider : IJwtTokenProvider
 {
     private readonly JwtOptions _jwtOptions;
+    private readonly AccountsDbContext _accountsDbContext;
 
-    public JwtTokenProvider(IOptions<JwtOptions> jwtOptions)
+    public JwtTokenProvider(
+        IOptions<JwtOptions> jwtOptions, AccountsDbContext accountsDbContext)
     {
         _jwtOptions = jwtOptions.Value;
+        _accountsDbContext = accountsDbContext;
     }
 
-    public string GenerateAccessToken(
-        User user, CancellationToken cancellationToken)
+    public JwtResult GenerateAccessToken(User user)
     {
+        var jti = Guid.NewGuid();
+
         Claim[] claims = 
-        [ new Claim(JwtClaimTypes.ID, user.Id.ToString()) ];
+            [
+                new Claim(JwtClaimTypes.ID, user.Id.ToString()),
+                new Claim(JwtClaimTypes.JTI, jti.ToString()) 
+            ];
 
         var securityKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(_jwtOptions.SecretKey));
@@ -40,7 +50,37 @@ public class JwtTokenProvider : IJwtTokenProvider
 
         var jwtToken = new JwtSecurityTokenHandler().WriteToken(configuredToken);
 
-        return jwtToken;
-       
+        return new JwtResult(jwtToken, jti);
+    }
+
+    public async Task<Guid> GenerateRefreshToken(User user, Guid jti, CancellationToken cancellationToken)
+    {
+        var refreshSession = new RefreshSession
+        {
+            User = user,
+            CreatedAt = DateTime.UtcNow,
+            ExpiresAt = DateTime.UtcNow.AddHours(_jwtOptions.RefreshExpiringHours),
+            RefreshToken = Guid.NewGuid(),
+            Jti = jti,
+        };
+
+        _accountsDbContext.RefreshSessions.Add(refreshSession);
+        await _accountsDbContext.SaveChangesAsync(cancellationToken);
+
+        return refreshSession.RefreshToken;
+    }
+
+    public async Task<Result<IReadOnlyList<Claim>, Error>> GetClaimsFromToken(string jwtToken)
+    {
+        var jwtHandler = new JwtSecurityTokenHandler();
+
+        var validationParameters = TokenValidationParametersFactory
+            .CreateWithoutLifetimeValidation(_jwtOptions);
+
+        var validationResult = await jwtHandler.ValidateTokenAsync(jwtToken, validationParameters);
+        if (validationResult.IsValid == false)
+            return Errors.Authentication.InvalidToken();
+
+        return validationResult.ClaimsIdentity.Claims.ToList();
     }
 }
