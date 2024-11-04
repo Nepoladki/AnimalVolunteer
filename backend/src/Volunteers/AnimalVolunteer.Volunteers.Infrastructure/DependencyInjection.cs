@@ -48,6 +48,7 @@ public static class DependencyInjection
         services.Configure<DatabaseOptions>(configuration.GetSection(DatabaseOptions.SECTION_NAME));
 
         services.AddScoped<WriteDbContext>();
+        services.AddKeyedTransient<WriteDbContext>(Modules.Volunteers);
         services.AddScoped<IReadDbContext, ReadDbContext>();
 
         return services;

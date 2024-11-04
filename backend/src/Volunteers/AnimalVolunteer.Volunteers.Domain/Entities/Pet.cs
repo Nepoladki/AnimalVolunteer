@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Domain.Common.ValueObjects;
 using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.SharedKernel.BaseClasses;
 using AnimalVolunteer.SharedKernel.ValueObjects;
 using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using AnimalVolunteer.Volunteers.Domain.Enums;
@@ -8,7 +9,7 @@ using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.Volunteers.Domain.Entities;
 
-public sealed class Pet : SharedKernel.Entity<PetId>
+public sealed class Pet : SoftDeletableEntity<PetId>
 {
     // EF Core ctor
     private Pet(PetId id) : base(id) { }
@@ -39,8 +40,6 @@ public sealed class Pet : SharedKernel.Entity<PetId>
         PaymentDetailsList = paymentDetails;
         PetPhotosList = photos;
     }
-
-    private bool _isDeleted;
     public Name Name { get; private set; } = null!;
     public Description Description { get; private set; } = null!;
     public PhysicalParameters PhysicalParameters { get; private set; } = null!;
@@ -85,10 +84,6 @@ public sealed class Pet : SharedKernel.Entity<PetId>
             paymentDetails,
             photos);
     }
-
-    internal void SoftDelete() => _isDeleted = true;
-
-    internal void Restore() => _isDeleted = false;
 
     internal void UpdatePhotos(ValueObjectList<PetPhoto> photos) =>
         PetPhotosList = photos;

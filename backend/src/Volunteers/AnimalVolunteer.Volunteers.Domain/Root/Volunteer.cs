@@ -7,10 +7,11 @@ using AnimalVolunteer.Volunteers.Domain.Entities;
 using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using AnimalVolunteer.SharedKernel.ValueObjects;
 using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.SharedKernel.BaseClasses;
 
 namespace AnimalVolunteer.Volunteers.Domain.Root;
 
-public class Volunteer : SharedKernel.Entity<VolunteerId>
+public class Volunteer : SoftDeletableEntity<VolunteerId>
 {
     // EF Core ctor
     private Volunteer(VolunteerId id) : base(id) { }
@@ -35,8 +36,6 @@ public class Volunteer : SharedKernel.Entity<VolunteerId>
     }
 
     private readonly List<Pet> _pets = default!;
-
-    private bool _isDeleted;
     public FullName FullName { get; private set; } = null!;
     public Email Email { get; private set; } = null!;
     public Description Description { get; private set; } = null!;
@@ -86,9 +85,9 @@ public class Volunteer : SharedKernel.Entity<VolunteerId>
     public void UpdatePaymentDetails(ValueObjectList<PaymentDetails> paymentDetails) =>
         PaymentDetailsList = paymentDetails;
 
-    public void SoftDelete()
+    public override void SoftDelete()
     {
-        _isDeleted = true;
+        base.SoftDelete();
 
         foreach (var pet in _pets)
         {
@@ -96,9 +95,9 @@ public class Volunteer : SharedKernel.Entity<VolunteerId>
         }
     }
 
-    public void Restore()
+    public override void Restore()
     {
-        _isDeleted = false;
+        base.Restore();
 
         foreach (var pet in _pets)
         {
