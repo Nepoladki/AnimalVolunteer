@@ -8,6 +8,7 @@ using AnimalVolunteer.Core.Options;
 using AnimalVolunteer.Volunteers.Application.Interfaces;
 using AnimalVolunteer.Volunteers.Infrastructure.DbContexts;
 using AnimalVolunteer.Volunteers.Infrastructure.Providers;
+using AnimalVolunteer.Volunteers.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
@@ -23,11 +24,18 @@ public static class DependencyInjection
             .AddMinioVault(configuration)
             .AddRepositories();
 
+        services.Configure<SoftDeletedCleanerOptions>(
+            configuration.GetSection(SoftDeletedCleanerOptions.SECTION_NAME));
+
         services.AddScoped<IFileProvider, MinioProvider>();
         services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(Modules.Volunteers);
+        services.AddScoped<SqlConnectionFactory>();
 
         services.AddHostedService<FileCleanerBackgroundService>();
+        services.AddHostedService<SoftDeletedCleanerBackgroundService>();
+
         services.AddScoped<IFilesCleanerService, FilesCleanerService>();
+        services.AddScoped<ISoftDeletedCleaner, SoftDeletedVolunteersCleanerService>();
         services.AddSingleton<IMessageQueue<IEnumerable<FileInfoDto>>,
             InMemoryMessageQueue<IEnumerable<FileInfoDto>>>();
 

@@ -24,9 +24,12 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
             id => id.Value,
             value => VolunteerId.CreateWithGuid(value));
 
-        builder.Property<bool>("_isDeleted")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("is_deleted");
+        builder.Property(v => v.IsDeleted)
+            .HasColumnName("is_deleted")
+            .IsRequired();
+
+        builder.Property(v => v.DeletionDateTime)
+            .HasColumnName("deletion_datetime");
 
         builder.ComplexProperty(x => x.FullName, fn =>
         {

@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnimalVolunteer.Volunteers.Infrastructure.Migrations
 {
     [DbContext(typeof(WriteDbContext))]
-    [Migration("20241103112446_Volunteers_init")]
+    [Migration("20241105081001_Volunteers_init")]
     partial class Volunteers_init
     {
         /// <inheritdoc />
@@ -50,6 +50,14 @@ namespace AnimalVolunteer.Volunteers.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("current_status");
 
+                    b.Property<DateTime?>("DeletionDateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deletion_datetime");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
                     b.Property<string>("PaymentDetailsList")
                         .IsRequired()
                         .HasColumnType("jsonb")
@@ -63,10 +71,6 @@ namespace AnimalVolunteer.Volunteers.Infrastructure.Migrations
                     b.Property<Guid>("VolunteerId")
                         .HasColumnType("uuid")
                         .HasColumnName("volunteer_id");
-
-                    b.Property<bool>("_isDeleted")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_deleted");
 
                     b.ComplexProperty<Dictionary<string, object>>("Address", "AnimalVolunteer.Volunteers.Domain.Entities.Pet.Address#Address", b1 =>
                         {
@@ -198,6 +202,14 @@ namespace AnimalVolunteer.Volunteers.Infrastructure.Migrations
                         .HasColumnType("jsonb")
                         .HasColumnName("contact_info");
 
+                    b.Property<DateTime?>("DeletionDateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deletion_datetime");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
                     b.Property<string>("PaymentDetailsList")
                         .IsRequired()
                         .HasColumnType("jsonb")
@@ -207,10 +219,6 @@ namespace AnimalVolunteer.Volunteers.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("jsonb")
                         .HasColumnName("social_networks");
-
-                    b.Property<bool>("_isDeleted")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_deleted");
 
                     b.ComplexProperty<Dictionary<string, object>>("Description", "AnimalVolunteer.Volunteers.Domain.Root.Volunteer.Description#Description", b1 =>
                         {
