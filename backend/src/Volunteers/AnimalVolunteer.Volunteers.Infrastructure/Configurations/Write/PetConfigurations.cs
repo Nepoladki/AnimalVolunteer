@@ -26,9 +26,12 @@ public class PetConfigurations : IEntityTypeConfiguration<Pet>
                 id => id.Value,
                 value => PetId.CreateWithGuid(value));
 
-        builder.Property<bool>("_isDeleted")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("is_deleted");
+        builder.Property(v => v.IsDeleted)
+            .HasColumnName("is_deleted")
+            .IsRequired();
+
+        builder.Property(v => v.DeletionDateTime)
+            .HasColumnName("deletion_datetime");
 
         builder.ComplexProperty(x => x.Name, nd =>
         {

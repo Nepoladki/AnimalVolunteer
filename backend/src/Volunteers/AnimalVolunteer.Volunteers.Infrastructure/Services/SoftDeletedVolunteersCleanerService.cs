@@ -1,26 +1,49 @@
 ﻿using AnimalVolunteer.Core;
-using AnimalVolunteer.Core.BackgroundServices;
+using AnimalVolunteer.Core.Abstractions;
 using AnimalVolunteer.Volunteers.Infrastructure.DbContexts;
+using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 
 namespace AnimalVolunteer.Volunteers.Infrastructure.Services;
 public class SoftDeletedVolunteersCleanerService : ISoftDeletedCleaner
 {
-    private readonly WriteDbContext _writeDbContext;
-    private readonly ReadDbContext _readDbContext;
+    private readonly SqlConnectionFactory _sqlConnectionFactory;
 
     public SoftDeletedVolunteersCleanerService(
-        WriteDbContext writeDbContext,
-        ReadDbContext readDbContext)
+        SqlConnectionFactory sqlConnectionFactory)
     {
-        _writeDbContext = writeDbContext;
-        _readDbContext = readDbContext;
+        _sqlConnectionFactory = sqlConnectionFactory;
     }
 
-    public void Process(CancellationToken cancellationToken)
+    public async Task Process(CancellationToken cancellationToken)
     {
-        var volunteersToDelete = _readDbContext.Volunteers.Where(v => v.IsDeleted == true);
-        var petsToDelete = _readDbContext.Pets.Where(p => p.IsDeleted == true);
+        using var connection = _sqlConnectionFactory.Create();
+
+        var petsCommand =
+            """
+            DELETE FROM public.pets p 
+            WHERE 
+            p.is_deleted = TRUE 
+            AND 
+            now() - deletion_datetime > interval '30 days'
+            """;
+
+        var volunteersCommand =
+             """
+            DELETE FROM public.volunteers v 
+            WHERE 
+            v.is_deleted = TRUE 
+            AND 
+            now() - deletion_datetime > interval '30 days'
+            """;
+
+        connection.Open();
+
+        await connection.ExecuteAsync(petsCommand);
+        await connection.ExecuteAsync(volunteersCommand);
+
+        connection.Close();
     }
 }
