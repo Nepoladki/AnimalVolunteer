@@ -21,24 +21,6 @@ public class VolunteerDtoConfigurations : IEntityTypeConfiguration<VolunteerDto>
             .WithOne()
             .HasForeignKey(x => x.VolunteerId);
 
-        builder.Property(x => x.PaymentDetails)
-            .HasConversion(
-            values => JsonSerializer
-                .Serialize(string.Empty, JsonSerializerOptions.Default),
-            json => JsonSerializer
-                .Deserialize<IEnumerable<PaymentDetailsDto>>(
-                    json, JsonSerializerOptions.Default)!)
-            .HasColumnName(PaymentDetails.DB_COLUMN_NAME); ;
-
-        builder.Property(x => x.SocialNetworks)
-            .HasConversion(
-            values => JsonSerializer
-                .Serialize(string.Empty, JsonSerializerOptions.Default),
-            json => JsonSerializer
-                .Deserialize<IEnumerable<SocialNetworkDto>>(
-                    json, JsonSerializerOptions.Default)!)
-            .HasColumnName(SocialNetwork.DB_COLUMN_NAME);
-
         builder.Property(x => x.ContactInfos)
             .HasConversion(
             values => JsonSerializer

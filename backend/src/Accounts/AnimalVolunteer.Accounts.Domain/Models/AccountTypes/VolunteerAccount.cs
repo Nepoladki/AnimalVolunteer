@@ -10,7 +10,7 @@ public sealed class VolunteerAccount
     // EF Core ctor
     private VolunteerAccount() { }
     public Guid Id { get; set; }
-    public User User { get; set; }
+    public User User { get; set; } = null!;
     public Guid UserId { get; set; }
     public int Expirience { get; set; }
     public List<Certificate> Certificates { get; set; } = null!;

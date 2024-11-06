@@ -38,4 +38,5 @@ public class AccountManager : IAccountManager
         _context.ParticipantsAccounts.Add(account);
         await _context.SaveChangesAsync(cancellationToken);
     }
+
 }

@@ -1,6 +1,7 @@
 ﻿using AnimalVolunteer.Accounts.Domain.Models;
 using AnimalVolunteer.Accounts.Domain.Models.AccountTypes;
 using AnimalVolunteer.Accounts.Domain.Models.ValueObjects;
+using AnimalVolunteer.Core.DTOs.Accounts;
 using AnimalVolunteer.Core.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

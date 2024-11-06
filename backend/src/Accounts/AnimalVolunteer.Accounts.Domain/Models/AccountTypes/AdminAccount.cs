@@ -16,7 +16,7 @@ public sealed class AdminAccount
 
     public Guid Id { get; set; }
 
-    public User User { get; set; }
+    public User User { get; set; } = null!;
 
     public Guid UserId { get; set; }
 }

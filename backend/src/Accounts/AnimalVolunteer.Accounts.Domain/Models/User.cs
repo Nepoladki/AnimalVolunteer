@@ -1,4 +1,5 @@
-﻿using AnimalVolunteer.Accounts.Domain.Models.ValueObjects;
+﻿using AnimalVolunteer.Accounts.Domain.Models.AccountTypes;
+using AnimalVolunteer.Accounts.Domain.Models.ValueObjects;
 using AnimalVolunteer.SharedKernel.ValueObjects;
 using Microsoft.AspNetCore.Identity;
 
@@ -11,8 +12,13 @@ public sealed class User : IdentityUser<Guid>
     public string Photo { get; set; } = string.Empty;
     public List<SocialNetwork> SocialNetworks { get; set; } = [];
     public Guid RoleId { get; set; }
-    public Role Role { get; set; } = null!;
-    public static User CreateAdmin(string userName, string email, Role role)
+    public List<Role> Roles { get; set; } = null!;
+    public ParticipantAccount? ParticipantAccount { get; set; }
+    public VolunteerAccount? VolunteerAccount { get; set; }
+    public AdminAccount? AdminAccount { get; set; }
+    
+    public static User CreateAdmin(
+        string userName, string email, Role role)
     {
         return new User
         {
@@ -21,11 +27,12 @@ public sealed class User : IdentityUser<Guid>
             SocialNetworks = [],
             UserName = userName,
             Email = email,
-            Role = role
+            Roles = [role]
         };
     }
 
-    public static User CreateParticipant(FullName fullName, string userName, string email, Role role)
+    public static User CreateParticipant(
+        FullName fullName, string userName, string email, Role role)
     {
         return new User
         {
@@ -34,7 +41,7 @@ public sealed class User : IdentityUser<Guid>
             SocialNetworks = [],
             UserName = userName,
             Email = email,
-            Role = role
+            Roles = [role]
         };
     }
 }
