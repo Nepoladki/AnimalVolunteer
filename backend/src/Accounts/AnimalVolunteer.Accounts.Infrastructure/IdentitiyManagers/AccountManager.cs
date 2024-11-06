@@ -1,5 +1,7 @@
 ﻿using AnimalVolunteer.Accounts.Application.Interfaces;
 using AnimalVolunteer.Accounts.Domain.Models.AccountTypes;
+using AnimalVolunteer.Core.DTOs.Accounts;
+using AnimalVolunteer.Core.DTOs.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
@@ -37,6 +39,31 @@ public class AccountManager : IAccountManager
     {
         _context.ParticipantsAccounts.Add(account);
         await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<UserAccountDto> GetUserAccountInfoById(Guid userId, CancellationToken cancellationToken)
+    {
+        return await _context.Users
+            .Include(u => u.AdminAccount)
+            .Include(u => u.VolunteerAccount)
+            .Include(u => u.ParticipantAccount)
+            .Where(u => u.Id == userId)
+            .Select(u => new UserAccountDto(
+                u.Id,
+                u.ParticipantAccount.Id,
+                u.VolunteerAccount.Id,
+                u.AdminAccount.Id,
+                new FullNameDto(
+                    u.FullName.FirstName,
+                    u.FullName.Patronymic,
+                    u.FullName.LastName),
+                u.Photo,
+                u.VolunteerAccount.Expirience,
+                new List<SocialNetworkDto>(),
+                new List<PaymentDetailsDto>(),
+                new List<CertificateDto>()))
+            .FirstOrDefaultAsync(cancellationToken);
+
     }
 
 }
