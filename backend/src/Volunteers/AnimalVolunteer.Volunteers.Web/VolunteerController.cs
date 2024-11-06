@@ -1,12 +1,10 @@
 ﻿using AnimalVolunteer.Volunteers.Web.Requests.Volunteer;
 using AnimalVolunteer.Volunteers.Web.Requests.Pet;
 using AnimalVolunteer.Framework;
-using AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.SocialNetworks;
 using AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.MainInfo;
 using AnimalVolunteer.Volunteers.Application.Queries.Volunteer.GetVolunteerById;
 using AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Create;
 using AnimalVolunteer.Volunteers.Application.Queries.Volunteer.GetVolunteersWithPagination;
-using AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.PaymentDetails;
 using AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.ContactInfo;
 using AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Delete;
 using AnimalVolunteer.Volunteers.Application.Commands.Pet.AddPet;
@@ -20,7 +18,6 @@ using AnimalVolunteer.Volunteers.Application.Queries.Pet.GetPetsFilteredPaginate
 using AnimalVolunteer.Volunteers.Application.Queries.Pet.GetPetById;
 using AnimalVolunteer.Volunteers.Web.Processors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using AnimalVolunteer.Framework.Authorization;
 
 namespace AnimalVolunteer.Volunteers.Web;
@@ -79,40 +76,6 @@ public class VolunteerController : ApplicationController
         CancellationToken cancellationToken = default)
     {
 
-        var command = request.ToCommand(id);
-
-        var handleResult = await handler.Handle(command, cancellationToken);
-        if (handleResult.IsFailure)
-            return handleResult.Error.ToResponse();
-
-        return Ok(handleResult.Value);
-    }
-
-    [Permission(Permissions.Volunteers.Update)]
-    [HttpPut("{id:guid}/social-networks")]
-    public async Task<IActionResult> UpdateSocialNetworks(
-        [FromRoute] Guid id,
-        [FromBody] UpdateVolunteerSocialNetworksRequest request,
-        [FromServices] UpdateVolunteerSocialNetworksHandler handler,
-        CancellationToken cancellationToken = default)
-    {
-        var command = request.ToCommand(id);
-
-        var handleResult = await handler.Handle(command, cancellationToken);
-        if (handleResult.IsFailure)
-            return handleResult.Error.ToResponse();
-
-        return Ok(handleResult.Value);
-    }
-
-    [Permission(Permissions.Volunteers.Update)]
-    [HttpPut("{id:guid}/payment-details")]
-    public async Task<IActionResult> UpdatePaymentDetails(
-        [FromRoute] Guid id,
-        [FromBody] UpdateVolunteerPaymentDetailsRequest request,
-        [FromServices] UpdateVolunteerPaymentDetailsHandler handler,
-        CancellationToken cancellationToken = default)
-    {
         var command = request.ToCommand(id);
 
         var handleResult = await handler.Handle(command, cancellationToken);

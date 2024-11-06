@@ -44,6 +44,38 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "users",
+                schema: "accounts",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    photo = table.Column<string>(type: "text", nullable: false),
+                    social_networks = table.Column<string>(type: "text", nullable: false),
+                    role_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    first_name = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
+                    last_name = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
+                    patronymic = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: true),
+                    user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    normalized_user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    normalized_email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    email_confirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    password_hash = table.Column<string>(type: "text", nullable: true),
+                    security_stamp = table.Column<string>(type: "text", nullable: true),
+                    concurrency_stamp = table.Column<string>(type: "text", nullable: true),
+                    phone_number = table.Column<string>(type: "text", nullable: true),
+                    phone_number_confirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    two_factor_enabled = table.Column<bool>(type: "boolean", nullable: false),
+                    lockout_end = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    lockout_enabled = table.Column<bool>(type: "boolean", nullable: false),
+                    access_failed_count = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_users", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "role_claims",
                 schema: "accounts",
                 columns: table => new
@@ -86,45 +118,6 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_roles_permissions_roles_role_id",
-                        column: x => x.role_id,
-                        principalSchema: "accounts",
-                        principalTable: "roles",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "users",
-                schema: "accounts",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    photo = table.Column<string>(type: "text", nullable: false),
-                    social_networks = table.Column<string>(type: "text", nullable: false),
-                    role_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    first_name = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
-                    last_name = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
-                    patronymic = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: true),
-                    user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    normalized_user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    normalized_email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    email_confirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    password_hash = table.Column<string>(type: "text", nullable: true),
-                    security_stamp = table.Column<string>(type: "text", nullable: true),
-                    concurrency_stamp = table.Column<string>(type: "text", nullable: true),
-                    phone_number = table.Column<string>(type: "text", nullable: true),
-                    phone_number_confirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    two_factor_enabled = table.Column<bool>(type: "boolean", nullable: false),
-                    lockout_end = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    lockout_enabled = table.Column<bool>(type: "boolean", nullable: false),
-                    access_failed_count = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_users", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_users_roles_role_id",
                         column: x => x.role_id,
                         principalSchema: "accounts",
                         principalTable: "roles",
@@ -190,6 +183,33 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "fk_refresh_session_asp_net_users_user_id",
                         column: x => x.user_id,
+                        principalSchema: "accounts",
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "role_user",
+                schema: "accounts",
+                columns: table => new
+                {
+                    roles_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    users_id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_role_user", x => new { x.roles_id, x.users_id });
+                    table.ForeignKey(
+                        name: "fk_role_user_roles_roles_id",
+                        column: x => x.roles_id,
+                        principalSchema: "accounts",
+                        principalTable: "roles",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_role_user_users_users_id",
+                        column: x => x.users_id,
                         principalSchema: "accounts",
                         principalTable: "users",
                         principalColumn: "id",
@@ -317,13 +337,15 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 name: "ix_admin_accounts_user_id",
                 schema: "accounts",
                 table: "admin_accounts",
-                column: "user_id");
+                column: "user_id",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_participant_accounts_user_id",
                 schema: "accounts",
                 table: "participant_accounts",
-                column: "user_id");
+                column: "user_id",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_permissions_code_name",
@@ -343,6 +365,12 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 schema: "accounts",
                 table: "role_claims",
                 column: "role_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_role_user_users_id",
+                schema: "accounts",
+                table: "role_user",
+                column: "users_id");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
@@ -382,12 +410,6 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 column: "normalized_email");
 
             migrationBuilder.CreateIndex(
-                name: "ix_users_role_id",
-                schema: "accounts",
-                table: "users",
-                column: "role_id");
-
-            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 schema: "accounts",
                 table: "users",
@@ -398,7 +420,8 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 name: "ix_volunteer_accounts_user_id",
                 schema: "accounts",
                 table: "volunteer_accounts",
-                column: "user_id");
+                column: "user_id",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -418,6 +441,10 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "role_claims",
+                schema: "accounts");
+
+            migrationBuilder.DropTable(
+                name: "role_user",
                 schema: "accounts");
 
             migrationBuilder.DropTable(
@@ -449,11 +476,11 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 schema: "accounts");
 
             migrationBuilder.DropTable(
-                name: "users",
+                name: "roles",
                 schema: "accounts");
 
             migrationBuilder.DropTable(
-                name: "roles",
+                name: "users",
                 schema: "accounts");
         }
     }

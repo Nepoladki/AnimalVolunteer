@@ -17,8 +17,6 @@ namespace AnimalVolunteer.Volunteers.Infrastructure.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     contact_info = table.Column<string>(type: "jsonb", nullable: false),
-                    social_networks = table.Column<string>(type: "jsonb", nullable: false),
-                    payment_details = table.Column<string>(type: "jsonb", nullable: false),
                     description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     email = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     first_name = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),

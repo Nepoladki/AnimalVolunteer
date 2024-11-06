@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
 {
     [DbContext(typeof(AccountsDbContext))]
-    [Migration("20241105081011_Accounts_init")]
+    [Migration("20241106173752_Accounts_init")]
     partial class Accounts_init
     {
         /// <inheritdoc />
@@ -42,6 +42,7 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                         .HasName("pk_admin_accounts");
 
                     b.HasIndex("UserId")
+                        .IsUnique()
                         .HasDatabaseName("ix_admin_accounts_user_id");
 
                     b.ToTable("admin_accounts", "accounts");
@@ -62,6 +63,7 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                         .HasName("pk_participant_accounts");
 
                     b.HasIndex("UserId")
+                        .IsUnique()
                         .HasDatabaseName("ix_participant_accounts_user_id");
 
                     b.ToTable("participant_accounts", "accounts");
@@ -96,6 +98,7 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                         .HasName("pk_volunteer_accounts");
 
                     b.HasIndex("UserId")
+                        .IsUnique()
                         .HasDatabaseName("ix_volunteer_accounts_user_id");
 
                     b.ToTable("volunteer_accounts", "accounts");
@@ -324,9 +327,6 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
-                    b.HasIndex("RoleId")
-                        .HasDatabaseName("ix_users_role_id");
-
                     b.ToTable("users", "accounts");
                 });
 
@@ -460,11 +460,30 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                     b.ToTable("user_tokens", "accounts");
                 });
 
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.Property<Guid>("RolesId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("roles_id");
+
+                    b.Property<Guid>("UsersId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("users_id");
+
+                    b.HasKey("RolesId", "UsersId")
+                        .HasName("pk_role_user");
+
+                    b.HasIndex("UsersId")
+                        .HasDatabaseName("ix_role_user_users_id");
+
+                    b.ToTable("role_user", "accounts");
+                });
+
             modelBuilder.Entity("AnimalVolunteer.Accounts.Domain.Models.AccountTypes.AdminAccount", b =>
                 {
                     b.HasOne("AnimalVolunteer.Accounts.Domain.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("AdminAccount")
+                        .HasForeignKey("AnimalVolunteer.Accounts.Domain.Models.AccountTypes.AdminAccount", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_admin_accounts_users_user_id");
@@ -475,8 +494,8 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
             modelBuilder.Entity("AnimalVolunteer.Accounts.Domain.Models.AccountTypes.ParticipantAccount", b =>
                 {
                     b.HasOne("AnimalVolunteer.Accounts.Domain.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("ParticipantAccount")
+                        .HasForeignKey("AnimalVolunteer.Accounts.Domain.Models.AccountTypes.ParticipantAccount", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_participant_accounts_asp_net_users_user_id");
@@ -487,8 +506,8 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
             modelBuilder.Entity("AnimalVolunteer.Accounts.Domain.Models.AccountTypes.VolunteerAccount", b =>
                 {
                     b.HasOne("AnimalVolunteer.Accounts.Domain.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("VolunteerAccount")
+                        .HasForeignKey("AnimalVolunteer.Accounts.Domain.Models.AccountTypes.VolunteerAccount", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_volunteer_accounts_users_user_id");
@@ -525,18 +544,6 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                         .HasConstraintName("fk_roles_permissions_roles_role_id");
 
                     b.Navigation("Permission");
-
-                    b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("AnimalVolunteer.Accounts.Domain.Models.User", b =>
-                {
-                    b.HasOne("AnimalVolunteer.Accounts.Domain.Models.Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_users_roles_role_id");
 
                     b.Navigation("Role");
                 });
@@ -598,6 +605,23 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                         .HasConstraintName("fk_user_tokens_asp_net_users_user_id");
                 });
 
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.HasOne("AnimalVolunteer.Accounts.Domain.Models.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_role_user_roles_roles_id");
+
+                    b.HasOne("AnimalVolunteer.Accounts.Domain.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_role_user_users_users_id");
+                });
+
             modelBuilder.Entity("AnimalVolunteer.Accounts.Domain.Models.Permission", b =>
                 {
                     b.Navigation("RolePermissions");
@@ -606,8 +630,15 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
             modelBuilder.Entity("AnimalVolunteer.Accounts.Domain.Models.Role", b =>
                 {
                     b.Navigation("RolePermissions");
+                });
 
-                    b.Navigation("Users");
+            modelBuilder.Entity("AnimalVolunteer.Accounts.Domain.Models.User", b =>
+                {
+                    b.Navigation("AdminAccount");
+
+                    b.Navigation("ParticipantAccount");
+
+                    b.Navigation("VolunteerAccount");
                 });
 #pragma warning restore 612, 618
         }

@@ -41,11 +41,12 @@ public class PermissonManager
         Guid userId, CancellationToken cancellationToken)
     {
         var user = await _accountsDbContext.Users
-            .Include(u => u.Role)
+            .Include(u => u.Roles)
             .ThenInclude(r => r.RolePermissions)
             .ThenInclude(rp => rp.Permission)
             .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
 
-        return user?.Role.RolePermissions.Select(rp => rp.Permission.CodeName);
+        return user?.Roles
+            .SelectMany(r => r.RolePermissions.Select(rp => rp.Permission.CodeName));
     }
 } 

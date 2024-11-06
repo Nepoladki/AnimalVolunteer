@@ -3,6 +3,7 @@ using AnimalVolunteer.Accounts.Application.Commands.RefreshUser;
 using AnimalVolunteer.Accounts.Application.Commands.RegisterUser;
 using AnimalVolunteer.Accounts.Application.Commands.UpdatePaymentDetails;
 using AnimalVolunteer.Accounts.Application.Commands.UpdateSocialNetworks;
+using AnimalVolunteer.Accounts.Application.Queries.GetUserInfo;
 using AnimalVolunteer.Accounts.Web.Requests;
 using AnimalVolunteer.Framework;
 using AnimalVolunteer.Framework.Authorization;
@@ -90,4 +91,18 @@ public partial class AccountsController : ApplicationController
         return Ok();
     }
 
+    [HttpGet("{userId:guid}/account")]
+    public async Task<IActionResult> GetUserAccountsInfo(
+        [FromServices] GetUserInfoHandler handler,
+        Guid userId,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetUserInfoQuery(userId);
+
+        var handleResult = await handler.Handle(query, cancellationToken);
+        if (handleResult.IsFailure)
+            return handleResult.Error.ToResponse();
+
+        return Ok(handleResult.Value);
+    }
 }

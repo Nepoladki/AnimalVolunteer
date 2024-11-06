@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Core;
 using AnimalVolunteer.Core.Abstractions;
+using AnimalVolunteer.Core.Factories;
 using AnimalVolunteer.Volunteers.Infrastructure.DbContexts;
 using Dapper;
 using Microsoft.EntityFrameworkCore;

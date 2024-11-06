@@ -2,6 +2,7 @@
 using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.Core.DTOs.Accounts;
 using AnimalVolunteer.Core.Extensions;
+using AnimalVolunteer.Core.Factories;
 using AnimalVolunteer.SharedKernel;
 using CSharpFunctionalExtensions;
 using FluentValidation;
@@ -10,14 +11,14 @@ namespace AnimalVolunteer.Accounts.Application.Queries.GetUserInfo;
 
 public class GetUserInfoHandler : IQueryHandler<Result<UserAccountDto, ErrorList>, GetUserInfoQuery>
 {
-    private readonly IAccountManager _accountManager;
+    private readonly SqlConnectionFactory _sqlConnectionFactory;
     private readonly IValidator<GetUserInfoQuery> _validator;
 
     public GetUserInfoHandler(
-        IAccountManager accountManager, 
+        SqlConnectionFactory sqlConnectionFactory,
         IValidator<GetUserInfoQuery> validator)
     {
-        _accountManager = accountManager;
+        _sqlConnectionFactory = sqlConnectionFactory;
         _validator = validator;
     }
 
@@ -28,7 +29,9 @@ public class GetUserInfoHandler : IQueryHandler<Result<UserAccountDto, ErrorList
         if (validationResult.IsValid == false)
             return validationResult.ToErrorList();
 
-        var userAccount = _accountManager.
+        using var connection = _sqlConnectionFactory.Create();
+
+        var query = """"""
     }
 }
 
