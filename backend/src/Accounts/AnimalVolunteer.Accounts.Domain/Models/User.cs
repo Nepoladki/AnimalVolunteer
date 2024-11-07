@@ -9,7 +9,7 @@ public sealed class User : IdentityUser<Guid>
 {
     private User() { }
     public FullName FullName { get; set; } = default!;
-    public string Photo { get; set; } = string.Empty;
+    public string? Photo { get; set; } = null;
     public List<SocialNetwork> SocialNetworks { get; set; } = [];
     public List<Role> Roles { get; set; } = null!;
     
@@ -18,7 +18,6 @@ public sealed class User : IdentityUser<Guid>
     {
         return new User
         {
-            Photo = "",
             FullName = FullName.Create("admin", null, "admin").Value,
             SocialNetworks = [],
             UserName = userName,
@@ -32,7 +31,6 @@ public sealed class User : IdentityUser<Guid>
     {
         return new User
         {
-            Photo = "",
             FullName = fullName,
             SocialNetworks = [],
             UserName = userName,

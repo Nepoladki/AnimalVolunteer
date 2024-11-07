@@ -91,7 +91,8 @@ public partial class AccountsController : ApplicationController
         return Ok();
     }
 
-    [HttpGet("{userId:guid}/account")]
+    [Permission(Permissions.Accounts.Read)]
+    [HttpGet("{userId:guid}")]
     public async Task<IActionResult> GetUserAccountsInfo(
         [FromServices] GetUserInfoHandler handler,
         Guid userId,
