@@ -45,6 +45,8 @@ public class AccountsWriteDbContext : IdentityDbContext<User, Role, Guid>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        base.OnModelCreating(builder);
+            
         builder.HasDefaultSchema("accounts");
 
         builder.Entity<IdentityUserClaim<Guid>>().ToTable("user_claims");

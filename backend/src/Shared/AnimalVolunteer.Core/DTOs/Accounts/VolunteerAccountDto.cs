@@ -4,7 +4,8 @@ namespace AnimalVolunteer.Core.DTOs.Accounts;
 
 public record VolunteerAccountDto(
     Guid Id,
-    int Expirience,
+    Guid UserId,
+    int? Expirience,
     List<PaymentDetailsDto>? PaymentDetails,
     List<CertificateDto>? Certificates);
 

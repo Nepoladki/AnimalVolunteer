@@ -15,6 +15,18 @@ public class UserDtoConfiguration : IEntityTypeConfiguration<UserDto>
 
         builder.HasKey(x => x.Id);
 
+        builder.HasOne(x => x.VolunteerAccount)
+            .WithOne()
+            .HasForeignKey<VolunteerAccountDto>(va => va.UserId);
+        
+        builder.HasOne(x => x.ParticipantAccount)
+            .WithOne()
+            .HasForeignKey<ParticipantAccountDto>(pa => pa.UserId);
+        
+        builder.HasOne(x => x.AdminAccount)
+            .WithOne()
+            .HasForeignKey<AdminAccountDto>(aa => aa.UserId);
+
         builder.Property(u => u.SocialNetworks)
             .HasConversion(
             sn => JsonSerializer.Serialize(sn, JsonSerializerOptions.Default),

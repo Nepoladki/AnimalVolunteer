@@ -51,7 +51,6 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     photo = table.Column<string>(type: "text", nullable: false),
                     social_networks = table.Column<string>(type: "text", nullable: false),
-                    role_id = table.Column<Guid>(type: "uuid", nullable: false),
                     first_name = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
                     last_name = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
                     patronymic = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: true),
@@ -317,7 +316,7 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     user_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    expirience = table.Column<int>(type: "integer", nullable: false),
+                    expirience = table.Column<int>(type: "integer", nullable: true),
                     certificates = table.Column<string>(type: "text", nullable: false),
                     payment_details = table.Column<string>(type: "text", nullable: false)
                 },
@@ -337,15 +336,13 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 name: "ix_admin_accounts_user_id",
                 schema: "accounts",
                 table: "admin_accounts",
-                column: "user_id",
-                unique: true);
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_participant_accounts_user_id",
                 schema: "accounts",
                 table: "participant_accounts",
-                column: "user_id",
-                unique: true);
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_permissions_code_name",
@@ -420,8 +417,7 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 name: "ix_volunteer_accounts_user_id",
                 schema: "accounts",
                 table: "volunteer_accounts",
-                column: "user_id",
-                unique: true);
+                column: "user_id");
         }
 
         /// <inheritdoc />

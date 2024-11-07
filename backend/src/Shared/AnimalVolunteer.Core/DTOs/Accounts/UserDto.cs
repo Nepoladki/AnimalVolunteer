@@ -9,7 +9,6 @@ public class UserDto
     public string? Patronymic {  get; init; }
     public string LastName { get; init; } = default!;
     public string? Photo {  get; init; }
-    public int? Expirience { get; init; }
     public List<SocialNetworkDto> SocialNetworks { get; init; } = [];
     public AdminAccountDto? AdminAccount { get; set; }
     public ParticipantAccountDto? ParticipantAccount { get; set; }

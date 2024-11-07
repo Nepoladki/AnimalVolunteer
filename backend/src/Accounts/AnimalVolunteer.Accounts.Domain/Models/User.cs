@@ -11,7 +11,6 @@ public sealed class User : IdentityUser<Guid>
     public FullName FullName { get; set; } = default!;
     public string Photo { get; set; } = string.Empty;
     public List<SocialNetwork> SocialNetworks { get; set; } = [];
-    public Guid RoleId { get; set; }
     public List<Role> Roles { get; set; } = null!;
     
     public static User CreateAdmin(
