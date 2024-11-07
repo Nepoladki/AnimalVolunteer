@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Security.Cryptography;
 using System.Text.Json;
 
-namespace AnimalVolunteer.Accounts.Infrastructure.Configurations;
+namespace AnimalVolunteer.Accounts.Infrastructure.Configurations.Write;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {

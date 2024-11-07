@@ -14,6 +14,7 @@ using AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
 using AnimalVolunteer.Accounts.Infrastructure.Options;
 using AnimalVolunteer.Core;
 using AnimalVolunteer.Framework.Authorization;
+using AnimalVolunteer.Accounts.Infrastructure.DbContexts;
 
 namespace AnimalVolunteer.Accounts.Infrastructure;
 
@@ -25,7 +26,8 @@ public static partial class DependencyInjection
         services.Configure<JwtOptions>(config.GetSection(JwtOptions.SECTION_NAME));
         services.Configure<AdminOptions>(config.GetSection(AdminOptions.SECTION_NAME));
 
-        services.AddScoped<AccountsDbContext>();
+        services.AddScoped<AccountsWriteDbContext>();
+        services.AddScoped<IReadDbContext, AccountsReadDbContext>();
 
         services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(Modules.Accounts);
 
@@ -47,7 +49,7 @@ public static partial class DependencyInjection
         services
             .AddIdentityCore<User>(options => options.User.RequireUniqueEmail = true)
             .AddRoles<Role>()
-            .AddEntityFrameworkStores<AccountsDbContext>()
+            .AddEntityFrameworkStores<AccountsWriteDbContext>()
             .AddDefaultTokenProviders();
 
         services

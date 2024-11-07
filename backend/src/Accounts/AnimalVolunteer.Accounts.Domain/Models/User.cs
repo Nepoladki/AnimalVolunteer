@@ -13,9 +13,6 @@ public sealed class User : IdentityUser<Guid>
     public List<SocialNetwork> SocialNetworks { get; set; } = [];
     public Guid RoleId { get; set; }
     public List<Role> Roles { get; set; } = null!;
-    public ParticipantAccount? ParticipantAccount { get; set; }
-    public VolunteerAccount? VolunteerAccount { get; set; }
-    public AdminAccount? AdminAccount { get; set; }
     
     public static User CreateAdmin(
         string userName, string email, Role role)

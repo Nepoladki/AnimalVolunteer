@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Accounts.Application.Interfaces;
 using AnimalVolunteer.Accounts.Domain.Models;
+using AnimalVolunteer.Accounts.Infrastructure.DbContexts;
 using AnimalVolunteer.SharedKernel;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -9,9 +10,9 @@ namespace AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
 
 public class RefreshSessionManager : IRefreshSessionManager
 {
-    private readonly AccountsDbContext _context;
+    private readonly AccountsWriteDbContext _context;
 
-    public RefreshSessionManager(AccountsDbContext context)
+    public RefreshSessionManager(AccountsWriteDbContext context)
     {
         _context = context;
     }

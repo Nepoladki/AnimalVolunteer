@@ -1,13 +1,14 @@
 ﻿using AnimalVolunteer.Accounts.Domain.Models;
+using AnimalVolunteer.Accounts.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
 
 public class PermissonManager
 {
-    private readonly AccountsDbContext _accountsDbContext;
+    private readonly AccountsWriteDbContext _accountsDbContext;
 
-    public PermissonManager(AccountsDbContext accountsDbContext)
+    public PermissonManager(AccountsWriteDbContext accountsDbContext)
     {
         _accountsDbContext = accountsDbContext;
     }

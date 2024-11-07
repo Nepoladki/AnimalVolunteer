@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Accounts.Application.Interfaces;
 using AnimalVolunteer.Accounts.Domain.Models.AccountTypes;
+using AnimalVolunteer.Accounts.Infrastructure.DbContexts;
 using AnimalVolunteer.Core.DTOs.Accounts;
 using AnimalVolunteer.Core.DTOs.Common;
 using Microsoft.EntityFrameworkCore;
@@ -9,9 +10,9 @@ namespace AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
 
 public class AccountManager : IAccountManager
 {
-    private readonly AccountsDbContext _context;
+    private readonly AccountsWriteDbContext _context;
 
-    public AccountManager(AccountsDbContext context)
+    public AccountManager(AccountsWriteDbContext context)
     {
         _context = context;
     }

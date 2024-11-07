@@ -2,36 +2,43 @@
 using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.Core.DTOs.Accounts;
 using AnimalVolunteer.Core.Extensions;
-using AnimalVolunteer.Core.Factories;
 using AnimalVolunteer.SharedKernel;
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnimalVolunteer.Accounts.Application.Queries.GetUserInfo;
 
-public class GetUserInfoHandler : IQueryHandler<Result<UserAccountDto, ErrorList>, GetUserInfoQuery>
+public class GetUserInfoHandler :
+    IQueryHandler<Result<UserDto, ErrorList>, GetUserInfoQuery>
 {
-    private readonly SqlConnectionFactory _sqlConnectionFactory;
     private readonly IValidator<GetUserInfoQuery> _validator;
+    private readonly IReadDbContext _readDbContext;
 
     public GetUserInfoHandler(
-        SqlConnectionFactory sqlConnectionFactory,
-        IValidator<GetUserInfoQuery> validator)
+        IValidator<GetUserInfoQuery> validator, IReadDbContext readDbContext)
     {
-        _sqlConnectionFactory = sqlConnectionFactory;
         _validator = validator;
+        _readDbContext = readDbContext;
     }
 
-    public async Task<Result<UserAccountDto, ErrorList>> Handle(
+    public async Task<Result<UserDto, ErrorList>> Handle(
         GetUserInfoQuery query, CancellationToken cancellationToken)
     {
         var validationResult = _validator.Validate(query);
         if (validationResult.IsValid == false)
             return validationResult.ToErrorList();
 
-        using var connection = _sqlConnectionFactory.Create();
+        var user = await _readDbContext.Users
+            .Include(u => u.AdminAccount)
+            .Include(u => u.VolunteerAccount)
+            .Include(u => u.ParticipantAccount)
+            .FirstOrDefaultAsync(u => u.Id == query.UserId, cancellationToken);
 
-        var query = """"""
+        if (user is null)
+            return Errors.Accounts.UserNotFoud(query.UserId).ToErrorList();
+
+        return user;
     }
 }
 
