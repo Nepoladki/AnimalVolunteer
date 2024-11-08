@@ -6,13 +6,16 @@ using System.Runtime.InteropServices;
 
 namespace AnimalVolunteer.VolunteerRequests.Domain;
 
-public sealed class VolunteerRequest
+public sealed class VolunteerRequest : CSharpFunctionalExtensions.Entity<VolunteerRequestId>
 {
     // EF Core ctor 
-    private VolunteerRequest() { }
-    private VolunteerRequest(UserId userId, AdminId adminId, DiscussionId discussionId)
+    private VolunteerRequest(VolunteerRequestId id) : base(id) { }
+    private VolunteerRequest(
+        VolunteerRequestId id, 
+        UserId userId, 
+        AdminId adminId, 
+        DiscussionId discussionId) : base(id)
     {
-        RequestId = VolunteerRequestId.Create();
         UserId = userId;
         AdminId = adminId;
         DiscussionId = discussionId;
@@ -20,7 +23,6 @@ public sealed class VolunteerRequest
         RejectionComment = null;
         CreatedAt = DateTime.UtcNow;
     }
-    public VolunteerRequestId RequestId { get; }
     public UserId UserId { get; } = null!;
     public AdminId AdminId { get; private set; } = null!;
     public DiscussionId DiscussionId { get; private set; } = null!;
@@ -29,47 +31,34 @@ public sealed class VolunteerRequest
     public DateTime CreatedAt { get; }
 
     public static VolunteerRequest Create(
+        VolunteerRequestId id,
         UserId userId, 
         AdminId adminId, 
         DiscussionId discussionId) =>
-            new(userId, adminId, discussionId);
+            new(id, userId, adminId, discussionId);
 
     /// <summary>
-    /// Sets status of request to Submitted, 
-    /// then provides way of transfering it to admin's consideration
+    /// Sets status of request to Submitted.
     /// </summary>
-    public void Submit()
-    {
-        // Request transfer logic
+    public void Submit() => Status = VolunteerRequestStatus.Submitted;
 
-        Status = VolunteerRequestStatus.Submitted;
-    }
 
     /// <summary>
     /// Sets status to RevisionRequired, which means that candidate
-    /// must get aquainted with comment RejectionComment and amend request
+    /// must get aquainted with comment RejectionComment and amend request.
     /// </summary>
-    /// <param name="comment"></param>
-    /// <returns>CSharpFunctionalExtensions.UnitResult</returns>
-    public UnitResult<Error> SendOnRevision(string comment)
-    {
-        // Request transfer logic
-
-        Status = VolunteerRequestStatus.RevisionRequired;
-
-        return UnitResult.Success<Error>();
-    }
+    public void SendOnRevision() => Status = VolunteerRequestStatus.RevisionRequired;
 
     /// <summary>
     /// Sets status to Rejected, 
     /// which means no more actions could be made with this request, except deleting
     /// </summary>
     /// <param name="rejectionComment"></param>
-    /// <returns>CSharpFunctionalExtensions.UnitResult</returns>
+    /// <returns>CSharpFunctionalExtensions.UnitResult`Error</returns>
     public UnitResult<Error> Reject(string rejectionComment)
     {
         if (string.IsNullOrWhiteSpace(rejectionComment))
-            return Errors.VolunteerRequests.RejectionMessageEmpty(RequestId);
+            return Errors.VolunteerRequests.RejectionMessageEmpty(Id);
         
         RejectionComment = rejectionComment;
         Status = VolunteerRequestStatus.Rejected;
@@ -77,17 +66,8 @@ public sealed class VolunteerRequest
         return UnitResult.Success<Error>();
     }
     /// <summary>
-    /// Sets status to Approved,
-    /// then requests to create VolunteerAccount
+    /// Sets status to Approved. Afrer, a request must be made to create VolunteerAccount for user.
     /// </summary>
-    /// <returns></returns>
-    public UnitResult<Error> ApproveRequest()
-    {
-        Status = VolunteerRequestStatus.Approved;
-
-        // Request to create VolunteerAccout (by contract?)
-
-        return UnitResult.Success<Error>();
-    }
+    public void ApproveRequest() => Status = VolunteerRequestStatus.Approved;
 }
 

@@ -6,7 +6,6 @@ public enum VolunteerRequestStatus
     Submitted,
     Rejected,
     RevisionRequired,
-    Approved,
-    Dismissed
+    Approved
 }
 
