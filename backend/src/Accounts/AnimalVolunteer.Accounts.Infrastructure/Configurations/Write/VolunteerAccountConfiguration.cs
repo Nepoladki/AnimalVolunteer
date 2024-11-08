@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Text.Json;
 
-namespace AnimalVolunteer.Accounts.Infrastructure.Configurations;
+namespace AnimalVolunteer.Accounts.Infrastructure.Configurations.Write;
 
 public class VolunteerAccountConfiguration : IEntityTypeConfiguration<VolunteerAccount>
 {
@@ -19,7 +19,7 @@ public class VolunteerAccountConfiguration : IEntityTypeConfiguration<VolunteerA
             .HasConversion(
             pd => JsonSerializer.Serialize(pd, JsonSerializerOptions.Default),
             json => JsonSerializer.Deserialize<List<PaymentDetails>>(json, JsonSerializerOptions.Default)!);
-        
+
         builder.Property(va => va.Certificates)
             .HasConversion(
             c => JsonSerializer.Serialize(c, JsonSerializerOptions.Default),

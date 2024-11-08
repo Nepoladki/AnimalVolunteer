@@ -46,20 +46,12 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, CreateVolunteerComma
 
         var statistics = Statistics.CreateEmpty();
 
-        var socialNetworks = command.SocialNetworkList
-            .Select(x => SocialNetwork.Create(x.Name, x.URL).Value).ToList();
-
-        var paymentDetails = command.PaymentDetailsList
-            .Select(x => PaymentDetails.Create(x.Name, x.Description).Value).ToList();
-
         var volunteer = DomainEntity.Volunteer.Create(
             VolunteerId.Create(),
             fullName,
             email,
             description,
-            statistics,
-            socialNetworks,
-            paymentDetails);
+            statistics);
 
         await _volunteerRepository.Create(volunteer, cancellationToken);
 

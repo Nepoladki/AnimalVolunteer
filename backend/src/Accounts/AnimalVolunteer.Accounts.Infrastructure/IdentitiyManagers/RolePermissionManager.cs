@@ -1,13 +1,14 @@
 ﻿using AnimalVolunteer.Accounts.Domain.Models;
+using AnimalVolunteer.Accounts.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
 
 public class RolePermissionManager
 {
-    private readonly AccountsDbContext _accountsDbContext;
+    private readonly AccountsWriteDbContext _accountsDbContext;
 
-    public RolePermissionManager(AccountsDbContext accountsDbContext)
+    public RolePermissionManager(AccountsWriteDbContext accountsDbContext)
     {
         _accountsDbContext = accountsDbContext;
     }

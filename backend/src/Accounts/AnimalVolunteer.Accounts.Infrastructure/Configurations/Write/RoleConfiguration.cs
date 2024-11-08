@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Threading.RateLimiting;
 
-namespace AnimalVolunteer.Accounts.Infrastructure.Configurations;
+namespace AnimalVolunteer.Accounts.Infrastructure.Configurations.Write;
 
 public class RoleConfiguration : IEntityTypeConfiguration<Role>
 {

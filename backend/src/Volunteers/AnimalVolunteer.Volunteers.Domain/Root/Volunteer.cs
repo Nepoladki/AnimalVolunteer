@@ -21,9 +21,7 @@ public class Volunteer : SoftDeletableEntity<VolunteerId>
         Email email,
         Description description,
         Statistics statistics,
-        ValueObjectList<ContactInfo> contactInfoList,
-        ValueObjectList<SocialNetwork> socialNetworkList,
-        ValueObjectList<PaymentDetails> paymentDetailsList) : base(id)
+        ValueObjectList<ContactInfo> contactInfoList) : base(id)
     {
         _pets = [];
         FullName = fullName;
@@ -31,8 +29,6 @@ public class Volunteer : SoftDeletableEntity<VolunteerId>
         Description = description;
         Statistics = statistics;
         ContactInfoList = contactInfoList;
-        SocialNetworksList = socialNetworkList;
-        PaymentDetailsList = paymentDetailsList;
     }
 
     private readonly List<Pet> _pets = default!;
@@ -41,8 +37,6 @@ public class Volunteer : SoftDeletableEntity<VolunteerId>
     public Description Description { get; private set; } = null!;
     public Statistics Statistics { get; private set; } = null!;
     public IReadOnlyList<ContactInfo> ContactInfoList { get; private set; } = null!;
-    public IReadOnlyList<SocialNetwork> SocialNetworksList { get; private set; } = null!;
-    public IReadOnlyList<PaymentDetails> PaymentDetailsList { get; private set; } = null!;
     public IReadOnlyList<Pet> Pets => _pets;
     public int CountPetsFoundedHome() => Statistics.PetsFoundedHome;
     public int CountPetsLookingForHome() => Statistics.PetsLookingForHome;
@@ -53,9 +47,7 @@ public class Volunteer : SoftDeletableEntity<VolunteerId>
         FullName fullName,
         Email email,
         Description description,
-        Statistics statistics,
-        ValueObjectList<SocialNetwork> socialNetworkList,
-        ValueObjectList<PaymentDetails> paymentDetailsList)
+        Statistics statistics)
     {
         var contactInfoList = new List<ContactInfo>();
 
@@ -65,9 +57,7 @@ public class Volunteer : SoftDeletableEntity<VolunteerId>
         email,
         description,
         statistics,
-        contactInfoList,
-        socialNetworkList,
-        paymentDetailsList);
+        contactInfoList);
     }
     public void UpdateMainInfo(FullName fullName, Email email, Description description)
     {
@@ -78,12 +68,6 @@ public class Volunteer : SoftDeletableEntity<VolunteerId>
 
     public void UpdateContactInfo(ValueObjectList<ContactInfo> contacts) =>
         ContactInfoList = contacts;
-
-    public void UpdateSocialNetworks(ValueObjectList<SocialNetwork> socialNetworks) =>
-        SocialNetworksList = socialNetworks;
-
-    public void UpdatePaymentDetails(ValueObjectList<PaymentDetails> paymentDetails) =>
-        PaymentDetailsList = paymentDetails;
 
     public override void SoftDelete()
     {

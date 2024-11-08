@@ -6,18 +6,14 @@ namespace AnimalVolunteer.Volunteers.Web.Requests.Volunteer
     public record CreateVolunteerRequest(
     FullNameDto FullName,
     string Email,
-    string Description,
-    IEnumerable<SocialNetworkDto> SocialNetworkList,
-    IEnumerable<PaymentDetailsDto> PaymentDetailsList)
+    string Description)
     {
         public CreateVolunteerCommand ToCommand()
         {
             return new(
                 FullName,
                 Email,
-                Description,
-                SocialNetworkList,
-                PaymentDetailsList);
+                Description);
         }
     }
 }

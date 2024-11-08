@@ -91,18 +91,6 @@ public class VolunteerConfigurations : IEntityTypeConfiguration<Volunteer>
                   .Create(dto.PhoneNumber, dto.Name, dto.Note).Value)
           .HasColumnName(ContactInfo.DB_COLUMN_NAME);
 
-        builder.Property(x => x.SocialNetworksList)
-             .HasValueObjectsJsonConversion(
-            dm => new SocialNetworkDto(dm.Name, dm.URL),
-            dto => SocialNetwork.Create(dto.Name, dto.URL).Value)
-             .HasColumnName(SocialNetwork.DB_COLUMN_NAME);
-
-        builder.Property(x => x.PaymentDetailsList)
-            .HasValueObjectsJsonConversion(
-            dm => new PaymentDetailsDto(dm.Name, dm.Description),
-            dto => PaymentDetails.Create(dto.Name, dto.Description).Value)
-            .HasColumnName(PaymentDetails.DB_COLUMN_NAME);
-
         builder.HasMany(v => v.Pets)
             .WithOne()
             .HasForeignKey(p => p.VolunteerId)

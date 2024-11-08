@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Security.Cryptography;
 using System.Text.Json;
 
-namespace AnimalVolunteer.Accounts.Infrastructure.Configurations;
+namespace AnimalVolunteer.Accounts.Infrastructure.Configurations.Write;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
@@ -17,7 +17,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasKey(u => u.Id);
 
-        builder.HasOne(u => u.Role);
+        builder.HasMany(u => u.Roles);
 
         builder.ComplexProperty(u => u.FullName, builder =>
         {

@@ -9,7 +9,7 @@ public sealed class ParticipantAccount
     // EF Core ctor
     private ParticipantAccount() { }
     public Guid Id { get; set; }
-    public User User { get; set; }
+    public User User { get; set; } = null!;
     public Guid UserId { get; set; }
 
     public static ParticipantAccount Create(User user)

@@ -1,6 +1,7 @@
 ﻿using AnimalVolunteer.Accounts.Application.Interfaces;
 using AnimalVolunteer.Accounts.Application.Models;
 using AnimalVolunteer.Accounts.Domain.Models;
+using AnimalVolunteer.Accounts.Infrastructure.DbContexts;
 using AnimalVolunteer.Core.Options;
 using AnimalVolunteer.Framework.Authorization;
 using AnimalVolunteer.SharedKernel;
@@ -16,10 +17,10 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Providers;
 public class JwtTokenProvider : IJwtTokenProvider
 {
     private readonly JwtOptions _jwtOptions;
-    private readonly AccountsDbContext _accountsDbContext;
+    private readonly AccountsWriteDbContext _accountsDbContext;
 
     public JwtTokenProvider(
-        IOptions<JwtOptions> jwtOptions, AccountsDbContext accountsDbContext)
+        IOptions<JwtOptions> jwtOptions, AccountsWriteDbContext accountsDbContext)
     {
         _jwtOptions = jwtOptions.Value;
         _accountsDbContext = accountsDbContext;

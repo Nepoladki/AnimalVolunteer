@@ -5,7 +5,7 @@ using Npgsql;
 using System.Data;
 using System.Reflection.Metadata.Ecma335;
 
-namespace AnimalVolunteer.Volunteers.Infrastructure;
+namespace AnimalVolunteer.Core.Factories;
 
 public class SqlConnectionFactory
 {

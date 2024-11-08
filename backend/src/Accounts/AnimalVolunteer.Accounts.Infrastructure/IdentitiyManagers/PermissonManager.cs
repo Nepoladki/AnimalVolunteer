@@ -1,13 +1,14 @@
 ﻿using AnimalVolunteer.Accounts.Domain.Models;
+using AnimalVolunteer.Accounts.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
 
 public class PermissonManager
 {
-    private readonly AccountsDbContext _accountsDbContext;
+    private readonly AccountsWriteDbContext _accountsDbContext;
 
-    public PermissonManager(AccountsDbContext accountsDbContext)
+    public PermissonManager(AccountsWriteDbContext accountsDbContext)
     {
         _accountsDbContext = accountsDbContext;
     }
@@ -41,11 +42,12 @@ public class PermissonManager
         Guid userId, CancellationToken cancellationToken)
     {
         var user = await _accountsDbContext.Users
-            .Include(u => u.Role)
+            .Include(u => u.Roles)
             .ThenInclude(r => r.RolePermissions)
             .ThenInclude(rp => rp.Permission)
             .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
 
-        return user?.Role.RolePermissions.Select(rp => rp.Permission.CodeName);
+        return user?.Roles
+            .SelectMany(r => r.RolePermissions.Select(rp => rp.Permission.CodeName));
     }
 } 

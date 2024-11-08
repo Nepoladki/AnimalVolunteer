@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AnimalVolunteer.Accounts.Infrastructure.Configurations;
+namespace AnimalVolunteer.Accounts.Infrastructure.Configurations.Write;
 
 public class RefreshSessionConfiguration : IEntityTypeConfiguration<RefreshSession>
 {
