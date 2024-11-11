@@ -17,7 +17,5 @@ public class VolunteerDto
     public int PetsInVetClinic { get; init; }
     public bool IsDeleted { get; init; }
     public IEnumerable<ContactInfoDto> ContactInfos { get; init; } = default!;
-    public IEnumerable<SocialNetworkDto> SocialNetworks { get; init; } = default!;
-    public IEnumerable<PaymentDetailsDto> PaymentDetails { get; init; } = default!;
     public IEnumerable<PetDto> Pets { get; init; } = default!;
 }

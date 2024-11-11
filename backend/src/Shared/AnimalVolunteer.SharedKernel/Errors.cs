@@ -136,4 +136,14 @@ public static class Errors
             Error.Failure("Discussions.DiscussionClosed", 
                 $"Discussion with id {id} closed, could not perform any actions with it");
     }
+
+    public static class VolunteerRequests
+    {
+        public static Error RejectionMessageEmpty(Guid id) =>
+            Error.Validation("VolunteerRequest.EmptyMessage", 
+                $"Rejection message of volunteer request with id {id} could not be empty");
+
+        public static Error WrongStatusChange() =>
+            Error.Conflict("VolunteerRequest.WrongStatusChange", "Incorrect status shift sequence");
+    }
 }

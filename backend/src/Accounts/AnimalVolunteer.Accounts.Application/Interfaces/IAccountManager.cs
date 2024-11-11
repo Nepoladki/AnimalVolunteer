@@ -1,4 +1,5 @@
 ﻿using AnimalVolunteer.Accounts.Domain.Models.AccountTypes;
+using AnimalVolunteer.Core.DTOs.Accounts;
 
 namespace AnimalVolunteer.Accounts.Application.Interfaces;
 

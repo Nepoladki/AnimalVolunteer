@@ -207,16 +207,6 @@ namespace AnimalVolunteer.Volunteers.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
 
-                    b.Property<string>("PaymentDetailsList")
-                        .IsRequired()
-                        .HasColumnType("jsonb")
-                        .HasColumnName("payment_details");
-
-                    b.Property<string>("SocialNetworksList")
-                        .IsRequired()
-                        .HasColumnType("jsonb")
-                        .HasColumnName("social_networks");
-
                     b.ComplexProperty<Dictionary<string, object>>("Description", "AnimalVolunteer.Volunteers.Domain.Root.Volunteer.Description#Description", b1 =>
                         {
                             b1.IsRequired();
