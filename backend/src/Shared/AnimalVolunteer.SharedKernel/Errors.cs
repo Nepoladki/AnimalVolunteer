@@ -108,4 +108,14 @@ public static class Errors
         public static Error RefreshSessionNotFound(Guid refreshToken) =>
             Error.NotFound("Accounts.RefreshSessionNotFound", $"Failed to find refresh session by refresh token {refreshToken}");
     }
+
+    public static class VolunteerRequests
+    {
+        public static Error RejectionMessageEmpty(Guid id) =>
+            Error.Validation("VolunteerRequest.EmptyMessage", 
+                $"Rejection message of volunteer request with id {id} could not be empty");
+
+        public static Error WrongStatusChange() =>
+            Error.Conflict("VolunteerRequest.WrongStatusChange", "Incorrect status shift sequence");
+    }
 }

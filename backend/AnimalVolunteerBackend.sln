@@ -52,15 +52,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AEA13C3B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Accounts", "Accounts", "{3E26E74F-EE19-4C31-80D5-252AB9DD2163}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Accounts.Web", "src\Accounts\AnimalVolunteer.Accounts.Web\AnimalVolunteer.Accounts.Web.csproj", "{CB258827-D10D-46AF-873D-4B04F9CFF646}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Accounts.Web", "src\Accounts\AnimalVolunteer.Accounts.Web\AnimalVolunteer.Accounts.Web.csproj", "{CB258827-D10D-46AF-873D-4B04F9CFF646}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Accounts.Domain", "src\Accounts\AnimalVolunteer.Accounts.Domain\AnimalVolunteer.Accounts.Domain.csproj", "{FE49540D-3396-40B2-A289-3F4CBA791644}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Accounts.Domain", "src\Accounts\AnimalVolunteer.Accounts.Domain\AnimalVolunteer.Accounts.Domain.csproj", "{FE49540D-3396-40B2-A289-3F4CBA791644}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Accounts.Infrastructure", "src\Accounts\AnimalVolunteer.Accounts.Infrastructure\AnimalVolunteer.Accounts.Infrastructure.csproj", "{6F31DCDA-ADC3-4848-8CB1-95DF008FD349}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Accounts.Infrastructure", "src\Accounts\AnimalVolunteer.Accounts.Infrastructure\AnimalVolunteer.Accounts.Infrastructure.csproj", "{6F31DCDA-ADC3-4848-8CB1-95DF008FD349}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Accounts.Contracts", "src\Accounts\AnimalVolunteer.Accounts.Contracts\AnimalVolunteer.Accounts.Contracts.csproj", "{6875BC68-836F-4224-8EF1-7CA0259C4E03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Accounts.Contracts", "src\Accounts\AnimalVolunteer.Accounts.Contracts\AnimalVolunteer.Accounts.Contracts.csproj", "{6875BC68-836F-4224-8EF1-7CA0259C4E03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Accounts.Application", "src\Accounts\AnimalVolunteer.Accounts.Application\AnimalVolunteer.Accounts.Application.csproj", "{FB3200E0-24CA-455E-A96E-D2E789106934}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Accounts.Application", "src\Accounts\AnimalVolunteer.Accounts.Application\AnimalVolunteer.Accounts.Application.csproj", "{FB3200E0-24CA-455E-A96E-D2E789106934}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VolunteerRequests", "VolunteerRequests", "{2B6CA33A-FB19-422F-9131-5F4BCCB09591}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.VolunteerRequests.Web", "src\VolunteersRequests\AnimalVolunteer.VolunteerRequests.Web\AnimalVolunteer.VolunteerRequests.Web.csproj", "{363AB38A-3AE8-460C-B8BD-D7C1154EA63C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.VolunteerRequests.Contracts", "src\VolunteersRequests\AnimalVolunteer.VolunteerRequests.Contracts\AnimalVolunteer.VolunteerRequests.Contracts.csproj", "{EC868F9E-CEC0-4BBB-AAEF-76B9036AD749}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.VolunteerRequests.Infrastructure", "src\VolunteersRequests\AnimalVolunteer.VolunteerRequests.Infrastructure\AnimalVolunteer.VolunteerRequests.Infrastructure.csproj", "{7527DAFA-DF34-4E20-8656-FDEA3E5E5156}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.VolunteerRequests.Domain", "src\VolunteersRequests\AnimalVolunteer.VolunteerRequests.Domain\AnimalVolunteer.VolunteerRequests.Domain.csproj", "{1D7C3DBD-7324-41E3-902D-EE5182C42093}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.VolunteerRequests.Application", "src\VolunteersRequests\AnimalVolunteer.VolunteerRequests.Application\AnimalVolunteer.VolunteerRequests.Application.csproj", "{954CE3D2-0EA6-4A63-9402-C0B703C8BF00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -150,6 +162,26 @@ Global
 		{FB3200E0-24CA-455E-A96E-D2E789106934}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB3200E0-24CA-455E-A96E-D2E789106934}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB3200E0-24CA-455E-A96E-D2E789106934}.Release|Any CPU.Build.0 = Release|Any CPU
+		{363AB38A-3AE8-460C-B8BD-D7C1154EA63C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{363AB38A-3AE8-460C-B8BD-D7C1154EA63C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{363AB38A-3AE8-460C-B8BD-D7C1154EA63C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{363AB38A-3AE8-460C-B8BD-D7C1154EA63C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC868F9E-CEC0-4BBB-AAEF-76B9036AD749}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC868F9E-CEC0-4BBB-AAEF-76B9036AD749}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC868F9E-CEC0-4BBB-AAEF-76B9036AD749}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC868F9E-CEC0-4BBB-AAEF-76B9036AD749}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7527DAFA-DF34-4E20-8656-FDEA3E5E5156}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7527DAFA-DF34-4E20-8656-FDEA3E5E5156}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7527DAFA-DF34-4E20-8656-FDEA3E5E5156}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7527DAFA-DF34-4E20-8656-FDEA3E5E5156}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D7C3DBD-7324-41E3-902D-EE5182C42093}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D7C3DBD-7324-41E3-902D-EE5182C42093}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D7C3DBD-7324-41E3-902D-EE5182C42093}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D7C3DBD-7324-41E3-902D-EE5182C42093}.Release|Any CPU.Build.0 = Release|Any CPU
+		{954CE3D2-0EA6-4A63-9402-C0B703C8BF00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{954CE3D2-0EA6-4A63-9402-C0B703C8BF00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{954CE3D2-0EA6-4A63-9402-C0B703C8BF00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{954CE3D2-0EA6-4A63-9402-C0B703C8BF00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -175,6 +207,11 @@ Global
 		{6F31DCDA-ADC3-4848-8CB1-95DF008FD349} = {3E26E74F-EE19-4C31-80D5-252AB9DD2163}
 		{6875BC68-836F-4224-8EF1-7CA0259C4E03} = {3E26E74F-EE19-4C31-80D5-252AB9DD2163}
 		{FB3200E0-24CA-455E-A96E-D2E789106934} = {3E26E74F-EE19-4C31-80D5-252AB9DD2163}
+		{363AB38A-3AE8-460C-B8BD-D7C1154EA63C} = {2B6CA33A-FB19-422F-9131-5F4BCCB09591}
+		{EC868F9E-CEC0-4BBB-AAEF-76B9036AD749} = {2B6CA33A-FB19-422F-9131-5F4BCCB09591}
+		{7527DAFA-DF34-4E20-8656-FDEA3E5E5156} = {2B6CA33A-FB19-422F-9131-5F4BCCB09591}
+		{1D7C3DBD-7324-41E3-902D-EE5182C42093} = {2B6CA33A-FB19-422F-9131-5F4BCCB09591}
+		{954CE3D2-0EA6-4A63-9402-C0B703C8BF00} = {2B6CA33A-FB19-422F-9131-5F4BCCB09591}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2918F184-1665-4379-B2CA-AE86614A7E61}
