@@ -106,6 +106,34 @@ public static class Errors
             Error.NotFound("Accounts.VolunteerNotFound", $"Failed to find volunteer account with userId {id}");
 
         public static Error RefreshSessionNotFound(Guid refreshToken) =>
-            Error.NotFound("Accounts.RefreshSessionNotFound", $"Failed to find refresh session by refresh token {refreshToken}");
+            Error.NotFound("Accounts.RefreshSessionNotFound", 
+                $"Failed to find refresh session by refresh token {refreshToken}");
+    }
+
+    public static class  Disscussions
+    {
+        public static Error InvalidDiscussionUsers() =>
+            Error.Validation("Disscussions.InvalidDiscussionUsers", "Unable to create discussion: invalid user's ids");
+
+        public static Error IncorrectUsersQuantity() =>
+            Error.Validation("Disscussions.IncorrectUsersQuantity", 
+                "Unable to create discussion with less or more than 2 users");
+
+        public static Error MessagingNotAllowed(Guid userId, Guid discussionId) =>
+            Error.Conflict("Discussions.MessagingNotAllowed", 
+                $"User with id {userId} does not participate in discusstion with id {discussionId}");
+
+        public static Error EmptyMessage() =>
+            Error.Validation("Discussions.EmptyMessage", "Unable to create new message withot text");
+
+        public static Error AccesDenied() =>
+            Error.Conflict("Discussions.AccessDenied", "User can delete or amend only his own messages");
+
+        public static Error MessageNotFound(Guid id) =>
+            Error.NotFound("Discussions.MessageNotFound", $"Message with id {id} was not found in discussion");
+
+        public static Error DiscussionClosed(Guid id) =>
+            Error.Failure("Discussions.DiscussionClosed", 
+                $"Discussion with id {id} closed, could not perform any actions with it");
     }
 }
