@@ -40,14 +40,30 @@ public sealed class VolunteerRequest : CSharpFunctionalExtensions.Entity<Volunte
     /// <summary>
     /// Sets status of request to Submitted.
     /// </summary>
-    public void Submit() => Status = VolunteerRequestStatus.Submitted;
+    public UnitResult<Error> Submit()
+    {
+        if (Status != VolunteerRequestStatus.Created)
+            return Errors.VolunteerRequests.WrongStatusChange();
+
+        Status = VolunteerRequestStatus.Submitted;
+
+        return UnitResult.Success<Error>();
+    }
 
 
     /// <summary>
     /// Sets status to RevisionRequired, which means that candidate
     /// must get aquainted with comment RejectionComment and amend request.
     /// </summary>
-    public void SendOnRevision() => Status = VolunteerRequestStatus.RevisionRequired;
+    public UnitResult<Error> SendOnRevision()
+    {
+        if (Status != VolunteerRequestStatus.Submitted)
+            return Errors.VolunteerRequests.WrongStatusChange();
+
+        Status = VolunteerRequestStatus.RevisionRequired;
+
+        return UnitResult.Success<Error>();
+    }
 
     /// <summary>
     /// Sets status to Rejected, 
@@ -57,6 +73,9 @@ public sealed class VolunteerRequest : CSharpFunctionalExtensions.Entity<Volunte
     /// <returns>CSharpFunctionalExtensions.UnitResult`Error</returns>
     public UnitResult<Error> Reject(string rejectionComment)
     {
+        if (Status != VolunteerRequestStatus.Submitted)
+            return Errors.VolunteerRequests.WrongStatusChange();
+
         if (string.IsNullOrWhiteSpace(rejectionComment))
             return Errors.VolunteerRequests.RejectionMessageEmpty(Id);
         
@@ -68,6 +87,14 @@ public sealed class VolunteerRequest : CSharpFunctionalExtensions.Entity<Volunte
     /// <summary>
     /// Sets status to Approved. Afrer, a request must be made to create VolunteerAccount for user.
     /// </summary>
-    public void ApproveRequest() => Status = VolunteerRequestStatus.Approved;
+    public UnitResult<Error> ApproveRequest()
+    {
+        if (Status != VolunteerRequestStatus.Submitted)
+            return Errors.VolunteerRequests.WrongStatusChange();
+    
+        Status = VolunteerRequestStatus.Approved;
+
+        return UnitResult.Success<Error>();
+    }
 }
 

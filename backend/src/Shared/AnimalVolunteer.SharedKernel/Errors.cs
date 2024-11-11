@@ -114,5 +114,8 @@ public static class Errors
         public static Error RejectionMessageEmpty(Guid id) =>
             Error.Validation("VolunteerRequest.EmptyMessage", 
                 $"Rejection message of volunteer request with id {id} could not be empty");
+
+        public static Error WrongStatusChange() =>
+            Error.Conflict("VolunteerRequest.WrongStatusChange", "Incorrect status shift sequence");
     }
 }
