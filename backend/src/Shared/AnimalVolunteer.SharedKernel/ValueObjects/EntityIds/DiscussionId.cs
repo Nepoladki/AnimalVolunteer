@@ -1,6 +1,9 @@
-﻿namespace AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+﻿
+using CSharpFunctionalExtensions;
 
-public record DiscussionId : IComparable<DiscussionId>
+namespace AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+
+public sealed class DiscussionId : ValueObject
 {
     private DiscussionId(Guid id)
     {
@@ -15,6 +18,11 @@ public record DiscussionId : IComparable<DiscussionId>
         ArgumentNullException.ThrowIfNull(other, nameof(other));
 
         return Value.CompareTo(other);
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
     }
 
     public static implicit operator DiscussionId(Guid guid) => new(guid);
