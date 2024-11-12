@@ -1,9 +1,9 @@
 ﻿using AnimalVolunteer.Core.Abstractions;
-using AnimalVolunteer.Species.Infrastructure.DbContexts;
+using AnimalVolunteer.Discussions.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
 
-namespace AnimalVolunteer.Species.Infrastructure;
+namespace AnimalVolunteer.Discussions.Infrastructure;
 
 public class UnitOfWork : IUnitOfWork
 {

@@ -8,6 +8,7 @@ using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.SharedKernel;
 using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.Volunteers.Application.Interfaces;
+using AnimalVolunteer.Core.Abstractions;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.ContactInfo;
 

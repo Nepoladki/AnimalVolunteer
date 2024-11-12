@@ -9,6 +9,7 @@ using AnimalVolunteer.Volunteers.Domain.ValueObjects.Volunteer;
 using AnimalVolunteer.SharedKernel.ValueObjects;
 using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.Volunteers.Application.Interfaces;
+using AnimalVolunteer.Core.Abstractions;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Volunteer.Update.MainInfo;
 

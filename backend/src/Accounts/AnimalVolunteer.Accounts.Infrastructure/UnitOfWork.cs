@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Accounts.Application.Interfaces;
 using AnimalVolunteer.Accounts.Infrastructure.DbContexts;
+using AnimalVolunteer.Core.Abstractions;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
 

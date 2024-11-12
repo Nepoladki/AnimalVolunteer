@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AnimalVolunteer.Species.Contracts;
 using AnimalVolunteer.Species.Contracts.Requests;
 using AnimalVolunteer.Volunteers.Application.Interfaces;
+using AnimalVolunteer.Core.Abstractions;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.UpdatePet;
 
