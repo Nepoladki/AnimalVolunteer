@@ -6,6 +6,7 @@ namespace AnimalVolunteer.Discussions.Domain.Aggregate.ValueObjects;
 
 public class Text : CSharpFunctionalExtensions.ValueObject
 {
+    public const int MAX_TEXT_LENGTH = 1000;
     private Text(string value)
     {
         Value = value;

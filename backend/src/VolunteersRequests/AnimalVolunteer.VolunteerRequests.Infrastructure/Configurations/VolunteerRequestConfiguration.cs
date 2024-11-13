@@ -4,6 +4,7 @@ using AnimalVolunteer.VolunteerRequests.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace AnimalVolunteer.VolunteerRequests.Infrastructure.Configurations;
 public class VolunteerRequestConfiguration : IEntityTypeConfiguration<VolunteerRequest>
@@ -13,6 +14,14 @@ public class VolunteerRequestConfiguration : IEntityTypeConfiguration<VolunteerR
         builder.ToTable("volunteer_requests");
 
         builder.HasKey(v => v.Id);
+
+        builder
+            .Property(v => v.Id)
+            .HasConversion(
+                vo => vo.Value,
+                db => VolunteerRequestId.CreateWithGuid(db))
+            .IsRequired()
+            .HasColumnName("id");
 
         builder
             .Property(v => v.UserId)

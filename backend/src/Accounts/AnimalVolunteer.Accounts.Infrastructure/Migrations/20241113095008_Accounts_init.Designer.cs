@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
 {
     [DbContext(typeof(AccountsWriteDbContext))]
-    [Migration("20241107184507_Accounts_init")]
+    [Migration("20241113095008_Accounts_init")]
     partial class Accounts_init
     {
         /// <inheritdoc />
@@ -266,7 +266,6 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                         .HasColumnName("phone_number_confirmed");
 
                     b.Property<string>("Photo")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("photo");
 

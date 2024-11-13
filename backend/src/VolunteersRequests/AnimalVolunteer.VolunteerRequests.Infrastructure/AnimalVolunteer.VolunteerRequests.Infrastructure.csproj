@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\AnimalVolunteer.Core\AnimalVolunteer.Core.csproj" />
+    <ProjectReference Include="..\AnimalVolunteer.VolunteerRequests.Application\AnimalVolunteer.VolunteerRequests.Application.csproj" />
     <ProjectReference Include="..\AnimalVolunteer.VolunteerRequests.Domain\AnimalVolunteer.VolunteerRequests.Domain.csproj" />
   </ItemGroup>
 

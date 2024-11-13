@@ -3,7 +3,7 @@ using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 
-public sealed class DiscussionId : ValueObject
+public sealed class DiscussionId : ValueObject, IComparable<DiscussionId>
 {
     private DiscussionId(Guid id)
     {

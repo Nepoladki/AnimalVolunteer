@@ -6,6 +6,8 @@ using AnimalVolunteer.Accounts.Web;
 using Serilog;
 using AnimalVolunteer.Accounts.Infrastructure.DatabaseSeeding;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using AnimalVolunteer.VolunteerRequests.Web;
+using AnimalVolunteer.Discussions.Web;
 
 DotNetEnv.Env.Load();
 
@@ -19,7 +21,9 @@ services
     .AddApi(config)
     .AddAccountsModule(config)
     .AddVolunteersModule(config)
-    .AddSpeciesModule(config);
+    .AddSpeciesModule(config)
+    .AddVolunteerRequestsModule(config)
+    .AddDiscussionsModule(config);
 
 services.AddControllers();
 

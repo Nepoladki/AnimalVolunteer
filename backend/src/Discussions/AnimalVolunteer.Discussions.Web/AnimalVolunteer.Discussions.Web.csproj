@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AnimalVolunteer.Discussions.Application\AnimalVolunteer.Discussions.Application.csproj" />
+    <ProjectReference Include="..\AnimalVolunteer.Discussions.Infrastructure\AnimalVolunteer.Discussions.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

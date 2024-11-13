@@ -25,8 +25,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Accounts\AnimalVolunteer.Accounts.Web\AnimalVolunteer.Accounts.Web.csproj" />
+    <ProjectReference Include="..\Discussions\AnimalVolunteer.Discussions.Infrastructure\AnimalVolunteer.Discussions.Infrastructure.csproj" />
+    <ProjectReference Include="..\Discussions\AnimalVolunteer.Discussions.Web\AnimalVolunteer.Discussions.Web.csproj" />
     <ProjectReference Include="..\Species\AnimalVolunteer.Species.Infrastructure\AnimalVolunteer.Species.Infrastructure.csproj" />
     <ProjectReference Include="..\Species\AnimalVolunteer.Species.Web\AnimalVolunteer.Species.Web.csproj" />
+    <ProjectReference Include="..\VolunteersRequests\AnimalVolunteer.VolunteerRequests.Infrastructure\AnimalVolunteer.VolunteerRequests.Infrastructure.csproj" />
+    <ProjectReference Include="..\VolunteersRequests\AnimalVolunteer.VolunteerRequests.Web\AnimalVolunteer.VolunteerRequests.Web.csproj" />
     <ProjectReference Include="..\Volunteers\AnimalVolunteer.Volunteers.Infrastructure\AnimalVolunteer.Volunteers.Infrastructure.csproj" />
     <ProjectReference Include="..\Volunteers\AnimalVolunteer.Volunteers.Web\AnimalVolunteer.Volunteers.Web.csproj" />
   </ItemGroup>

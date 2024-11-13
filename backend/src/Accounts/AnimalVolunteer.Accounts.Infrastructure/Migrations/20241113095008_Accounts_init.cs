@@ -49,7 +49,7 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    photo = table.Column<string>(type: "text", nullable: false),
+                    photo = table.Column<string>(type: "text", nullable: true),
                     social_networks = table.Column<string>(type: "text", nullable: false),
                     first_name = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
                     last_name = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),

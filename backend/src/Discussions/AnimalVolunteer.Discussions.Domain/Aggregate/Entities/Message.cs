@@ -20,6 +20,7 @@ public sealed class Message : CSharpFunctionalExtensions.Entity<MessageId>
     public Text Text { get; private set; } = default!;
     public DateTime CreatedAt { get; } = DateTime.UtcNow;
     public bool IsEdited { get; private set; }
+    public Discussion Discussion { get; } = default!;
 
     public static Message Create(Guid userId, Text text) => new(userId, text);
 

@@ -11,6 +11,7 @@ public class WriteDbContext : DbContext
 {
     private readonly IConfiguration _configuration;
     private readonly DatabaseOptions _options;
+
     public WriteDbContext(IConfiguration configuration, 
         IOptions<DatabaseOptions> options)
     {
@@ -32,6 +33,8 @@ public class WriteDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.HasDefaultSchema("volunteer_requests");
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }

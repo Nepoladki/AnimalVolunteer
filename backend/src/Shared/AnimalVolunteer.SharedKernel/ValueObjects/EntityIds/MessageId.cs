@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
-public sealed class MessageId : ValueObject
+public sealed class MessageId : ValueObject, IComparable<MessageId>
 {
     private MessageId(Guid value) => Value = value;
     public Guid Value { get; }

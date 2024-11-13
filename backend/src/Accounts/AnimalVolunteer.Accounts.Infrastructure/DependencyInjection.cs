@@ -15,6 +15,7 @@ using AnimalVolunteer.Accounts.Infrastructure.Options;
 using AnimalVolunteer.Core;
 using AnimalVolunteer.Framework.Authorization;
 using AnimalVolunteer.Accounts.Infrastructure.DbContexts;
+using AnimalVolunteer.Core.Abstractions;
 
 namespace AnimalVolunteer.Accounts.Infrastructure;
 

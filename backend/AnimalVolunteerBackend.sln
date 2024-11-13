@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.API", "src\Web\AnimalVolunteer.API.csproj", "{50CB1F7D-CCA4-4791-A9C6-E08EB3FC3B2A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{363AB38A-3AE8-460C-B8BD-D7C1154EA63C} = {363AB38A-3AE8-460C-B8BD-D7C1154EA63C}
+		{B1949C25-7B39-4A26-9A12-F145E215C3B9} = {B1949C25-7B39-4A26-9A12-F145E215C3B9}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{6BEDAD03-A0AC-44D0-9740-DE654403792B}"
 	ProjectSection(SolutionItems) = preProject
@@ -64,27 +68,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Accounts.Ap
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Discussions", "Discussions", "{42BCBBD7-D70F-492C-8143-A7BB1710A36C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Discussions.Web", "src\Discussions\AnimalVolunteer.Discussions.Web\AnimalVolunteer.Discussions.Web.csproj", "{B1949C25-7B39-4A26-9A12-F145E215C3B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Discussions.Web", "src\Discussions\AnimalVolunteer.Discussions.Web\AnimalVolunteer.Discussions.Web.csproj", "{B1949C25-7B39-4A26-9A12-F145E215C3B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Discussions.Infrastructure", "src\Discussions\AnimalVolunteer.Discussions.Infrastructure\AnimalVolunteer.Discussions.Infrastructure.csproj", "{F72216FE-5525-42FC-B79C-4A631022C33A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Discussions.Infrastructure", "src\Discussions\AnimalVolunteer.Discussions.Infrastructure\AnimalVolunteer.Discussions.Infrastructure.csproj", "{F72216FE-5525-42FC-B79C-4A631022C33A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Discussions.Application", "src\Discussions\AnimalVolunteer.Discussions.Application\AnimalVolunteer.Discussions.Application.csproj", "{B21D4716-4C5D-400A-A176-D3AEC7B934DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Discussions.Application", "src\Discussions\AnimalVolunteer.Discussions.Application\AnimalVolunteer.Discussions.Application.csproj", "{B21D4716-4C5D-400A-A176-D3AEC7B934DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Discussions.Contracts", "src\Discussions\AnimalVolunteer.Discussions.Contracts\AnimalVolunteer.Discussions.Contracts.csproj", "{A6F4480E-8E7A-43C2-A245-D3CE8763A27A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Discussions.Contracts", "src\Discussions\AnimalVolunteer.Discussions.Contracts\AnimalVolunteer.Discussions.Contracts.csproj", "{A6F4480E-8E7A-43C2-A245-D3CE8763A27A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.Discussions.Domain", "src\Discussions\AnimalVolunteer.Discussions.Domain\AnimalVolunteer.Discussions.Domain.csproj", "{B715A820-109A-48E5-BD38-460D50B03E0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.Discussions.Domain", "src\Discussions\AnimalVolunteer.Discussions.Domain\AnimalVolunteer.Discussions.Domain.csproj", "{B715A820-109A-48E5-BD38-460D50B03E0F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VolunteerRequests", "VolunteerRequests", "{2B6CA33A-FB19-422F-9131-5F4BCCB09591}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.VolunteerRequests.Web", "src\VolunteersRequests\AnimalVolunteer.VolunteerRequests.Web\AnimalVolunteer.VolunteerRequests.Web.csproj", "{363AB38A-3AE8-460C-B8BD-D7C1154EA63C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.VolunteerRequests.Web", "src\VolunteersRequests\AnimalVolunteer.VolunteerRequests.Web\AnimalVolunteer.VolunteerRequests.Web.csproj", "{363AB38A-3AE8-460C-B8BD-D7C1154EA63C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.VolunteerRequests.Contracts", "src\VolunteersRequests\AnimalVolunteer.VolunteerRequests.Contracts\AnimalVolunteer.VolunteerRequests.Contracts.csproj", "{EC868F9E-CEC0-4BBB-AAEF-76B9036AD749}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.VolunteerRequests.Contracts", "src\VolunteersRequests\AnimalVolunteer.VolunteerRequests.Contracts\AnimalVolunteer.VolunteerRequests.Contracts.csproj", "{EC868F9E-CEC0-4BBB-AAEF-76B9036AD749}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.VolunteerRequests.Infrastructure", "src\VolunteersRequests\AnimalVolunteer.VolunteerRequests.Infrastructure\AnimalVolunteer.VolunteerRequests.Infrastructure.csproj", "{7527DAFA-DF34-4E20-8656-FDEA3E5E5156}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.VolunteerRequests.Infrastructure", "src\VolunteersRequests\AnimalVolunteer.VolunteerRequests.Infrastructure\AnimalVolunteer.VolunteerRequests.Infrastructure.csproj", "{7527DAFA-DF34-4E20-8656-FDEA3E5E5156}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.VolunteerRequests.Domain", "src\VolunteersRequests\AnimalVolunteer.VolunteerRequests.Domain\AnimalVolunteer.VolunteerRequests.Domain.csproj", "{1D7C3DBD-7324-41E3-902D-EE5182C42093}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.VolunteerRequests.Domain", "src\VolunteersRequests\AnimalVolunteer.VolunteerRequests.Domain\AnimalVolunteer.VolunteerRequests.Domain.csproj", "{1D7C3DBD-7324-41E3-902D-EE5182C42093}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalVolunteer.VolunteerRequests.Application", "src\VolunteersRequests\AnimalVolunteer.VolunteerRequests.Application\AnimalVolunteer.VolunteerRequests.Application.csproj", "{954CE3D2-0EA6-4A63-9402-C0B703C8BF00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalVolunteer.VolunteerRequests.Application", "src\VolunteersRequests\AnimalVolunteer.VolunteerRequests.Application\AnimalVolunteer.VolunteerRequests.Application.csproj", "{954CE3D2-0EA6-4A63-9402-C0B703C8BF00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

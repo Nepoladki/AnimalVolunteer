@@ -1,6 +1,7 @@
 ﻿using AnimalVolunteer.Accounts.Application.Interfaces;
 using AnimalVolunteer.Accounts.Domain.Models;
 using AnimalVolunteer.Core;
+using AnimalVolunteer.Core.Abstractions;
 using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.SharedKernel;
