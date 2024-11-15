@@ -13,15 +13,15 @@ public sealed class Discussion : CSharpFunctionalExtensions.Entity<DiscussionId>
     // EF Core ctor
     private Discussion() { }
 
-    private Discussion(Guid relationId, List<Guid> users)
+    private Discussion(Guid relationId, IEnumerable<Guid> users)
     {
         RelationId = relationId;
-        _usersIds = users;
+        _usersIds = users.ToArray();
     }
 
     private readonly List<Message> _messages = default!;
 
-    private readonly List<Guid> _usersIds = default!;
+    private readonly Guid[] _usersIds = new Guid[2];
     public IReadOnlyList<Message> Messages => _messages;
     public IReadOnlyList<Guid> UsersIds => _usersIds;
     public Guid RelationId { get; }

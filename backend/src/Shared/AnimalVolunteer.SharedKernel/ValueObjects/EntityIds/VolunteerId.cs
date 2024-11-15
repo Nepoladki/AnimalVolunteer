@@ -1,15 +1,22 @@
-﻿namespace AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+﻿using CSharpFunctionalExtensions;
 
-public record VolunteerId
+namespace AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+
+public sealed class VolunteerId : ValueObject
 {
     public Guid Value { get; }
-    protected VolunteerId(Guid value)
+    private VolunteerId(Guid value)
     {
         Value = value;
     }
     public static VolunteerId Create() => new(Guid.NewGuid());
     public static VolunteerId CreateWithGuid(Guid value) => new(value);
     public static VolunteerId Empty() => new(Guid.Empty);
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
+    }
 
     public static implicit operator VolunteerId(Guid value) => new(value);
 

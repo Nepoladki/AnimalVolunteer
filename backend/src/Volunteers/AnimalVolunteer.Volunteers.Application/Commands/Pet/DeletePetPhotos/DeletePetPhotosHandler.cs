@@ -9,6 +9,7 @@ using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using AnimalVolunteer.Core;
 using Microsoft.Extensions.DependencyInjection;
 using AnimalVolunteer.Volunteers.Application.Interfaces;
+using AnimalVolunteer.Core.Abstractions;
 
 namespace AnimalVolunteer.Volunteers.Application.Commands.Pet.DeletePetPhotos;
 

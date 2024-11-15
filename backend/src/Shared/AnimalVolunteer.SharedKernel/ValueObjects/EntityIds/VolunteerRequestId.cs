@@ -1,20 +1,22 @@
-﻿namespace AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+﻿using CSharpFunctionalExtensions;
 
-public class VolunteerRequestId : IComparable, IComparable<VolunteerRequestId>
+namespace AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+
+public sealed class VolunteerRequestId : ValueObject, IComparable<VolunteerRequestId>
 {
     private VolunteerRequestId(Guid Id) => Value = Id;
     public Guid Value { get; }
     public static VolunteerRequestId Create() => new(Guid.NewGuid());
     public static VolunteerRequestId CreateWithGuid(Guid id) => new(id);
     public static VolunteerRequestId CreateEmpty() => new(Guid.Empty);
-
-    public int CompareTo(object? obj) => Value.CompareTo(obj);
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
+    }
 
     public int CompareTo(VolunteerRequestId? other)
     {
-        ArgumentNullException.ThrowIfNull(other);
-
-        return other.CompareTo(Value);
+        return Value.CompareTo(other?.Value);
     }
 
     public static implicit operator VolunteerRequestId(Guid value) => new(value);

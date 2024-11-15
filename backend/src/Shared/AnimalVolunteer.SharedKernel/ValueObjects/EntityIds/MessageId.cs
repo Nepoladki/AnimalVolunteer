@@ -1,5 +1,7 @@
-﻿namespace AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
-public class MessageId : IComparable<MessageId>
+﻿using CSharpFunctionalExtensions;
+
+namespace AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+public sealed class MessageId : ValueObject, IComparable<MessageId>
 {
     private MessageId(Guid value) => Value = value;
     public Guid Value { get; }
@@ -12,6 +14,11 @@ public class MessageId : IComparable<MessageId>
         ArgumentNullException.ThrowIfNull(other, nameof(other));
 
         return Value.CompareTo(other.Value);
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
     }
 
     public static implicit operator Guid(MessageId value) => value.Value;

@@ -1,6 +1,8 @@
-﻿namespace AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+﻿using CSharpFunctionalExtensions;
 
-public record PetId
+namespace AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
+
+public class PetId : ValueObject
 {
     public Guid Value { get; }
     private PetId(Guid value)
@@ -10,6 +12,11 @@ public record PetId
     public static PetId Create() => new(Guid.NewGuid());
     public static PetId CreateWithGuid(Guid value) => new(value);
     public static PetId Empty() => new(Guid.Empty);
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
+    }
 
     public static implicit operator PetId(Guid id) => new(id);
 

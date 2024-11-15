@@ -9,6 +9,7 @@ using AnimalVolunteer.Volunteers.Contracts;
 using AnimalVolunteer.Volunteers.Contracts.Requests;
 using Microsoft.Extensions.DependencyInjection;
 using AnimalVolunteer.Core;
+using AnimalVolunteer.Core.Abstractions;
 
 namespace AnimalVolunteer.Species.Application.Commands.DeleteBreedById;
 

@@ -9,7 +9,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddVolunteersApplication(this IServiceCollection services)
     {
-        services.AddCommands()
+        services
+            .AddCommands()
             .AddQueries()
             .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 

@@ -263,7 +263,6 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                         .HasColumnName("phone_number_confirmed");
 
                     b.Property<string>("Photo")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("photo");
 

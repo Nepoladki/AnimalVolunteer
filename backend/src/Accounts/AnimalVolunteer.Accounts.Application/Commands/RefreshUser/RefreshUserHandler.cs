@@ -2,6 +2,7 @@
 using AnimalVolunteer.Accounts.Contracts.Responses;
 using AnimalVolunteer.Accounts.Domain.Models;
 using AnimalVolunteer.Core;
+using AnimalVolunteer.Core.Abstractions;
 using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.Framework.Authorization;
 using AnimalVolunteer.SharedKernel;
