@@ -38,13 +38,13 @@ public class DiscussionConfiguration : IEntityTypeConfiguration<Discussion>
             .IsRequired()
             .HasColumnName("related_entity");
 
-        //builder
-        //    .Property(d => d.UsersIds)
-        //    .HasField("_usersIds")
-        //    .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction)
-        //    .IsRequired()
-        //    .HasColumnName("users_ids");
-            
+        builder
+            .Property(d => d.UsersIds)
+            .HasField("_usersIds")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .IsRequired()
+            .HasColumnName("users_ids");
+
         builder
             .Property(d => d.IsOpened)
             .IsRequired()

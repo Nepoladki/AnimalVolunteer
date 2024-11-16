@@ -37,6 +37,11 @@ namespace AnimalVolunteer.Discussions.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("related_entity");
 
+                    b.Property<Guid[]>("UsersIds")
+                        .IsRequired()
+                        .HasColumnType("uuid[]")
+                        .HasColumnName("users_ids");
+
                     b.HasKey("Id")
                         .HasName("pk_discussions");
 

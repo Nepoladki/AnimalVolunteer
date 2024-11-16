@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnimalVolunteer.Discussions.Infrastructure.Migrations
 {
     [DbContext(typeof(WriteDbContext))]
-    [Migration("20241113095001_Discussions_init")]
+    [Migration("20241116205247_Discussions_init")]
     partial class Discussions_init
     {
         /// <inheritdoc />
@@ -39,6 +39,11 @@ namespace AnimalVolunteer.Discussions.Infrastructure.Migrations
                     b.Property<Guid>("RelationId")
                         .HasColumnType("uuid")
                         .HasColumnName("related_entity");
+
+                    b.Property<Guid[]>("UsersIds")
+                        .IsRequired()
+                        .HasColumnType("uuid[]")
+                        .HasColumnName("users_ids");
 
                     b.HasKey("Id")
                         .HasName("pk_discussions");

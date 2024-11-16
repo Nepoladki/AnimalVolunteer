@@ -20,6 +20,7 @@ namespace AnimalVolunteer.Discussions.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
+                    users_ids = table.Column<Guid[]>(type: "uuid[]", nullable: false),
                     related_entity = table.Column<Guid>(type: "uuid", nullable: false),
                     is_opened = table.Column<bool>(type: "boolean", nullable: false)
                 },

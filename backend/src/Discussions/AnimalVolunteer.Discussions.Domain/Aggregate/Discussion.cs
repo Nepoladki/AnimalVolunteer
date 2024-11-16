@@ -23,7 +23,7 @@ public sealed class Discussion : CSharpFunctionalExtensions.Entity<DiscussionId>
 
     private readonly Guid[] _usersIds = new Guid[2];
     public IReadOnlyList<Message> Messages => _messages;
-    public IReadOnlyList<Guid> UsersIds => _usersIds;
+    public IList<Guid> UsersIds => _usersIds;
     public Guid RelationId { get; }
     public bool IsOpened { get; private set; } = true;
 
