@@ -17,4 +17,8 @@
     <ProjectReference Include="..\AnimalVolunteer.VolunteerRequests.Domain\AnimalVolunteer.VolunteerRequests.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Qureries\" />
+  </ItemGroup>
+
 </Project>

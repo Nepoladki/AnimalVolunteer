@@ -12,30 +12,26 @@ public sealed class VolunteerRequest : CSharpFunctionalExtensions.Entity<Volunte
     private VolunteerRequest(VolunteerRequestId id) : base(id) { }
     private VolunteerRequest(
         VolunteerRequestId id, 
-        UserId userId, 
-        AdminId adminId, 
-        DiscussionId discussionId) : base(id)
+        UserId userId) : base(id)
     {
         UserId = userId;
-        AdminId = adminId;
-        DiscussionId = discussionId;
+        AdminId = null;
+        DiscussionId = null;
         Status = VolunteerRequestStatus.Created;
         RejectionComment = null;
         CreatedAt = DateTime.UtcNow;
     }
     public UserId UserId { get; } = null!;
-    public AdminId AdminId { get; private set; } = null!;
-    public DiscussionId DiscussionId { get; private set; } = null!;
+    public AdminId? AdminId { get; private set; }
+    public DiscussionId? DiscussionId { get; private set; }
     public VolunteerRequestStatus Status { get; private set; }
     public string? RejectionComment { get; private set; }
     public DateTime CreatedAt { get; }
 
     public static VolunteerRequest Create(
         VolunteerRequestId id,
-        UserId userId, 
-        AdminId adminId, 
-        DiscussionId discussionId) =>
-            new(id, userId, adminId, discussionId);
+        UserId userId) =>
+            new(id, userId);
 
     /// <summary>
     /// Sets status of request to Submitted.
@@ -49,7 +45,6 @@ public sealed class VolunteerRequest : CSharpFunctionalExtensions.Entity<Volunte
 
         return UnitResult.Success<Error>();
     }
-
 
     /// <summary>
     /// Sets status to RevisionRequired, which means that candidate
@@ -84,6 +79,7 @@ public sealed class VolunteerRequest : CSharpFunctionalExtensions.Entity<Volunte
 
         return UnitResult.Success<Error>();
     }
+
     /// <summary>
     /// Sets status to Approved. Afrer, a request must be made to create VolunteerAccount for user.
     /// </summary>

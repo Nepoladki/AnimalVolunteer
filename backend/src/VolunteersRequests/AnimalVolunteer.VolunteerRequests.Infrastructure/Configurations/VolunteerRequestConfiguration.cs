@@ -44,7 +44,7 @@ public class VolunteerRequestConfiguration : IEntityTypeConfiguration<VolunteerR
             .HasConversion(
                 vo => vo.Value,
                 guid => DiscussionId.CreateWithGuid(guid))
-            .IsRequired()
+            .IsRequired(false)
             .HasColumnName("discussion_id");
 
         builder
