@@ -1,0 +1,18 @@
+﻿using AnimalVolunteer.Core.Options;
+using AnimalVolunteer.VolunteerRequests.Domain;
+using LinqToDB;
+using LinqToDB.Data;
+using LinqToDB.Mapping;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+
+namespace AnimalVolunteer.VolunteerRequests.Infrastructure.Linq2db.Connections;
+
+public class Linq2DbConnection : DataConnection
+{
+    public Linq2DbConnection(DataOptions<Linq2DbConnection> options) 
+        : base(options.Options) { }
+
+    public ITable<VolunteerRequest> VolunteerRequests => this.GetTable<VolunteerRequest>();
+}

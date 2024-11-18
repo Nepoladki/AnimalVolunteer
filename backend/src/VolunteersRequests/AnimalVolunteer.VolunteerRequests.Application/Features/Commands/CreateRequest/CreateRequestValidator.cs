@@ -5,6 +5,6 @@ public class CreateRequestValidator : AbstractValidator<CreateRequestCommand>
 {
     public CreateRequestValidator()
     {
-        
+        RuleFor(x => x.UserId).NotEmpty();
     }
 }

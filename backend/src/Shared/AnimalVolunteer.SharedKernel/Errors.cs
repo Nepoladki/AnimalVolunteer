@@ -145,5 +145,8 @@ public static class Errors
 
         public static Error WrongStatusChange() =>
             Error.Conflict("VolunteerRequest.WrongStatusChange", "Incorrect status shift sequence");
+
+        public static Error AlreadyExist() =>
+            Error.Conflict("VolunteerRequest.AlreadyExist", "One user can have only one volunteer request");
     }
 }

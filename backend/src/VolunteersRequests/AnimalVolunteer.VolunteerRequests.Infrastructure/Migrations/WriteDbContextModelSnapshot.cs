@@ -37,9 +37,13 @@ namespace AnimalVolunteer.VolunteerRequests.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<Guid>("DiscussionId")
+                    b.Property<Guid?>("DiscussionId")
                         .HasColumnType("uuid")
                         .HasColumnName("discussion_id");
+
+                    b.Property<DateTime?>("LastRejectionAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_rejection_at");
 
                     b.Property<string>("RejectionComment")
                         .HasColumnType("text")

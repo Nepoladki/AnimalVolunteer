@@ -19,6 +19,7 @@ public sealed class VolunteerRequest : CSharpFunctionalExtensions.Entity<Volunte
         DiscussionId = null;
         Status = VolunteerRequestStatus.Created;
         RejectionComment = null;
+        LastRejectionAt = null;
         CreatedAt = DateTime.UtcNow;
     }
     public UserId UserId { get; } = null!;
@@ -26,6 +27,7 @@ public sealed class VolunteerRequest : CSharpFunctionalExtensions.Entity<Volunte
     public DiscussionId? DiscussionId { get; private set; }
     public VolunteerRequestStatus Status { get; private set; }
     public string? RejectionComment { get; private set; }
+    public DateTime? LastRejectionAt { get; private set; }
     public DateTime CreatedAt { get; }
 
     public static VolunteerRequest Create(
@@ -76,6 +78,7 @@ public sealed class VolunteerRequest : CSharpFunctionalExtensions.Entity<Volunte
         
         RejectionComment = rejectionComment;
         Status = VolunteerRequestStatus.Rejected;
+        LastRejectionAt = DateTime.UtcNow;
 
         return UnitResult.Success<Error>();
     }

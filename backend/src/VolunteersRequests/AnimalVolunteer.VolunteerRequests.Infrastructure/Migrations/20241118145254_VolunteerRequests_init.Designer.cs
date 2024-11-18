@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnimalVolunteer.VolunteerRequests.Infrastructure.Migrations
 {
     [DbContext(typeof(WriteDbContext))]
-    [Migration("20241116205244_VolunteerRequests_init")]
+    [Migration("20241118145254_VolunteerRequests_init")]
     partial class VolunteerRequests_init
     {
         /// <inheritdoc />
@@ -40,9 +40,13 @@ namespace AnimalVolunteer.VolunteerRequests.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<Guid>("DiscussionId")
+                    b.Property<Guid?>("DiscussionId")
                         .HasColumnType("uuid")
                         .HasColumnName("discussion_id");
+
+                    b.Property<DateTime?>("LastRejectionAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_rejection_at");
 
                     b.Property<string>("RejectionComment")
                         .HasColumnType("text")
