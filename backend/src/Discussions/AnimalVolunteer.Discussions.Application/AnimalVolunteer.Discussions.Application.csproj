@@ -17,4 +17,10 @@
     <ProjectReference Include="..\AnimalVolunteer.Discussions.Domain\AnimalVolunteer.Discussions.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Commands\AmendMessage\" />
+    <Folder Include="Features\Commands\DeleteMessage\" />
+    <Folder Include="Features\Queries\" />
+  </ItemGroup>
+
 </Project>

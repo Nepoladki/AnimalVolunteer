@@ -17,11 +17,11 @@ public class DiscussionsRepository : IDiscussionsRepository
         _dbContext = dbContext;
     }
 
-    public async Task<Result<Discussion, Error>> GetById(DiscussionId id, CancellationToken token)
+    public async Task<Result<Discussion, Error>> GetByRelatedId(Guid relatedId, CancellationToken token)
     {
-        var discussion = await _dbContext.Discussions.FirstOrDefaultAsync(c => c.Id == id, token);
+        var discussion = await _dbContext.Discussions.FirstOrDefaultAsync(c => c.RelationId == relatedId, token);
         if (discussion is null)
-            return Errors.General.NotFound(id);
+            return Errors.General.NotFound(relatedId);
 
         return discussion;
     }

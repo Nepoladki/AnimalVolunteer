@@ -39,7 +39,7 @@ public class CreateRequestHandler : ICommandHandler<CreateRequestCommand>
 
         var requestAlreadyExist = await _readOnlyRepository
             .VolunteerRequestExistsByUserId(command.UserId, cancellationToken);
-        if (requestAlreadyExist == true)
+        if (requestAlreadyExist)
             return Errors.VolunteerRequests.AlreadyExist().ToErrorList();
 
         var requestId = VolunteerRequestId.Create();
