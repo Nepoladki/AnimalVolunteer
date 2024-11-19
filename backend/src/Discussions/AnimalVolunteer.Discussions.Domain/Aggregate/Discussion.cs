@@ -40,13 +40,22 @@ public sealed class Discussion : CSharpFunctionalExtensions.Entity<DiscussionId>
         return new Discussion(relationId, users.ToList());
     }
 
-    public UnitResult<Error> Message(Message message, Guid userId) 
+    public Result<Message, Error> GetMessage(MessageId messageId)
+    {
+        var getResult = Messages.FirstOrDefault(m => m.Id == messageId);
+        if (getResult is null)
+            return Errors.General.NotFound(messageId);
+
+        return getResult;
+    }
+
+    public UnitResult<Error> AddMessage(Message message) 
     {
         var openedResult = IsDiscusionOpened();
         if (openedResult.IsFailure)
             return openedResult.Error;
 
-        var accessResult = IsMessagingAllowed(userId);
+        var accessResult = IsMessagingAllowed(message.UserId);
         if (accessResult.IsFailure)
             return accessResult.Error;
 

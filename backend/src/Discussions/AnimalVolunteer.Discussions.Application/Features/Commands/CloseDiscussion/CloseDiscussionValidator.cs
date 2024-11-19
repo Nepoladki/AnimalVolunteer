@@ -5,6 +5,6 @@ public class CloseDiscussionValidator : AbstractValidator<CloseDiscussionCommand
 {
     public CloseDiscussionValidator()
     {
-        RuleFor(x => x.RelatedId).NotEmpty();
+        RuleFor(x => x.DiscussionId).NotEmpty();
     }
 }

@@ -3,6 +3,7 @@ using AnimalVolunteer.Core.Abstractions;
 using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.Discussions.Application.Interfaces;
+using AnimalVolunteer.Discussions.Domain.Aggregate;
 using AnimalVolunteer.Discussions.Domain.Aggregate.Entities;
 using AnimalVolunteer.Discussions.Domain.Aggregate.ValueObjects;
 using AnimalVolunteer.SharedKernel;
@@ -35,14 +36,22 @@ public class AddMessageHandler : ICommandHandler<AddMessageCommand>
             return validationResult.ToErrorList();
 
         var discussionResult = await _discussionRepository
-            .GetByRelatedId(command.RelatedId, cancellationToken);
+            .GetById(command.DiscussionId, cancellationToken);
         if (discussionResult.IsFailure)
             return discussionResult.Error.ToErrorList();
 
-        var discussion = discussionResult.Value;
+        Discussion discussion = discussionResult.Value;
 
         Text text = Text.Create(command.Text).Value;
 
         Message message = Message.Create(command.UserId, text);
+
+        var addResult = discussion.AddMessage(message);
+        if (addResult.IsFailure)
+            return addResult.Error.ToErrorList();
+
+        await _unitOfWork.SaveChanges(cancellationToken);
+
+        return UnitResult.Success<ErrorList>();
     }
 }

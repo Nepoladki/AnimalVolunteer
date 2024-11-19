@@ -8,6 +8,7 @@ using AnimalVolunteer.SharedKernel;
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace AnimalVolunteer.Discussions.Application.Features.Commands.CreateDiscussion;
 public class CreateDiscussionHandler : ICommandHandler<CreateDiscussionCommand>
@@ -15,15 +16,18 @@ public class CreateDiscussionHandler : ICommandHandler<CreateDiscussionCommand>
     private readonly IValidator<CreateDiscussionCommand> _validator;
     private readonly IDiscussionsRepository _discussionsRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<CreateDiscussionHandler> _logger;
 
     public CreateDiscussionHandler(
         IValidator<CreateDiscussionCommand> validator,
         IDiscussionsRepository discussionsRepository,
-        [FromKeyedServices(Modules.Discussions)]IUnitOfWork unitOfWork)
+        [FromKeyedServices(Modules.Discussions)]IUnitOfWork unitOfWork,
+        ILogger<CreateDiscussionHandler> logger)
     {
         _validator = validator;
         _discussionsRepository = discussionsRepository;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task<UnitResult<ErrorList>> Handle(
@@ -40,6 +44,11 @@ public class CreateDiscussionHandler : ICommandHandler<CreateDiscussionCommand>
         _discussionsRepository.Add(discussion.Value);
 
         await _unitOfWork.SaveChanges();
+
+        _logger.LogInformation(
+            "Discussion with Id {dId} created for reladed id {rId}",
+            discussion.Value.Id,
+            command.RelatedId);
 
         return UnitResult.Success<ErrorList>();
     }

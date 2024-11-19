@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Core;
 using AnimalVolunteer.Core.Abstractions;
+using AnimalVolunteer.Core.Options;
 using AnimalVolunteer.VolunteerRequests.Application.Interfaces;
 using AnimalVolunteer.VolunteerRequests.Infrastructure.DbContexts;
 using AnimalVolunteer.VolunteerRequests.Infrastructure.Linq2db.Connections;
@@ -8,6 +9,7 @@ using LinqToDB;
 using LinqToDB.AspNet;
 using LinqToDB.AspNet.Logging;
 using LinqToDB.Mapping;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,12 +33,18 @@ public static class DependencyInjection
     private static IServiceCollection ConfigureLinq2db(
         this IServiceCollection services, IConfiguration config)
     {
+        var dbOptions = new DatabaseOptions();
+        config.GetSection(DatabaseOptions.SECTION_NAME).Bind(dbOptions);
+
+        //var linq2dbDataOptions = new DataOptions()
+        //    .UsePostgreSQL(
+        //        config.GetConnectionString(dbOptions.PostgresConnectionName)
+        //            ?? throw new ApplicationException("Unable to get connection string"));
+
         services.AddLinqToDBContext<Linq2DbConnection>((provider, options) =>
-        {
-            options.UsePostgreSQL(config.GetConnectionString("Postgres")!);
-            options.UseDefaultLogging(provider);
-            return options;
-        });
+            options.UsePostgreSQL(config.GetConnectionString(dbOptions.PostgresConnectionName)));
+
+        services.AddScoped<Linq2DbConnection>();
 
         return services;
     }

@@ -9,7 +9,6 @@ public class AddMessageValidator : AbstractValidator<AddMessageCommand>
     {
         RuleFor(x => x.Text).MustBeValueObject(Text.Create);
         RuleFor(x => x.UserId).NotEmpty();
-        RuleFor(x => x.RelatedId).NotEmpty();
-        RuleFor(x => x.RelatedId).NotEmpty();
+        RuleFor(x => x.DiscussionId).NotEmpty();
     }
 }

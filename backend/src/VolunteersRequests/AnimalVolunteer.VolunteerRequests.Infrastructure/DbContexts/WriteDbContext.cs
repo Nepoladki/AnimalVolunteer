@@ -12,7 +12,8 @@ public class WriteDbContext : DbContext
     private readonly IConfiguration _configuration;
     private readonly DatabaseOptions _options;
 
-    public WriteDbContext(IConfiguration configuration, 
+    public WriteDbContext(
+        IConfiguration configuration, 
         IOptions<DatabaseOptions> options)
     {
         _configuration = configuration;
