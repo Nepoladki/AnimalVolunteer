@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Discussions\AnimalVolunteer.Discussions.Contracts\AnimalVolunteer.Discussions.Contracts.csproj" />
     <ProjectReference Include="..\..\Shared\AnimalVolunteer.Core\AnimalVolunteer.Core.csproj" />
     <ProjectReference Include="..\AnimalVolunteer.VolunteerRequests.Domain\AnimalVolunteer.VolunteerRequests.Domain.csproj" />
   </ItemGroup>

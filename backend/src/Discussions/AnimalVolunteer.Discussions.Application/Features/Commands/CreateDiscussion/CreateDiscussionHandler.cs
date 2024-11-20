@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace AnimalVolunteer.Discussions.Application.Features.Commands.CreateDiscussion;
-public class CreateDiscussionHandler : ICommandHandler<CreateDiscussionCommand>
+public class CreateDiscussionHandler : ICommandHandler<Guid, CreateDiscussionCommand>
 {
     private readonly IValidator<CreateDiscussionCommand> _validator;
     private readonly IDiscussionsRepository _discussionsRepository;
@@ -30,7 +30,7 @@ public class CreateDiscussionHandler : ICommandHandler<CreateDiscussionCommand>
         _logger = logger;
     }
 
-    public async Task<UnitResult<ErrorList>> Handle(
+    public async Task<Result<Guid, ErrorList>> Handle(
         CreateDiscussionCommand command, CancellationToken cancellationToken)
     {
         var validationResult = _validator.Validate(command);
@@ -50,6 +50,6 @@ public class CreateDiscussionHandler : ICommandHandler<CreateDiscussionCommand>
             discussion.Value.Id,
             command.RelatedId);
 
-        return UnitResult.Success<ErrorList>();
+        return (Guid)discussion.Value.Id;
     }
 }

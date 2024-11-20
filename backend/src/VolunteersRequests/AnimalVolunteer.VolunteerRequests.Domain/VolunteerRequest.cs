@@ -15,16 +15,16 @@ public sealed class VolunteerRequest : CSharpFunctionalExtensions.Entity<Volunte
         UserId userId) : base(id)
     {
         UserId = userId;
-        AdminId = null;
-        DiscussionId = null;
+        AdminId = Guid.Empty;
+        DiscussionId = Guid.Empty;
         Status = VolunteerRequestStatus.Created;
         RejectionComment = null;
         LastRejectionAt = null;
         CreatedAt = DateTime.UtcNow;
     }
     public UserId UserId { get; } = null!;
-    public AdminId? AdminId { get; private set; }
-    public DiscussionId? DiscussionId { get; private set; }
+    public AdminId AdminId { get; private set; }
+    public DiscussionId DiscussionId { get; private set; }
     public VolunteerRequestStatus Status { get; private set; }
     public string? RejectionComment { get; private set; }
     public DateTime? LastRejectionAt { get; private set; }
@@ -36,12 +36,16 @@ public sealed class VolunteerRequest : CSharpFunctionalExtensions.Entity<Volunte
             new(id, userId);
 
     /// <summary>
-    /// Sets status of request to Submitted.
+    /// Sets admin and discussion id's and changes status of request to Submitted.
+    /// (Meaning that now request is on consideration)
     /// </summary>
-    public UnitResult<Error> Submit()
+    public UnitResult<Error> Submit(AdminId adminId, DiscussionId discussionId)
     {
         if (Status != VolunteerRequestStatus.Created)
             return Errors.VolunteerRequests.WrongStatusChange();
+
+        AdminId = adminId;
+        DiscussionId = discussionId;
 
         Status = VolunteerRequestStatus.Submitted;
 

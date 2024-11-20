@@ -1,18 +1,36 @@
 ﻿using AnimalVolunteer.Framework;
 using AnimalVolunteer.VolunteerRequests.Application.Features.Commands.CreateRequest;
+using AnimalVolunteer.VolunteerRequests.Application.Features.Commands.TakeRequestOnConsideration;
+using AnimalVolunteer.VolunteerRequests.Web.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnimalVolunteer.VolunteerRequests.Web;
 
 public class VolunteerRequestsController : ApplicationController
 {
-    [HttpPost("{userId:guid}")]
+    [HttpPost]
     public async Task<IActionResult> CreateRequest(
+        [FromBody] CreateRequestRequest request,
         [FromServices] CreateRequestHandler handler,
-        [FromRoute] Guid userId,
         CancellationToken cancellationToken)
     {
-        var command = new CreateRequestCommand(userId);
+        var command = new CreateRequestCommand(request.UserId);
+
+        var handleResult = await handler.Handle(command, cancellationToken);
+        if (handleResult.IsFailure)
+            return handleResult.Error.ToResponse();
+
+        return Ok();
+    }
+
+    [HttpPut("{requestId:guid}")]
+    public async Task<IActionResult> TakeOnConsideration(
+        [FromRoute] Guid requestId,
+        [FromBody] TakeRequestForConsiderationRequest request,
+        [FromServices] TakeRequestForConsiderationHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var command = new TakeRequestForConsiderationCommand(requestId, request.UserId, request.AdminId);
 
         var handleResult = await handler.Handle(command, cancellationToken);
         if (handleResult.IsFailure)

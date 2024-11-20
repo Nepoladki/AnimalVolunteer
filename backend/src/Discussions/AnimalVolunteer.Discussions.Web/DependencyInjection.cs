@@ -1,4 +1,6 @@
 ﻿using AnimalVolunteer.Discussions.Application;
+using AnimalVolunteer.Discussions.Application.Features.Commands.CreateDiscussion;
+using AnimalVolunteer.Discussions.Contracts;
 using AnimalVolunteer.Discussions.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +14,8 @@ public static class DependencyInjection
     {
         services
             .AddInfrastructure(configuration)
-            .AddApplication(configuration);
+            .AddApplication(configuration)
+            .AddScoped<IDiscussionsContract, DiscussionsContract>();
 
         return services;
     }

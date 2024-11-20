@@ -36,13 +36,9 @@ public static class DependencyInjection
         var dbOptions = new DatabaseOptions();
         config.GetSection(DatabaseOptions.SECTION_NAME).Bind(dbOptions);
 
-        //var linq2dbDataOptions = new DataOptions()
-        //    .UsePostgreSQL(
-        //        config.GetConnectionString(dbOptions.PostgresConnectionName)
-        //            ?? throw new ApplicationException("Unable to get connection string"));
-
         services.AddLinqToDBContext<Linq2DbConnection>((provider, options) =>
-            options.UsePostgreSQL(config.GetConnectionString(dbOptions.PostgresConnectionName)));
+            options.UsePostgreSQL(config.GetConnectionString(dbOptions.PostgresConnectionName)
+                ?? throw new ApplicationException("Unable to get connection string")));
 
         services.AddScoped<Linq2DbConnection>();
 

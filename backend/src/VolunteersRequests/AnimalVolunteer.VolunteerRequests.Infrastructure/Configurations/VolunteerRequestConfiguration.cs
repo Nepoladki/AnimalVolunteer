@@ -44,7 +44,7 @@ public class VolunteerRequestConfiguration : IEntityTypeConfiguration<VolunteerR
             .HasConversion(
                 vo => vo.Value,
                 guid => DiscussionId.CreateWithGuid(guid))
-            .IsRequired(false)
+            .IsRequired()
             .HasColumnName("discussion_id");
 
         builder
@@ -57,7 +57,8 @@ public class VolunteerRequestConfiguration : IEntityTypeConfiguration<VolunteerR
 
         builder
             .Property(v => v.RejectionComment)
-            .HasColumnName("rejection_comment");
+            .HasColumnName("rejection_comment")
+            .IsRequired(false);
 
         builder
             .Property(v => v.CreatedAt)

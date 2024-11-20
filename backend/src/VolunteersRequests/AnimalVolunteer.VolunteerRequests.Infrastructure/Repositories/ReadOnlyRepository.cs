@@ -25,7 +25,7 @@ public class ReadOnlyRepository : IReadOnlyRepository
     }
 
     public async Task<bool> VolunteerRequestExistsByUserId(Guid userId, CancellationToken token = default) =>
-        await _connection.VolunteerRequests.AnyAsync(request => request.UserId == userId, token);
+        await _connection.VolunteerRequests.AnyAsync(r => r.UserId == userId, token);
     
 }
 
