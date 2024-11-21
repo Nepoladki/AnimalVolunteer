@@ -5,6 +5,7 @@ public class SendRequestForRevisionValidator : AbstractValidator<SendRequestForR
 {
     public SendRequestForRevisionValidator()
     {
-        
+        RuleFor(x => x.RequestId).NotEmpty();
+        RuleFor(x => x.RejectionComment).NotEmpty();
     }
 }

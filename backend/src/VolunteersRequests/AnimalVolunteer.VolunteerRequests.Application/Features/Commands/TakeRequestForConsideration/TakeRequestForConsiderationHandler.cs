@@ -13,7 +13,7 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace AnimalVolunteer.VolunteerRequests.Application.Features.Commands.TakeRequestOnConsideration;
+namespace AnimalVolunteer.VolunteerRequests.Application.Features.Commands.TakeRequestForConsideration;
 public class TakeRequestForConsiderationHandler : ICommandHandler<TakeRequestForConsiderationCommand>
 {
     private readonly IDiscussionsContract _discussonsContract;
@@ -27,7 +27,7 @@ public class TakeRequestForConsiderationHandler : ICommandHandler<TakeRequestFor
         ILogger<TakeRequestForConsiderationHandler> logger,
         IVolunteerRequestsRepository volunteerRequestsRepository,
         IValidator<TakeRequestForConsiderationCommand> validator,
-        [FromKeyedServices(Modules.VolunteerRequests)]IUnitOfWork unitOfWork)
+        [FromKeyedServices(Modules.VolunteerRequests)] IUnitOfWork unitOfWork)
     {
         _discussonsContract = discussonsContract;
         _logger = logger;
@@ -50,18 +50,16 @@ public class TakeRequestForConsiderationHandler : ICommandHandler<TakeRequestFor
         var discussionRequest = new CreateDiscussionRequest(command.RequestId, command.UserId, command.AdminId);
 
         var discussionId = await _discussonsContract.CreateNewDiscussion(discussionRequest, cancellationToken);
-        if (discussionId.IsFailure) 
+        if (discussionId.IsFailure)
             return discussionId.Error;
 
-        var adminId = AdminId.CreateWithGuid(command.AdminId);
-
-        volunteerRequest.Value.Submit(adminId, discussionId.Value);
+        volunteerRequest.Value.TakeOnCosideration(command.AdminId, discussionId.Value);
 
         await _unitOfWork.SaveChanges(cancellationToken);
 
         _logger.LogInformation(
-            "Volunteer request {vrId} was taken on consideration by admin {aId}", 
-            command.RequestId, 
+            "Volunteer request {vrId} was taken on consideration by admin {aId}",
+            command.RequestId,
             command.AdminId);
 
         return UnitResult.Success<ErrorList>();

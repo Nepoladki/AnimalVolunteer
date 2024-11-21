@@ -5,6 +5,6 @@ public class UpdateRequestAfterRevisionValidator : AbstractValidator<UpdateReque
 {
     public UpdateRequestAfterRevisionValidator()
     {
-        
+        RuleFor(x => x.RequestId).NotEmpty();
     }
 }

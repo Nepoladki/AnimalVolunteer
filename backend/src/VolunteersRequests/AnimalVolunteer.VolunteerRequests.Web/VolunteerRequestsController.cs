@@ -1,6 +1,6 @@
 ﻿using AnimalVolunteer.Framework;
 using AnimalVolunteer.VolunteerRequests.Application.Features.Commands.CreateRequest;
-using AnimalVolunteer.VolunteerRequests.Application.Features.Commands.TakeRequestOnConsideration;
+using AnimalVolunteer.VolunteerRequests.Application.Features.Commands.TakeRequestForConsideration;
 using AnimalVolunteer.VolunteerRequests.Web.Requests;
 using Microsoft.AspNetCore.Mvc;
 
