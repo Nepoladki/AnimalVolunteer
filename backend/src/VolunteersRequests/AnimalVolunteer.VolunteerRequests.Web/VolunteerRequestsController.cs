@@ -26,11 +26,12 @@ public class VolunteerRequestsController : ApplicationController
 
     [HttpPut("{requestId:guid}/update")]
     public async Task<IActionResult> UpdateRequest(
+        [FromRoute] Guid requestId,
         [FromBody] UpdateRequestRequest request,
         [FromServices] UpdateRequestHandler handler,
         CancellationToken cancellationToken)
     {
-        var command = new UpdateRequestCommand(request.RequestId, request.VolunteerInfo);
+        var command = new UpdateRequestCommand(requestId, request.VolunteerInfo);
 
         var handleResult = await handler.Handle(command, cancellationToken);
         if (handleResult.IsFailure)
