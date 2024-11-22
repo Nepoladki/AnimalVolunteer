@@ -61,6 +61,18 @@ public class VolunteerRequestConfiguration : IEntityTypeConfiguration<VolunteerR
             .IsRequired(false);
 
         builder
+            .ComplexProperty(v => v.VolunteerInfo, b =>
+            {
+                b.Property(vi => vi.ExpirienceDescription)
+                .IsRequired()
+                .HasColumnName("expirience_description");
+
+                b.Property(vi => vi.Passport)
+                .IsRequired()
+                .HasColumnName("passport");
+            });
+
+        builder
             .Property(v => v.CreatedAt)
             .IsRequired()
             .HasColumnName("created_at");

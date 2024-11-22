@@ -2,4 +2,5 @@
 
 namespace AnimalVolunteer.VolunteerRequests.Web.Requests;
 
-public record CreateRequestRequest(Guid UserId, VolunteerInfoDto VolunteerInfo);
+public record UpdateRequestRequest(VolunteerInfoDto VolunteerInfo);
+

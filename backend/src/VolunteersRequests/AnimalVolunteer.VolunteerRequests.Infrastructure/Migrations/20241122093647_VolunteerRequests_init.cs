@@ -22,11 +22,13 @@ namespace AnimalVolunteer.VolunteerRequests.Infrastructure.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     user_id = table.Column<Guid>(type: "uuid", nullable: false),
                     admin_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    discussion_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    discussion_id = table.Column<Guid>(type: "uuid", nullable: false),
                     status_enum = table.Column<string>(type: "text", nullable: false),
                     rejection_comment = table.Column<string>(type: "text", nullable: true),
                     last_rejection_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    expirience_description = table.Column<string>(type: "text", nullable: false),
+                    passport = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

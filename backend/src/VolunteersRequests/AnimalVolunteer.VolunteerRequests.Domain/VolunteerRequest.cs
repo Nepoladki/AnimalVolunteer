@@ -59,7 +59,7 @@ public sealed class VolunteerRequest : CSharpFunctionalExtensions.Entity<Volunte
 
     /// <summary>
     /// Sets status to RevisionRequired, which means that candidate
-    /// must get aquainted with RejectionComment and amend request.
+    /// must get aquainted with RejectionComment and update request.
     /// </summary>
     /// <param name="rejectionComment"></param>
     /// <returns>CSharpFunctionalExtensions.UnitResult`Error</returns>

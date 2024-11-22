@@ -1,4 +1,5 @@
-﻿using LinqToDB.Mapping;
+﻿using AnimalVolunteer.SharedKernel.ValueObjects;
+using LinqToDB.Mapping;
 
 namespace AnimalVolunteer.Core.DTOs.VolunteerRequests;
 
@@ -23,6 +24,9 @@ public class VolunteerRequestDto
 
     [Column("rejection_comment")]
     public string? RejectionComment { get; set; }
+
+    [Column("volunteer_info")]
+    public VolunteerInfo VolunteerInfo { get; set; } = default!;
 
     [Column("last_rejection_at")]
     public DateTime? LastRejectionAt { get; set; }

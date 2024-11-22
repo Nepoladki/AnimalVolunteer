@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnimalVolunteer.Volunteers.Infrastructure.Migrations
 {
     [DbContext(typeof(WriteDbContext))]
-    [Migration("20241118145246_Volunteers_init")]
+    [Migration("20241122093639_Volunteers_init")]
     partial class Volunteers_init
     {
         /// <inheritdoc />

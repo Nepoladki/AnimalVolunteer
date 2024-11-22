@@ -3,6 +3,7 @@ using AnimalVolunteer.Core.Abstractions;
 using AnimalVolunteer.Core.Abstractions.CQRS;
 using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.SharedKernel;
+using AnimalVolunteer.SharedKernel.ValueObjects;
 using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using AnimalVolunteer.VolunteerRequests.Application.Interfaces;
 using AnimalVolunteer.VolunteerRequests.Domain;
@@ -46,9 +47,16 @@ public class CreateRequestHandler : ICommandHandler<CreateRequestCommand>
 
         var userId = UserId.CreateWithGuid(command.UserId);
 
+        var volunteerInfo = VolunteerInfo.Create(
+            command.VolunteerInfo.ExpirienceDescription, 
+            command.VolunteerInfo.Passport);
+        if (volunteerInfo.IsFailure)
+            return volunteerInfo.Error.ToErrorList();
+
         var request = VolunteerRequest.Create(
             requestId,
-            userId);
+            userId,
+            volunteerInfo.Value);
 
         _repository.Add(request);
 
