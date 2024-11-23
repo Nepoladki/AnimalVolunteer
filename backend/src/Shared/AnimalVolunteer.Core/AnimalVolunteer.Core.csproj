@@ -16,7 +16,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.10" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" />
     <PackageReference Include="Npgsql" Version="8.0.5" />
-    <PackageReference Include="Scrutor" Version="5.0.1" />
+    <PackageReference Include="Scrutor" Version="5.0.2" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
 
   <ItemGroup>

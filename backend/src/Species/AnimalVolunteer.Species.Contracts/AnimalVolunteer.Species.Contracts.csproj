@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Scrutor" Version="5.0.2" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Shared\AnimalVolunteer.Core\AnimalVolunteer.Core.csproj" />
     <ProjectReference Include="..\..\Shared\AnimalVolunteer.SharedKernel\AnimalVolunteer.SharedKernel.csproj" />
   </ItemGroup>

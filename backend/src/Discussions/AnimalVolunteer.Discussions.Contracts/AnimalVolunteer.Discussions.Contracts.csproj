@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="CSharpFunctionalExtensions" Version="3.1.0" />
+    <PackageReference Include="Scrutor" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>
