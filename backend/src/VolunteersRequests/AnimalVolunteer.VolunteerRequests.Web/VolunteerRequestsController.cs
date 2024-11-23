@@ -1,6 +1,7 @@
 ﻿using AnimalVolunteer.Framework;
 using AnimalVolunteer.VolunteerRequests.Application.Features.Commands.CreateRequest;
 using AnimalVolunteer.VolunteerRequests.Application.Features.Commands.TakeRequestForConsideration;
+using AnimalVolunteer.VolunteerRequests.Application.Features.Commands.TakeRequestForReConsideration;
 using AnimalVolunteer.VolunteerRequests.Application.Features.Commands.UpdateRequest;
 using AnimalVolunteer.VolunteerRequests.Web.Requests;
 using Microsoft.AspNetCore.Mvc;
@@ -47,11 +48,24 @@ public class VolunteerRequestsController : ApplicationController
         [FromServices] TakeRequestForConsiderationHandler handler,
         CancellationToken cancellationToken)
     {
-        var command = new TakeRequestForConsiderationCommand(requestId, request.UserId, request.AdminId);
+        var command = new TakeRequestForConsiderationCommand(requestId, request.AdminId);
 
         var handleResult = await handler.Handle(command, cancellationToken);
         if (handleResult.IsFailure)
             return handleResult.Error.ToResponse();
+
+        return Ok();
+    }
+
+    [HttpPut("{requestId:guid}/re-considerate")]
+    public async Task<IActionResult> TakeOnReConsideration(
+        [FromRoute] Guid requestId,
+        [FromServices] TakeRequestForReConsiderationHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var command = new TakeRequestForReConsiderationCommand(requestId);
+
+
 
         return Ok();
     }

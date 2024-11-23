@@ -6,7 +6,6 @@ public class TakeRequestForConsiderationValidator : AbstractValidator<TakeReques
     public TakeRequestForConsiderationValidator()
     {
         RuleFor(x => x.RequestId).NotEmpty();
-        RuleFor(x => x.UserId).NotEmpty();
         RuleFor(x => x.AdminId).NotEmpty();
     }
 }

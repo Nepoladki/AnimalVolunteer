@@ -95,7 +95,7 @@ public sealed class VolunteerRequest : CSharpFunctionalExtensions.Entity<Volunte
     /// Take updated request on consideration by the same admin.
     /// </summary>
     /// <returns></returns>
-    public UnitResult<Error> TakeOnConsiderationAfterRevision()
+    public UnitResult<Error> TakeOnReConsideration()
     {
         if (Status != VolunteerRequestStatus.Updated)
             return Errors.VolunteerRequests.WrongStatusChange();

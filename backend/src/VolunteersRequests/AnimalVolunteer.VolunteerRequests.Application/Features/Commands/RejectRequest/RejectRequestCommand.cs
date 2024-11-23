@@ -1,4 +1,4 @@
 ﻿using AnimalVolunteer.Core.Abstractions.CQRS;
 
 namespace AnimalVolunteer.VolunteerRequests.Application.Features.Commands.RejectRequest;
-public class RejectRequestCommand() : ICommand;
+public record RejectRequestCommand(Guid RequestId, string RejectionComment) : ICommand;

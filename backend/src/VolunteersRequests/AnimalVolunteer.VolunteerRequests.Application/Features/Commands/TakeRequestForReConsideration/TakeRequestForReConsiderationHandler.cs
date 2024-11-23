@@ -9,28 +9,28 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace AnimalVolunteer.VolunteerRequests.Application.Features.Commands.ApproveRequest;
-public class ApproveRequestHandler : ICommandHandler<ApproveRequestCommand>
+namespace AnimalVolunteer.VolunteerRequests.Application.Features.Commands.TakeRequestForReConsideration;
+public class TakeRequestForReConsiderationHandler : ICommandHandler<TakeRequestForReConsiderationCommand>
 {
-    private readonly IValidator<ApproveRequestCommand> _validator;
+    private readonly IValidator<TakeRequestForReConsiderationCommand> _validator;
     private readonly IVolunteerRequestsRepository _volunteerRequestsRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<ApproveRequestHandler> _logger;
+    private readonly ILogger<TakeRequestForReConsiderationHandler> _logger;
 
-    public ApproveRequestHandler(
-        IValidator<ApproveRequestCommand> validator, 
-        IVolunteerRequestsRepository volunteerRequestsRepository, 
-        [FromKeyedServices(Modules.VolunteerRequests)]IUnitOfWork unitOfWork, 
-        ILogger<ApproveRequestHandler> logger)
+    public TakeRequestForReConsiderationHandler(
+        IValidator<TakeRequestForReConsiderationCommand> validator,
+        [FromKeyedServices(Modules.VolunteerRequests)] IUnitOfWork unitOfWork,
+        IVolunteerRequestsRepository volunteerRequestsRepository,
+        ILogger<TakeRequestForReConsiderationHandler> logger)
     {
         _validator = validator;
-        _volunteerRequestsRepository = volunteerRequestsRepository;
         _unitOfWork = unitOfWork;
+        _volunteerRequestsRepository = volunteerRequestsRepository;
         _logger = logger;
     }
 
     public async Task<UnitResult<ErrorList>> Handle(
-        ApproveRequestCommand command, CancellationToken cancellationToken)
+        TakeRequestForReConsiderationCommand command, CancellationToken cancellationToken)
     {
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
         if (validationResult.IsValid == false)
@@ -41,13 +41,15 @@ public class ApproveRequestHandler : ICommandHandler<ApproveRequestCommand>
         if (volunteerRequest.IsFailure)
             return volunteerRequest.Error.ToErrorList();
 
-        var approveResult = volunteerRequest.Value.ApproveRequest();
-        if (approveResult.IsFailure)
-            return approveResult.Error.ToErrorList();
+        var takeResult = volunteerRequest.Value.TakeOnReConsideration();
+        if (takeResult.IsFailure)
+            return takeResult.Error.ToErrorList();
 
         await _unitOfWork.SaveChanges(cancellationToken);
 
-        _logger.LogInformation("Volunteer request {vrId} was approved", command.RequestId);
+        _logger.LogInformation(
+            "Volunteer request {vrId} was sended to re-consideration", 
+            volunteerRequest.Value.Id);
 
         return UnitResult.Success<ErrorList>();
     }

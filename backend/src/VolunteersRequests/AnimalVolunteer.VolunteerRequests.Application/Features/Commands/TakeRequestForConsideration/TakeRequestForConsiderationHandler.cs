@@ -47,13 +47,18 @@ public class TakeRequestForConsiderationHandler : ICommandHandler<TakeRequestFor
         if (volunteerRequest.IsFailure)
             return volunteerRequest.Error.ToErrorList();
 
-        var discussionRequest = new CreateDiscussionRequest(command.RequestId, command.UserId, command.AdminId);
+        var discussionRequest = new CreateDiscussionRequest(
+            command.RequestId, 
+            volunteerRequest.Value.UserId,
+            command.AdminId);
 
         var discussionId = await _discussonsContract.CreateNewDiscussion(discussionRequest, cancellationToken);
         if (discussionId.IsFailure)
             return discussionId.Error;
 
-        volunteerRequest.Value.TakeOnCosideration(command.AdminId, discussionId.Value);
+        var takeResult = volunteerRequest.Value.TakeOnCosideration(command.AdminId, discussionId.Value);
+        if (takeResult.IsFailure)
+            return takeResult.Error.ToErrorList();
 
         await _unitOfWork.SaveChanges(cancellationToken);
 
