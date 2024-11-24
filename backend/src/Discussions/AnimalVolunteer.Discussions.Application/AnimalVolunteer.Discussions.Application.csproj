@@ -17,8 +17,4 @@
     <ProjectReference Include="..\AnimalVolunteer.Discussions.Domain\AnimalVolunteer.Discussions.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Queries\" />
-  </ItemGroup>
-
 </Project>

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace AnimalVolunteer.VolunteerRequests.Infrastructure.Linq2db.Connections;
+namespace AnimalVolunteer.VolunteerRequests.Infrastructure.Linq2db;
 
 public class Linq2DbConnection : DataConnection
 {
@@ -19,5 +19,6 @@ public class Linq2DbConnection : DataConnection
 
     }
 
-    public ITable<VolunteerRequestDto> VolunteerRequests => this.GetTable<VolunteerRequestDto>();
+    public ITable<VolunteerRequestDto> VolunteerRequests => 
+        this.GetTable<VolunteerRequestDto>();
 }
