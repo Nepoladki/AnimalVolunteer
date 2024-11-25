@@ -11,5 +11,5 @@ public class MessageDto
     [Column("created_at")] public DateTime CreatedAt { get; set; }
     [Column("is_edited")] public bool IsEdited { get; set; }
 
-    [Association(ThisKey = Id)] public DiscussionDto Discussion { get; set; }
+    [Association()] public DiscussionDto Discussion { get; set; }
 }
