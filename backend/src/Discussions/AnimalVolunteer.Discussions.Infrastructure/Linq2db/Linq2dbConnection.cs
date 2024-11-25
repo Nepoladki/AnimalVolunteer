@@ -13,5 +13,6 @@ public class Linq2dbConnection : DataConnection
 
     public ITable<DiscussionDto> Discussions =>
         this.GetTable<DiscussionDto>();
-
+    
+    public ITable<MessageDto> Messages => this.GetTable<MessageDto>();
 }
