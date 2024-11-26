@@ -71,15 +71,15 @@ namespace AnimalVolunteer.Discussions.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
-                    b.Property<Guid?>("discussion")
+                    b.Property<Guid?>("discussion_id")
                         .HasColumnType("uuid")
-                        .HasColumnName("discussion");
+                        .HasColumnName("discussion_id");
 
                     b.HasKey("Id")
                         .HasName("pk_messages");
 
-                    b.HasIndex("discussion")
-                        .HasDatabaseName("ix_messages_discussion");
+                    b.HasIndex("discussion_id")
+                        .HasDatabaseName("ix_messages_discussion_id");
 
                     b.ToTable("messages", "discussions");
                 });
@@ -88,8 +88,8 @@ namespace AnimalVolunteer.Discussions.Infrastructure.Migrations
                 {
                     b.HasOne("AnimalVolunteer.Discussions.Domain.Aggregate.Discussion", "Discussion")
                         .WithMany("Messages")
-                        .HasForeignKey("discussion")
-                        .HasConstraintName("fk_messages_discussions_discussion");
+                        .HasForeignKey("discussion_id")
+                        .HasConstraintName("fk_messages_discussions_discussion_id");
 
                     b.Navigation("Discussion");
                 });

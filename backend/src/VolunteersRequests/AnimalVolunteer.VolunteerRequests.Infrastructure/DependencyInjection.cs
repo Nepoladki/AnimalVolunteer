@@ -3,7 +3,7 @@ using AnimalVolunteer.Core.Abstractions;
 using AnimalVolunteer.Core.Options;
 using AnimalVolunteer.VolunteerRequests.Application.Interfaces;
 using AnimalVolunteer.VolunteerRequests.Infrastructure.DbContexts;
-using AnimalVolunteer.VolunteerRequests.Infrastructure.Linq2db.Connections;
+using AnimalVolunteer.VolunteerRequests.Infrastructure.Linq2db;
 using AnimalVolunteer.VolunteerRequests.Infrastructure.Repositories;
 using LinqToDB;
 using LinqToDB.AspNet;

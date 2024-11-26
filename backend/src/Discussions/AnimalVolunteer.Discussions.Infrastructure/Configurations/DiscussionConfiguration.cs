@@ -1,5 +1,4 @@
 ﻿using AnimalVolunteer.Core.Extensions;
-using AnimalVolunteer.Discussions.Application.DTOs;
 using AnimalVolunteer.Discussions.Domain.Aggregate;
 using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +30,7 @@ public class DiscussionConfiguration : IEntityTypeConfiguration<Discussion>
         builder
             .HasMany(d => d.Messages)
             .WithOne(m => m.Discussion)
-            .HasForeignKey("discussion");
+            .HasForeignKey("discussion_id");
 
         builder
             .Property(d => d.RelationId)

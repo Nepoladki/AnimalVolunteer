@@ -39,24 +39,24 @@ namespace AnimalVolunteer.Discussions.Infrastructure.Migrations
                     text = table.Column<string>(type: "text", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     is_edited = table.Column<bool>(type: "boolean", nullable: false),
-                    discussion = table.Column<Guid>(type: "uuid", nullable: true)
+                    discussion_id = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_messages", x => x.id);
                     table.ForeignKey(
-                        name: "fk_messages_discussions_discussion",
-                        column: x => x.discussion,
+                        name: "fk_messages_discussions_discussion_id",
+                        column: x => x.discussion_id,
                         principalSchema: "discussions",
                         principalTable: "discussions",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_messages_discussion",
+                name: "ix_messages_discussion_id",
                 schema: "discussions",
                 table: "messages",
-                column: "discussion");
+                column: "discussion_id");
         }
 
         /// <inheritdoc />

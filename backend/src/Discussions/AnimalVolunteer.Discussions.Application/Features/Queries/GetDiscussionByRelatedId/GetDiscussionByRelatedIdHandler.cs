@@ -30,6 +30,8 @@ public class GetDiscussionByRelatedIdHandler : ICommandHandler<GetDiscussionByRe
         if (validationResult.IsValid == false)
             return validationResult.ToErrorList();
 
+
+
         // get discussion with messages with linq2db
 
         return UnitResult.Success<ErrorList>();

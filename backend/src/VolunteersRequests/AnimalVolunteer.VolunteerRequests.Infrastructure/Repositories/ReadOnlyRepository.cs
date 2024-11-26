@@ -1,6 +1,6 @@
 ﻿using AnimalVolunteer.SharedKernel;
 using AnimalVolunteer.VolunteerRequests.Application.Interfaces;
-using AnimalVolunteer.VolunteerRequests.Infrastructure.Linq2db.Connections;
+using AnimalVolunteer.VolunteerRequests.Infrastructure.Linq2db;
 using CSharpFunctionalExtensions;
 using LinqToDB;
 
