@@ -12,7 +12,7 @@ public class MessageDto
     [Column("is_edited")] public bool IsEdited { get; set; }
     [Column("discussion_id")] public Guid DiscussionId { get; set; }
 
-    [Association(ThisKey = "discussion_id", OtherKey = "id)")]
+    [Association(ThisKey = "discussion_id", OtherKey = "discussions.id)")]
     public DiscussionDto Discussion { get; set; } = default!;
 }
  

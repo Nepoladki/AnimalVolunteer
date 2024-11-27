@@ -15,12 +15,15 @@ public class GetDiscussionByRelatedIdHandler : ICommandHandler<GetDiscussionByRe
 {
     private readonly IValidator<GetDiscussionByRelatedIdCommand> _validator;
     private readonly ILogger<GetDiscussionByRelatedIdHandler> _logger;
+    private readonly IReadOnlyRepository _readOnlyRepository;
     public GetDiscussionByRelatedIdHandler(
         IValidator<GetDiscussionByRelatedIdCommand> validator,
-        ILogger<GetDiscussionByRelatedIdHandler> logger)
+        ILogger<GetDiscussionByRelatedIdHandler> logger,
+        IReadOnlyRepository readOnlyRepository)
     {
         _validator = validator;
         _logger = logger;
+        _readOnlyRepository = readOnlyRepository;
     }
 
     public async Task<UnitResult<ErrorList>> Handle(
@@ -30,7 +33,7 @@ public class GetDiscussionByRelatedIdHandler : ICommandHandler<GetDiscussionByRe
         if (validationResult.IsValid == false)
             return validationResult.ToErrorList();
 
-
+        //var discussion = _readOnlyRepository.
 
         // get discussion with messages with linq2db
 
