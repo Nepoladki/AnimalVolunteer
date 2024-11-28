@@ -1,6 +1,7 @@
 ﻿using AnimalVolunteer.Core;
 using AnimalVolunteer.Core.Abstractions;
 using AnimalVolunteer.Core.Abstractions.CQRS;
+using AnimalVolunteer.Core.DTOs.Discussions;
 using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.Discussions.Application.Features.Queries.GetDiscussionById;
 using AnimalVolunteer.Discussions.Application.Interfaces;
@@ -11,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace AnimalVolunteer.Discussions.Application.Features.Queries.GetDiscussionByRelatedId;
-public class GetDiscussionByRelatedIdHandler : ICommandHandler<GetDiscussionByRelatedIdCommand>
+public class GetDiscussionByRelatedIdHandler : ICommandHandler<DiscussionDto, GetDiscussionByRelatedIdCommand>
 {
     private readonly IValidator<GetDiscussionByRelatedIdCommand> _validator;
     private readonly ILogger<GetDiscussionByRelatedIdHandler> _logger;
@@ -26,17 +27,20 @@ public class GetDiscussionByRelatedIdHandler : ICommandHandler<GetDiscussionByRe
         _readOnlyRepository = readOnlyRepository;
     }
 
-    public async Task<UnitResult<ErrorList>> Handle(
+    public async Task<Result<DiscussionDto, ErrorList>> Handle(
         GetDiscussionByRelatedIdCommand command, CancellationToken cancellationToken)
     {
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
         if (validationResult.IsValid == false)
             return validationResult.ToErrorList();
 
-        //var discussion = _readOnlyRepository.
+        var discussion = _readOnlyRepository.GetDiscussionByRelatedId(command.RelatedId);
+        if (discussion.IsFailure)
+        {
+            _logger.LogError("Discussion eith RelatedId {rId} was not found", command.RelatedId);
+            return discussion.Error.ToErrorList();
+        }
 
-        // get discussion with messages with linq2db
-
-        return UnitResult.Success<ErrorList>();
+        return discussion.Value;
     }
 }
