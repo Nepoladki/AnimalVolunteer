@@ -13,8 +13,9 @@ public sealed class Discussion : CSharpFunctionalExtensions.Entity<DiscussionId>
     // EF Core ctor
     private Discussion() { }
 
-    private Discussion(Guid relationId, IEnumerable<Guid> users)
+    private Discussion(DiscussionId id, Guid relationId, IEnumerable<Guid> users)
     {
+        Id = id;
         RelationId = relationId;
         _usersIds = users.ToArray();
     }
@@ -37,7 +38,9 @@ public sealed class Discussion : CSharpFunctionalExtensions.Entity<DiscussionId>
         if (users.Any(u => u == Guid.Empty))
             return Errors.Disscussions.InvalidDiscussionUsers();
 
-        return new Discussion(relationId, users.ToList());
+        var id = DiscussionId.Create();
+
+        return new Discussion(id, relationId, users.ToList());
     }
 
     public Result<Message, Error> GetMessage(MessageId messageId)

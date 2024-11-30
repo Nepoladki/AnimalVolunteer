@@ -14,7 +14,7 @@ public class ReadOnlyRepository : IReadOnlyRepository
     }
     public Result<DiscussionDto, Error> GetDiscussionByRelatedId(Guid id)
     {
-        var discussion = _connection.Discussions.FirstOrDefault(d => d.RelatedId == id);
+        var discussion = _connection.Discussions.First(d => d.RelatedId == id);
         if (discussion is null)
             return Errors.General.NotFound(id);
 

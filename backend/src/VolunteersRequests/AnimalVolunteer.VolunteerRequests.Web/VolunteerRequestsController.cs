@@ -65,7 +65,9 @@ public class VolunteerRequestsController : ApplicationController
     {
         var command = new TakeRequestForReConsiderationCommand(requestId);
 
-
+        var handleResult = await handler.Handle(command, cancellationToken);
+        if (handleResult.IsFailure)
+            return handleResult.Error.ToResponse();
 
         return Ok();
     }

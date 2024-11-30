@@ -21,6 +21,7 @@ public static class DependencyInjection
             .AddKeyedScoped<IUnitOfWork, UnitOfWork>(Modules.Discussions)
             .AddScoped<WriteDbContext>()
             .AddScoped<IDiscussionsRepository, DiscussionsRepository>()
+            .AddScoped<IReadOnlyRepository, ReadOnlyRepository>()
             .ConfigureLinq2db(config);
 
         return services;
