@@ -6,10 +6,9 @@ namespace AnimalVolunteer.Core.DTOs.Discussions;
 [Table("discussions", Schema = "discussions")]
 public record DiscussionDto
 {
-    [Column("id"), PrimaryKey]public Guid Id { get; }
-    [Column("related_entity")] public Guid RelatedId { get; }
-    public IReadOnlyList<MessageDto> Messages { get; }
-    [Column("users_ids")] public IReadOnlyList<Guid> UsersIds { get; }
-    [Column("is_opened")] public bool IsOpened { get; }
-
+    [Column("id"), PrimaryKey, NotNull] public Guid Id { get; set; }
+    [Column("related_entity"), NotNull] public Guid RelatedId { get; set; }
+    public IReadOnlyList<MessageDto> Messages { get; set; }
+    [Column("users_ids"), NotNull] public Guid[] UsersIds { get; set; }
+    [Column("is_opened"), NotNull] public bool IsOpened { get; set; }
 }
