@@ -1,4 +1,6 @@
-﻿namespace AnimalVolunteer.VolunteerRequests.Application.Features.Queries.GetRequestsForConsideration;
+﻿using AnimalVolunteer.Core.Abstractions.CQRS;
 
-public record GetRequestsForConsiderationQuery(int Page, int PageSize);
+namespace AnimalVolunteer.VolunteerRequests.Application.Features.Queries.GetRequestsForConsideration;
+
+public record GetRequestsForConsiderationQuery(int Page, int PageSize) : IQuery;
 

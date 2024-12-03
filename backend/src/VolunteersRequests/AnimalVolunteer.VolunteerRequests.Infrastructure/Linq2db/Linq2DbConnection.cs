@@ -1,5 +1,6 @@
 ﻿using AnimalVolunteer.Core.DTOs.VolunteerRequests;
 using AnimalVolunteer.Core.Options;
+using AnimalVolunteer.VolunteerRequests.Application.Interfaces;
 using AnimalVolunteer.VolunteerRequests.Domain;
 using LinqToDB;
 using LinqToDB.Data;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Options;
 
 namespace AnimalVolunteer.VolunteerRequests.Infrastructure.Linq2db;
 
-public class Linq2DbConnection : DataConnection
+public class Linq2DbConnection : DataConnection, ILinq2dbConnection
 {
 
     public Linq2DbConnection(DataOptions<Linq2DbConnection> options)
