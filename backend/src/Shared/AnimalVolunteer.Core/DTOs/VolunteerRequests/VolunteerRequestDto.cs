@@ -14,19 +14,22 @@ public class VolunteerRequestDto
     public Guid UserId { get; set; } = default!;
 
     [Column("admin_id")]
-    public Guid AdminId { get; set; } = default!;
+    public Guid AdminId { get; set; } = default;
 
     [Column("discussion_id")]
     public Guid? DiscussionId { get; set; }
 
-    [Column("status")]
+    [Column("status_enum")]
     public string Status { get; set; } = default!;
 
     [Column("rejection_comment")]
     public string? RejectionComment { get; set; }
 
-    [Column("volunteer_info")]
-    public VolunteerInfo VolunteerInfo { get; set; } = default!;
+    [Column("expirience_description")]
+    public string ExpirienceDescription { get; set; } = string.Empty;
+    
+    [Column("passport")]
+    public string Passport { get; set; } = string.Empty;
 
     [Column("last_rejection_at")]
     public DateTime? LastRejectionAt { get; set; }

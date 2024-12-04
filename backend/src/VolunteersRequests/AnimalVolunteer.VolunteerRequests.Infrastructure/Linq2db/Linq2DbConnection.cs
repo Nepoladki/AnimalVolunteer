@@ -11,7 +11,7 @@ using Microsoft.Extensions.Options;
 
 namespace AnimalVolunteer.VolunteerRequests.Infrastructure.Linq2db;
 
-public class Linq2DbConnection : DataConnection, ILinq2dbConnection
+public class Linq2DbConnection : DataConnection
 {
 
     public Linq2DbConnection(DataOptions<Linq2DbConnection> options)

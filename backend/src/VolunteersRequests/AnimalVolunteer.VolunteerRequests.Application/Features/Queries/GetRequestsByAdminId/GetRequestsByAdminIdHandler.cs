@@ -7,30 +7,32 @@ using AnimalVolunteer.VolunteerRequests.Application.Interfaces;
 using CSharpFunctionalExtensions;
 using FluentValidation;
 
-namespace AnimalVolunteer.VolunteerRequests.Application.Features.Queries.GetRequestsForConsideration;
+namespace AnimalVolunteer.VolunteerRequests.Application.Features.Queries.GetRequestsByAdminId;
 
-public class GetRequestsForConsiderationHandler 
-    : IQueryHandler<Result<PagedList<VolunteerRequestDto>, ErrorList>, GetRequestsForConsiderationQuery>
+public class GetRequestsByAdminIdHandler : 
+    IQueryHandler<Result<PagedList<VolunteerRequestDto>, ErrorList>, GetRequestsByAdminIdQuery>
 {
-    private readonly IValidator<GetRequestsForConsiderationQuery> _validator;
     private readonly IReadOnlyRepository _repository;
+    private readonly IValidator<GetRequestsByAdminIdQuery> _validator;
 
-    public GetRequestsForConsiderationHandler(
-        IValidator<GetRequestsForConsiderationQuery> validator,
-        IReadOnlyRepository repository)
+    public GetRequestsByAdminIdHandler(
+        IReadOnlyRepository repository,
+        IValidator<GetRequestsByAdminIdQuery> validator)
     {
-        _validator = validator;
         _repository = repository;
+        _validator = validator;
     }
 
+
     public async Task<Result<PagedList<VolunteerRequestDto>, ErrorList>> Handle(
-        GetRequestsForConsiderationQuery query, CancellationToken cancellationToken)
+        GetRequestsByAdminIdQuery query, CancellationToken cancellationToken)
     {
         var validationResult = await _validator.ValidateAsync(query, cancellationToken);
         if (validationResult.IsValid == false)
             return validationResult.ToErrorList();
 
-        return await _repository.GetRequestsForConsideration(query.Page, query.PageSize, cancellationToken);
+        return await _repository.GetRequestsByAdminId(
+            query.AdminId, query.Page, query.PageSize, cancellationToken, query.Status);
     }
 }
 

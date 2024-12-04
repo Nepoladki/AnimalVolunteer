@@ -3,6 +3,9 @@ using AnimalVolunteer.VolunteerRequests.Application.Features.Commands.CreateRequ
 using AnimalVolunteer.VolunteerRequests.Application.Features.Commands.TakeRequestForConsideration;
 using AnimalVolunteer.VolunteerRequests.Application.Features.Commands.TakeRequestForReConsideration;
 using AnimalVolunteer.VolunteerRequests.Application.Features.Commands.UpdateRequest;
+using AnimalVolunteer.VolunteerRequests.Application.Features.Queries.GetRequestsByAdminId;
+using AnimalVolunteer.VolunteerRequests.Application.Features.Queries.GetRequestsForConsideration;
+using AnimalVolunteer.VolunteerRequests.Domain.Enums;
 using AnimalVolunteer.VolunteerRequests.Web.Requests;
 using Microsoft.AspNetCore.Mvc;
 
@@ -70,6 +73,40 @@ public class VolunteerRequestsController : ApplicationController
             return handleResult.Error.ToResponse();
 
         return Ok();
+    }
+
+    [HttpGet("to-considerate")]
+    public async Task<IActionResult> GetRequestsForConsideration(
+        [FromQuery] int Page,
+        [FromQuery] int PageSize,
+        [FromServices] GetRequestsForConsiderationHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetRequestsForConsiderationQuery(Page, PageSize);
+
+        var handleResult = await handler.Handle(query, cancellationToken);
+        if (handleResult.IsFailure)
+            return handleResult.Error.ToResponse();
+
+        return Ok(handleResult.Value);
+    }
+
+    [HttpGet("admin/{AdminId:guid}")]
+    public async Task<IActionResult> GetRequestsForConsideration(
+        [FromRoute] Guid AdminId,
+        [FromQuery] int Page,
+        [FromQuery] int PageSize,
+        [FromQuery] VolunteerRequestStatus? Status,
+        [FromServices] GetRequestsByAdminIdHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetRequestsByAdminIdQuery(AdminId, Page, PageSize, Status);
+
+        var handleResult = await handler.Handle(query, cancellationToken);
+        if (handleResult.IsFailure)
+            return handleResult.Error.ToResponse();
+
+        return Ok(handleResult.Value);
     }
 }
 

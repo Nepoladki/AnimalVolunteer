@@ -1,10 +1,9 @@
 ﻿using AnimalVolunteer.Core.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+using LinqToDB;
 
-namespace AnimalVolunteer.Core.Extensions;
+namespace AnimalVolunteer.Core.Extensions.Linq2Db;
 
-public static class QueriesExtensions
+public static class Linq2DbQueriesExtensions
 {
     public static async Task<PagedList<T>> ToPagedList<T>(
         this IQueryable<T> source,
@@ -28,12 +27,5 @@ public static class QueriesExtensions
             TotalCount = totalCount
         };
     }
-
-    public static IQueryable<T> WhereIf<T>(
-        this IQueryable<T> source,
-        bool condition,
-        Expression<Func<T, bool>> predicate)
-    {
-        return condition ? source.Where(predicate) : source;
-    }
 }
+

@@ -2,6 +2,7 @@
 using AnimalVolunteer.Core.DTOs.Volunteers.Pet;
 using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.Core.Models;
+using AnimalVolunteer.Core.QueriesExtensions;
 using AnimalVolunteer.Volunteers.Application.Interfaces;
 using System.Linq.Expressions;
 

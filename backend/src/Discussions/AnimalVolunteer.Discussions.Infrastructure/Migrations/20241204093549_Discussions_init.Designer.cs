@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnimalVolunteer.Discussions.Infrastructure.Migrations
 {
     [DbContext(typeof(WriteDbContext))]
-    [Migration("20241202132035_Discussions_init")]
+    [Migration("20241204093549_Discussions_init")]
     partial class Discussions_init
     {
         /// <inheritdoc />

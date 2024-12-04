@@ -12,9 +12,9 @@ public class VolunteerRequestExistsHandler : IQueryHandler<bool, VolunteerReques
         _repository = repository;
     }
 
-    public Task<bool> Handle(VolunteerRequestExistsQuery query, CancellationToken cancellationToken)
+    public async Task<bool> Handle(VolunteerRequestExistsQuery query, CancellationToken cancellationToken)
     {
-        return _repository.VolunteerRequestExistsByUserId(query.UserId, cancellationToken);
+        return await _repository.VolunteerRequestExistsByUserId(query.UserId, cancellationToken);
     }
 }
 

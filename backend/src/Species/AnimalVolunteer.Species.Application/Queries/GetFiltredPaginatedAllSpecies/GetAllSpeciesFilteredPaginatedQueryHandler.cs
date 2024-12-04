@@ -2,6 +2,7 @@
 using AnimalVolunteer.Core.DTOs.Species;
 using AnimalVolunteer.Core.Extensions;
 using AnimalVolunteer.Core.Models;
+using AnimalVolunteer.Core.QueriesExtensions;
 
 namespace AnimalVolunteer.Species.Application.Queries.GetFiltredPaginatedAllSpecies;
 
