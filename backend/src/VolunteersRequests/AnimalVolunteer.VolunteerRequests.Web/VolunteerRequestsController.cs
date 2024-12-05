@@ -3,6 +3,7 @@ using AnimalVolunteer.VolunteerRequests.Application.Features.Commands.CreateRequ
 using AnimalVolunteer.VolunteerRequests.Application.Features.Commands.TakeRequestForConsideration;
 using AnimalVolunteer.VolunteerRequests.Application.Features.Commands.TakeRequestForReConsideration;
 using AnimalVolunteer.VolunteerRequests.Application.Features.Commands.UpdateRequest;
+using AnimalVolunteer.VolunteerRequests.Application.Features.Queries.GetRequestByUserId;
 using AnimalVolunteer.VolunteerRequests.Application.Features.Queries.GetRequestsByAdminId;
 using AnimalVolunteer.VolunteerRequests.Application.Features.Queries.GetRequestsForConsideration;
 using AnimalVolunteer.VolunteerRequests.Domain.Enums;
@@ -91,16 +92,31 @@ public class VolunteerRequestsController : ApplicationController
         return Ok(handleResult.Value);
     }
 
-    [HttpGet("admin/{AdminId:guid}")]
+    [HttpGet("admin/{adminId:guid}")]
     public async Task<IActionResult> GetRequestsForConsideration(
-        [FromRoute] Guid AdminId,
+        [FromRoute] Guid adminId,
         [FromQuery] int Page,
         [FromQuery] int PageSize,
         [FromQuery] VolunteerRequestStatus? Status,
         [FromServices] GetRequestsByAdminIdHandler handler,
         CancellationToken cancellationToken)
     {
-        var query = new GetRequestsByAdminIdQuery(AdminId, Page, PageSize, Status);
+        var query = new GetRequestsByAdminIdQuery(adminId, Page, PageSize, Status);
+
+        var handleResult = await handler.Handle(query, cancellationToken);
+        if (handleResult.IsFailure)
+            return handleResult.Error.ToResponse();
+
+        return Ok(handleResult.Value);
+    }
+
+    [HttpGet("user/{userId:guid}")]
+    public async Task<IActionResult> GetRequestForUser(
+        [FromRoute] Guid userId,
+        [FromServices] GetRequestByUserIdHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetRequestByUserIdQuery(userId);
 
         var handleResult = await handler.Handle(query, cancellationToken);
         if (handleResult.IsFailure)
