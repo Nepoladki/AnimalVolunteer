@@ -57,7 +57,20 @@ public class VolunteerRequestConfiguration : IEntityTypeConfiguration<VolunteerR
 
         builder
             .Property(v => v.RejectionComment)
-            .HasColumnName("rejection_comment");
+            .HasColumnName("rejection_comment")
+            .IsRequired(false);
+
+        builder
+            .ComplexProperty(v => v.VolunteerInfo, b =>
+            {
+                b.Property(vi => vi.ExpirienceDescription)
+                .IsRequired()
+                .HasColumnName("expirience_description");
+
+                b.Property(vi => vi.Passport)
+                .IsRequired()
+                .HasColumnName("passport");
+            });
 
         builder
             .Property(v => v.CreatedAt)

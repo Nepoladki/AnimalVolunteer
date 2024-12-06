@@ -1,5 +1,4 @@
 ﻿using AnimalVolunteer.Core.Extensions;
-using AnimalVolunteer.Discussions.Application.DTOs;
 using AnimalVolunteer.Discussions.Domain.Aggregate;
 using AnimalVolunteer.SharedKernel.ValueObjects.EntityIds;
 using Microsoft.EntityFrameworkCore;
@@ -31,20 +30,20 @@ public class DiscussionConfiguration : IEntityTypeConfiguration<Discussion>
         builder
             .HasMany(d => d.Messages)
             .WithOne(m => m.Discussion)
-            .HasForeignKey("discussion");
+            .HasForeignKey("discussion_id");
 
         builder
             .Property(d => d.RelationId)
             .IsRequired()
             .HasColumnName("related_entity");
 
-        //builder
-        //    .Property(d => d.UsersIds)
-        //    .HasField("_usersIds")
-        //    .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction)
-        //    .IsRequired()
-        //    .HasColumnName("users_ids");
-            
+        builder
+            .Property(d => d.UsersIds)
+            .HasField("_usersIds")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .IsRequired()
+            .HasColumnName("users_ids");
+
         builder
             .Property(d => d.IsOpened)
             .IsRequired()

@@ -1,11 +1,11 @@
 ﻿namespace AnimalVolunteer.VolunteerRequests.Domain.Enums;
-
 public enum VolunteerRequestStatus
 {
     Created,
-    Submitted,
+    OnConsideration,
     Rejected,
     RevisionRequired,
+    Updated,
     Approved
 }
 

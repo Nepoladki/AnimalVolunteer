@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Scrutor" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Shared\AnimalVolunteer.Framework\AnimalVolunteer.Framework.csproj" />
     <ProjectReference Include="..\AnimalVolunteer.VolunteerRequests.Application\AnimalVolunteer.VolunteerRequests.Application.csproj" />
     <ProjectReference Include="..\AnimalVolunteer.VolunteerRequests.Infrastructure\AnimalVolunteer.VolunteerRequests.Infrastructure.csproj" />

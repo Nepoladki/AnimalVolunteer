@@ -36,7 +36,7 @@ public class WriteDbContext : DbContext
 
         optionsBuilder.UseNpgsql(_configuration
             .GetConnectionString(_options.PostgresConnectionName));
-        optionsBuilder.UseLowerCaseNamingConvention();
+        optionsBuilder.UseSnakeCaseNamingConvention();
         optionsBuilder.EnableSensitiveDataLogging();
     }
 }

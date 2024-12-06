@@ -13,8 +13,9 @@ public sealed class Discussion : CSharpFunctionalExtensions.Entity<DiscussionId>
     // EF Core ctor
     private Discussion() { }
 
-    private Discussion(Guid relationId, IEnumerable<Guid> users)
+    private Discussion(DiscussionId id, Guid relationId, IEnumerable<Guid> users)
     {
+        Id = id;
         RelationId = relationId;
         _usersIds = users.ToArray();
     }
@@ -23,7 +24,7 @@ public sealed class Discussion : CSharpFunctionalExtensions.Entity<DiscussionId>
 
     private readonly Guid[] _usersIds = new Guid[2];
     public IReadOnlyList<Message> Messages => _messages;
-    public IReadOnlyList<Guid> UsersIds => _usersIds;
+    public IList<Guid> UsersIds => _usersIds;
     public Guid RelationId { get; }
     public bool IsOpened { get; private set; } = true;
 
@@ -37,16 +38,27 @@ public sealed class Discussion : CSharpFunctionalExtensions.Entity<DiscussionId>
         if (users.Any(u => u == Guid.Empty))
             return Errors.Disscussions.InvalidDiscussionUsers();
 
-        return new Discussion(relationId, users.ToList());
+        var id = DiscussionId.Create();
+
+        return new Discussion(id, relationId, users.ToList());
     }
 
-    public UnitResult<Error> Message(Message message, Guid userId) 
+    public Result<Message, Error> GetMessage(MessageId messageId)
+    {
+        var getResult = Messages.FirstOrDefault(m => m.Id == messageId);
+        if (getResult is null)
+            return Errors.General.NotFound(messageId);
+
+        return getResult;
+    }
+
+    public UnitResult<Error> AddMessage(Message message) 
     {
         var openedResult = IsDiscusionOpened();
         if (openedResult.IsFailure)
             return openedResult.Error;
 
-        var accessResult = IsMessagingAllowed(userId);
+        var accessResult = IsMessagingAllowed(message.UserId);
         if (accessResult.IsFailure)
             return accessResult.Error;
 
