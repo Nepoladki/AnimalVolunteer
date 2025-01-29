@@ -13,7 +13,7 @@ services:
     - postgres-data:/var/lib/postgresql/data
   seq:
     image: datalust/seq:latest
-    container_name: seq-logs
+    container_name: av_seq-logs
     restart: always
     environment: 
       - ACCEPT_EULA=Y
@@ -21,7 +21,7 @@ services:
       - 5341:5341
       - 8081:80
   minio:
-   container_name: minio
+   container_name: av_minio
    image: minio/minio
    ports:
     - 9000:9000
