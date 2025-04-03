@@ -26,12 +26,12 @@ public static class GetUploadPresignedUrl
     {
         try
         {
-            var key = Guid.NewGuid();
+            var key = $"{request.ContentType}/{Guid.NewGuid()}";
 
             var urlRequest = new GetPreSignedUrlRequest
             {
                 BucketName = "bucket",
-                Key = $"videos/{key}",
+                Key = key,
                 Verb = HttpVerb.PUT,
                 Expires = DateTime.UtcNow.AddHours(1),
                 ContentType = request.ContentType,

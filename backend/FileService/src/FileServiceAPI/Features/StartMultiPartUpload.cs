@@ -1,5 +1,4 @@
-﻿using Amazon.Runtime.Internal;
-using Amazon.S3;
+﻿using Amazon.S3;
 using Amazon.S3.Model;
 using FileServiceAPI.Endpoints;
 
@@ -27,12 +26,13 @@ public static class StartMultiPartUpload
     {
         try
         {
-            var key = Guid.NewGuid();
+            var key = $"{request.ContentType}/{Guid.NewGuid()}";
 
             var urlRequest = new InitiateMultipartUploadRequest
             {
                 BucketName = "bucket",
-                Key = $"videos/{key}",
+                Key = key,
+                ContentType = request.ContentType,
                 Metadata =
                 {
                     ["file-name"] = request.FileName
