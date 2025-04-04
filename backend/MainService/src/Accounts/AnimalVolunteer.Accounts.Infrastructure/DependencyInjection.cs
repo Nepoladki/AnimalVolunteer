@@ -10,12 +10,12 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using AnimalVolunteer.Accounts.Infrastructure.Providers;
 using AnimalVolunteer.Accounts.Infrastructure.DatabaseSeeding;
-using AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
 using AnimalVolunteer.Accounts.Infrastructure.Options;
 using AnimalVolunteer.Core;
 using AnimalVolunteer.Framework.Authorization;
 using AnimalVolunteer.Accounts.Infrastructure.DbContexts;
 using AnimalVolunteer.Core.Abstractions;
+using AnimalVolunteer.Accounts.Infrastructure.Repositories;
 
 namespace AnimalVolunteer.Accounts.Infrastructure;
 
@@ -76,11 +76,9 @@ public static partial class DependencyInjection
     private static IServiceCollection AddCustomIdentityManagers(this IServiceCollection services)
     {
         services
-            .AddScoped<IAccountManager, AccountManager>()
-            .AddScoped<AccountManager>()
-            .AddScoped<IRefreshSessionManager, RefreshSessionManager>()
-            .AddScoped<PermissonManager>()
-            .AddScoped<RolePermissionManager>();
+            .AddScoped<IAccountsRepository, AccountsRepository>()
+            .AddScoped<IRefreshSessionsRepository, RefreshSessionsRepository>()
+            .AddScoped<IRolesPermissionsRepository, RolesPermissionsRepository>();
 
         return services;
     }

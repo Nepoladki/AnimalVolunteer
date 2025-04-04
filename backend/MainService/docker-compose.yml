@@ -1,7 +1,7 @@
 services:
 
   postgres: 
-    container_name: AnimaVolunteerDataBase
+    container_name: av_postgres
     image: postgres
     restart: always
     environment: 
@@ -11,7 +11,7 @@ services:
     ports:
     - 5434:5432
     volumes:
-    - postgres-data:/var/lib/postgresql/data
+    - av_postgres-data:/var/lib/postgresql/data
 
   seq:
     image: datalust/seq:latest
@@ -25,27 +25,27 @@ services:
 
   mongodb:
     image: mongo
-    container_name: mongodb
+    container_name: av_mongodb
     restart: always
-    enviroment:
+    environment:
       MONGO_INITDB_ROOT_USERNAME: mongoadmin
       MONGO_INITDB_ROOT_PASSWORD: mongopassword
     ports:
       - 27017:27017
     volumes:
-      - mongo_data:/data/db
+      - av_mongo_data:/data/db
 
   minio:
    container_name: av_minio
-   image: minio/minio
+   image: minio/minio:latest
    ports:
     - 9000:9000
     - 9001:9001
    volumes:
-    - minio_data:/data
+    - av_minio_data:/data
    command: server --console-address ":9001" /data
    
 volumes:
-  postgres-data:
-  minio_data:
-  mongo_data:
+  av_postgres-data:
+  av_minio_data:
+  av_mongo_data:

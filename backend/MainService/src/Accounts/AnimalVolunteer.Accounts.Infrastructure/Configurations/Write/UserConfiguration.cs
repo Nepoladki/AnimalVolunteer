@@ -1,6 +1,7 @@
 ﻿using AnimalVolunteer.Accounts.Domain.Models;
 using AnimalVolunteer.Accounts.Domain.Models.ValueObjects;
 using AnimalVolunteer.SharedKernel.ValueObjects;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -17,7 +18,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasKey(u => u.Id);
 
-        builder.HasMany(u => u.Roles);
+        builder.HasMany(u => u.Roles)
+            .WithMany()
+            .UsingEntity<IdentityUserRole<Guid>>();
 
         builder.ComplexProperty(u => u.FullName, builder =>
         {

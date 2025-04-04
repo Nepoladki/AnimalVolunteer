@@ -4,7 +4,7 @@ using CSharpFunctionalExtensions;
 
 namespace AnimalVolunteer.Accounts.Application.Interfaces;
 
-public interface IRefreshSessionManager
+public interface IRefreshSessionsRepository
 {
     Task<Result<RefreshSession, Error>> GetByRefreshToken(Guid refreshToken, CancellationToken cancellationToken);
     void DeleteSession(RefreshSession session);

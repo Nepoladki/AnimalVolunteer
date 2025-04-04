@@ -36,11 +36,13 @@ public class UpdateSocialNetworksHandler : ICommandHandler<UpdateSocialNetworksC
         var newSocials = command.SocialNetworks
             .Select(c => SocialNetwork.Create(c.Name, c.URL).Value).ToList();
 
-        user.SocialNetworks = newSocials;
+        var updateSocialsResult = user.UpdateSocialNetworks(newSocials);
+        if (updateSocialsResult.IsFailure)
+            return updateSocialsResult.Error.ToErrorList();
 
-        var updateResult = await _userManager.UpdateAsync(user);
-        if (updateResult.Succeeded == false)
-            return updateResult.Errors.ToDomainErrors();
+        var saveResult = await _userManager.UpdateAsync(user);
+        if (saveResult.Succeeded == false)
+            return saveResult.Errors.ToDomainErrors();
 
         return UnitResult.Success<ErrorList>();
 

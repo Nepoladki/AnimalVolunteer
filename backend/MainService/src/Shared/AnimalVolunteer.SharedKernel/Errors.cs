@@ -92,6 +92,9 @@ public static class Errors
 
         public static Error IdMismatch() =>
             Error.Failure("Auth.IdMismatch", "User id from access token doesn't match with id in system");
+
+        public static Error WrongRole() =>
+            Error.Failure("Auth.WrongRole", "Unable to create user with this role");
     }
 
     public static class Accounts

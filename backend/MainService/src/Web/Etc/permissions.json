@@ -40,10 +40,19 @@
       "volunteers.read",
       "volunteers.pets.read",
       "species.read",
-      "accounts.update"
+      "accounts.update",
+      "accounts.read"
     ],
     "Volunteer": [
-      
+      "volunteers.create",
+      "volunteers.read",
+      "volunteers.pets.create",
+      "volunteers.pets.read",
+      "volunteers.pets.update",
+      "volunteers.pets.soft.delete",
+      "species.read",
+      "accounts.read",
+      "accounts.update"
     ]
   }
 

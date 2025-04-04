@@ -15,12 +15,12 @@ namespace AnimalVolunteer.Accounts.Application.Commands.UpdatePaymentDetails;
 
 public class UpdatePaymentDetailsHandler : ICommandHandler<UpdatePaymentDetailsCommand>
 {
-    private readonly IAccountManager _accountManager;
+    private readonly IAccountsRepository _accountManager;
     private readonly IValidator<UpdatePaymentDetailsCommand> _validator;
     private readonly IUnitOfWork _unitOfWork;
 
     public UpdatePaymentDetailsHandler(
-        IAccountManager accountManager, 
+        IAccountsRepository accountManager, 
         IValidator<UpdatePaymentDetailsCommand> validator,
         [FromKeyedServices(Modules.Accounts)] IUnitOfWork unitOfWork)
     {
@@ -44,7 +44,7 @@ public class UpdatePaymentDetailsHandler : ICommandHandler<UpdatePaymentDetailsC
         var newPaymentDetails = command.PaymentDetails
             .Select(pd => PaymentDetails.Create(pd.Name, pd.Description).Value).ToList();
 
-        volunteerAccount.PaymentDetails = newPaymentDetails;
+        volunteerAccount.UpdatePaymentDetails(newPaymentDetails);
 
         await _unitOfWork.SaveChanges(cancellationToken);
 

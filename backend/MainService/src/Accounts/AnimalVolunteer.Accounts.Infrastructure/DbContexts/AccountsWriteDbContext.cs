@@ -19,7 +19,6 @@ public class AccountsWriteDbContext : IdentityDbContext<User, Role, Guid>
     private readonly DatabaseOptions _dbOptions;
     private readonly Assembly _assembly;
 
-    public DbSet<RolePermission> RolesPermissions { get; set; }
     public DbSet<Permission> Permissions { get; set; }
     public DbSet<ParticipantAccount> ParticipantsAccounts { get; set; }
     public DbSet<VolunteerAccount> VolunteerAccounts { get; set; }
@@ -49,6 +48,7 @@ public class AccountsWriteDbContext : IdentityDbContext<User, Role, Guid>
             
         builder.HasDefaultSchema("accounts");
 
+        builder.Entity<Role>().ToTable("roles");
         builder.Entity<IdentityUserClaim<Guid>>().ToTable("user_claims");
         builder.Entity<IdentityUserToken<Guid>>().ToTable("user_tokens");
         builder.Entity<IdentityUserLogin<Guid>>().ToTable("user_logins");

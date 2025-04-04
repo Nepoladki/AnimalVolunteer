@@ -18,7 +18,7 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
 {
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<Role> _roleManager;
-    private readonly IAccountManager _accountManager;
+    private readonly IAccountsRepository _accountsRepository;
     private readonly ILogger<RegisterUserHandler> _logger;
     private readonly IValidator<RegisterUserCommand> _validator;
     public RegisterUserHandler(
@@ -26,13 +26,13 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
         ILogger<RegisterUserHandler> logger,
         RoleManager<Role> roleManager,
         IValidator<RegisterUserCommand> validator,
-        IAccountManager accountManager)
+        IAccountsRepository accountManager)
     {
         _userManager = userManager;
         _logger = logger;
         _roleManager = roleManager;
         _validator = validator;
-        _accountManager = accountManager;
+        _accountsRepository = accountManager;
     }
     public async Task<UnitResult<ErrorList>> Handle(
         RegisterUserCommand command, CancellationToken cancellationToken = default)
@@ -50,7 +50,11 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
         if (role is null)
             return Errors.Accounts.RoleNotFound(ParticipantAccount.PARTICIPANT_ACCOUNT_NAME).ToErrorList();
 
-        var user = User.CreateParticipant(fullName, command.UserName, command.Email, role);
+        var userResult = User.CreateParticipant(fullName, command.UserName, command.Email, role);
+        if (userResult.IsFailure)
+            return userResult.Error.ToErrorList();
+
+        var user = userResult.Value;
 
         var creationResult = await _userManager.CreateAsync(user, command.Password);
         if (creationResult.Succeeded == false)
@@ -58,7 +62,7 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
 
         var participantAccount = ParticipantAccount.Create(user);
 
-        await _accountManager.AddParticipantAccount(participantAccount, cancellationToken);
+        await _accountsRepository.AddParticipantAccount(participantAccount, cancellationToken);
 
         _logger.LogInformation("Created user with username {Name}", command.UserName);
 

@@ -15,13 +15,13 @@ namespace AnimalVolunteer.Accounts.Application.Commands.RefreshUser;
 
 public class RefreshUserHandler : ICommandHandler<LoginResponse, RefreshUserCommand>
 {
-    private readonly IRefreshSessionManager _refreshSessionManager;
+    private readonly IRefreshSessionsRepository _refreshSessionManager;
     private readonly IJwtTokenProvider _jwtTokenProvider;
     private readonly UserManager<User> _userManager;
     private readonly IUnitOfWork _unitOfWork;
 
     public RefreshUserHandler(
-        IRefreshSessionManager refreshSessionManager,
+        IRefreshSessionsRepository refreshSessionManager,
         IJwtTokenProvider jwtTokenProvider,
         UserManager<User> userManager,
         [FromKeyedServices(Modules.Accounts)]IUnitOfWork unitOfWork)

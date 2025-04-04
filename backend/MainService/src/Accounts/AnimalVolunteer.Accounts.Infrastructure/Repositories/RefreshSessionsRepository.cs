@@ -6,13 +6,13 @@ using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 
-namespace AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
+namespace AnimalVolunteer.Accounts.Infrastructure.Repositories;
 
-public class RefreshSessionManager : IRefreshSessionManager
+public class RefreshSessionsRepository : IRefreshSessionsRepository
 {
     private readonly AccountsWriteDbContext _context;
 
-    public RefreshSessionManager(AccountsWriteDbContext context)
+    public RefreshSessionsRepository(AccountsWriteDbContext context)
     {
         _context = context;
     }

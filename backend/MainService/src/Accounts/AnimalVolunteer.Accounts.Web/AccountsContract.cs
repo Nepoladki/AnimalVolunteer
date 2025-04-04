@@ -1,20 +1,14 @@
-﻿using AnimalVolunteer.Accounts.Contracts;
-using AnimalVolunteer.Accounts.Infrastructure.IdentitiyManagers;
+﻿using AnimalVolunteer.Accounts.Application.Interfaces;
+using AnimalVolunteer.Accounts.Contracts;
 
 namespace AnimalVolunteer.Accounts.Web;
 
-public class AccountsContract : IAccountsContract
+public class AccountsContract(IRolesPermissionsRepository repository) : IAccountsContract
 {
-    private readonly PermissonManager _permissionManager;
-
-    public AccountsContract(PermissonManager permissionManager)
-    {
-        _permissionManager = permissionManager;
-    }
 
     public async Task<IEnumerable<string>?> GetUserPermissions(
         Guid userId, CancellationToken cancellationToken = default)
     {
-        return await _permissionManager.GetUserPermissionsById(userId, cancellationToken);
+        return await repository.GetPermissionCodesByUserId(userId, cancellationToken);
     }
 }

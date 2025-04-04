@@ -75,6 +75,33 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "permission_role",
+                schema: "accounts",
+                columns: table => new
+                {
+                    permissions_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    roles_id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_permission_role", x => new { x.permissions_id, x.roles_id });
+                    table.ForeignKey(
+                        name: "fk_permission_role_permissions_permissions_id",
+                        column: x => x.permissions_id,
+                        principalSchema: "accounts",
+                        principalTable: "permissions",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_permission_role_roles_roles_id",
+                        column: x => x.roles_id,
+                        principalSchema: "accounts",
+                        principalTable: "roles",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "role_claims",
                 schema: "accounts",
                 columns: table => new
@@ -89,34 +116,7 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 {
                     table.PrimaryKey("pk_role_claims", x => x.id);
                     table.ForeignKey(
-                        name: "fk_role_claims_asp_net_roles_role_id",
-                        column: x => x.role_id,
-                        principalSchema: "accounts",
-                        principalTable: "roles",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "roles_permissions",
-                schema: "accounts",
-                columns: table => new
-                {
-                    role_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    permission_id = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_roles_permissions", x => new { x.role_id, x.permission_id });
-                    table.ForeignKey(
-                        name: "fk_roles_permissions_permissions_permission_id",
-                        column: x => x.permission_id,
-                        principalSchema: "accounts",
-                        principalTable: "permissions",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "fk_roles_permissions_roles_role_id",
+                        name: "fk_role_claims_roles_role_id",
                         column: x => x.role_id,
                         principalSchema: "accounts",
                         principalTable: "roles",
@@ -189,33 +189,6 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "role_user",
-                schema: "accounts",
-                columns: table => new
-                {
-                    roles_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    users_id = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_role_user", x => new { x.roles_id, x.users_id });
-                    table.ForeignKey(
-                        name: "fk_role_user_roles_roles_id",
-                        column: x => x.roles_id,
-                        principalSchema: "accounts",
-                        principalTable: "roles",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "fk_role_user_users_users_id",
-                        column: x => x.users_id,
-                        principalSchema: "accounts",
-                        principalTable: "users",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "user_claims",
                 schema: "accounts",
                 columns: table => new
@@ -272,17 +245,17 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 {
                     table.PrimaryKey("pk_user_roles", x => new { x.user_id, x.role_id });
                     table.ForeignKey(
-                        name: "fk_user_roles_asp_net_roles_role_id",
-                        column: x => x.role_id,
-                        principalSchema: "accounts",
-                        principalTable: "roles",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "fk_user_roles_asp_net_users_user_id",
                         column: x => x.user_id,
                         principalSchema: "accounts",
                         principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_user_roles_roles_role_id",
+                        column: x => x.role_id,
+                        principalSchema: "accounts",
+                        principalTable: "roles",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -336,13 +309,20 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 name: "ix_admin_accounts_user_id",
                 schema: "accounts",
                 table: "admin_accounts",
-                column: "user_id");
+                column: "user_id",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_participant_accounts_user_id",
                 schema: "accounts",
                 table: "participant_accounts",
                 column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_permission_role_roles_id",
+                schema: "accounts",
+                table: "permission_role",
+                column: "roles_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_permissions_code_name",
@@ -364,23 +344,11 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 column: "role_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_role_user_users_id",
-                schema: "accounts",
-                table: "role_user",
-                column: "users_id");
-
-            migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 schema: "accounts",
                 table: "roles",
                 column: "normalized_name",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "ix_roles_permissions_permission_id",
-                schema: "accounts",
-                table: "roles_permissions",
-                column: "permission_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_user_claims_user_id",
@@ -417,7 +385,8 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 name: "ix_volunteer_accounts_user_id",
                 schema: "accounts",
                 table: "volunteer_accounts",
-                column: "user_id");
+                column: "user_id",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -432,19 +401,15 @@ namespace AnimalVolunteer.Accounts.Infrastructure.Migrations
                 schema: "accounts");
 
             migrationBuilder.DropTable(
+                name: "permission_role",
+                schema: "accounts");
+
+            migrationBuilder.DropTable(
                 name: "refresh_session",
                 schema: "accounts");
 
             migrationBuilder.DropTable(
                 name: "role_claims",
-                schema: "accounts");
-
-            migrationBuilder.DropTable(
-                name: "role_user",
-                schema: "accounts");
-
-            migrationBuilder.DropTable(
-                name: "roles_permissions",
                 schema: "accounts");
 
             migrationBuilder.DropTable(

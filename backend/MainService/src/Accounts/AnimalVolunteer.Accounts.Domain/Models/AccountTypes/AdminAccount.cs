@@ -9,10 +9,8 @@ public sealed class AdminAccount
     // EF Core ctor
     private AdminAccount() { }
 
-    public static AdminAccount Create (User user)
-    {
-        return new() { User = user };
-    }
+    public AdminAccount(User user)
+        => User = user;
 
     public Guid Id { get; set; }
 
