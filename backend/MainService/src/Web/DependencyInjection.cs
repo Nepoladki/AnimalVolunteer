@@ -1,11 +1,7 @@
-﻿using AnimalVolunteer.Core.Options;
-using AnimalVolunteer.SharedKernel.ValueObjects;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
-using System.Text;
 
 namespace AnimalVolunteer.API;
 
@@ -16,6 +12,11 @@ public static class DependencyInjection
         AddSerilogLogger(services, config);
 
         services.AddCustomSwaggerGen();
+
+        services.Configure<ApiBehaviorOptions>(opt =>
+        {
+            opt.SuppressModelStateInvalidFilter = true;
+        });
 
         return services;
     }
